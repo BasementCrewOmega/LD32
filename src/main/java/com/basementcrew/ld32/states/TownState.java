@@ -13,6 +13,8 @@ import bropals.lib.simplegame.gui.GuiGroup;
 import bropals.lib.simplegame.gui.GuiImage;
 import bropals.lib.simplegame.state.GameState;
 import com.basementcrew.ld32.data.Area;
+import com.basementcrew.ld32.data.PlayerData;
+import com.basementcrew.ld32.movie.Movie;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -28,6 +30,7 @@ public class TownState extends GameState {
     private ArrayList<Area> areas = new ArrayList<>();
     private Gui gui = new Gui();
     private BufferedImage background;
+    private PlayerData playerData;
 
     @Override
     public void update() {
@@ -43,17 +46,18 @@ public class TownState extends GameState {
         g.drawImage(background, 0, 0, null);
         gui.render(o);
     }
-
+    
     @Override
     public void onEnter() {
         //Add areas to the list of areas.
-
+        areas.add(getAssetManager().getAsset("area_area1", Area.class));
+        
         //Main town area GUI
         GuiGroup main = new GuiGroup();
         for (int i = 0; i < areas.size(); i++) {
             main.addElement(new GuiButton(
                     areas.get(i).getIconX(),
-                    areas.get(i).getIconX(),
+                    areas.get(i).getIconY(),
                     100, 100,
                     areas.get(i).getIconImage(),
                     areas.get(i).getIconImage(),
@@ -115,7 +119,10 @@ public class TownState extends GameState {
 
         @Override
         public void onButtonPress() {
-
+            getGameStateRunner().setState(new TransitionState(
+                    getAssetManager().getAsset("enter_battle", Movie.class),
+                    new BattleSequenceState(area.getRandomEnemy(), playerData, area.getBackgroundImage())
+            ));
         }
 
     }

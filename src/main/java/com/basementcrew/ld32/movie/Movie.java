@@ -67,7 +67,6 @@ public class Movie {
         } catch (ConcurrentModificationException cme) {
             
         }
-        InfoLogger.println(delayLeft);
     }
 
     public void setBackground(BufferedImage background) {

@@ -1,8 +1,8 @@
 enemies {
-	enemy_enemy1
-	enemy_enemy1
-	enemy_enemy1
+	enemy_enemy1;
 }
 boss:enemy_boss1;
 background_image:area1_background;
 weapon:weapon_fists;
+icon_image:area1_icon;
+button_location:500,100;

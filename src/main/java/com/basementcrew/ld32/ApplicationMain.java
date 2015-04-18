@@ -58,6 +58,9 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/battleSequence/selector.png", "selector");
             assetManager.loadImage("assets/img/battleSequence/lowerMenuBackground.png", "lowerMenuBackground");
             
+            //Movie images
+            assetManager.loadImage("assets/img/movies/enteringBattleBackground.png", "enteringBattleBackground");
+            
             // enemy1 files
             assetManager.loadImage("assets/img/entity/enemy1_idle.png", "img_enemy1_idle");
             assetManager.loadAsset("assets/data/enemy1/anim_idle.txt", "anim_enemy1_idle", Animation.class);
@@ -73,13 +76,16 @@ public class ApplicationMain {
 
             // areas
             assetManager.loadImage("assets/img/battleSequence/area1_background.png", "area1_background");
+            assetManager.loadImage("assets/img/townMenu/area1_icon.png", "area1_icon");
             assetManager.loadAsset("assets/data/area_area1.txt", "area_area1", Area.class);
            
 
             //Movie files
             assetManager.loadAsset("assets/data/movies/cool_movie.txt", "cool_movie", Movie.class);
-
+            assetManager.loadAsset("assets/data/movies/enter_battle.txt", "enter_battle", Movie.class);
+            
             GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
+            
             TimedGameStateRunner runner = new TimedGameStateRunner(window, assetManager);
             /*
             runner.setState(new MainMenuState());

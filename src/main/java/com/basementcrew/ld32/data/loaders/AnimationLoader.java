@@ -20,6 +20,10 @@ import java.util.ArrayList;
 /**
  * Loads animation files.
  * 
+ * Format:
+ * ``
+ * ImageKey;widthOfEachTile;heighOfEachTile;millisecondsBetweenFrames;
+ * ``
  * @author Jonathon
  */
 public class AnimationLoader extends AssetLoader<Animation> {
@@ -50,6 +54,7 @@ public class AnimationLoader extends AssetLoader<Animation> {
             BufferedImage image = null;
             int width = -1;
             int height = -1;
+            int millisBetween = -1;
             
             for (int i=0; i<src.length; i++) {
                 if (src[i] == ';') {
@@ -59,12 +64,15 @@ public class AnimationLoader extends AssetLoader<Animation> {
                         width = Integer.parseInt(buffer);
                     } else if (height == -1) {
                         height = Integer.parseInt(buffer);
+                    } else if (millisBetween == -1) {
+                        millisBetween = Integer.parseInt(buffer);
                     } else {
-                        tracks.add(new Track(image, width, height));
+                        tracks.add(new Track(image, width, height, millisBetween));
                         
                         image = null;
                         width = -1;
                         height = -1;
+                        millisBetween = -1;
                     }
                     buffer = "";
                 } else {

@@ -3,7 +3,10 @@ package com.basementcrew.ld32;
 import bropals.lib.simplegame.AWTGameWindow;
 import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
+import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.io.AssetManager;
+import com.basementcrew.ld32.data.Enemy;
+import com.basementcrew.ld32.data.Weapon;
 import com.basementcrew.ld32.states.MainMenuState;
 import com.basementcrew.ld32.states.TimedGameStateRunner;
 import java.io.File;
@@ -38,6 +41,14 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/battleSequence/selector.png", "selector");
             assetManager.loadImage("assets/img/battleSequence/lowerMenuBackground.png", "lowerMenuBackground");
             
+            // enemy1 files
+            assetManager.loadImage("assets/img/enemy1_idle", "img_enemy1_idle");
+            assetManager.loadAsset("assets/data/enemy1/anim_idle.txt", "anim_enemy1_idle", Animation.class);
+            assetManager.loadAsset("assets/data/enemy1/enemy.txt", "enemy_enemy1", Enemy.class);
+            
+            // player file
+            assetManager.loadAsset("assets/data/weapon_fists.txt", "weapon_fists", Weapon.class);
+
             GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
             TimedGameStateRunner runner = new TimedGameStateRunner(window, assetManager);
             runner.setState(new MainMenuState());

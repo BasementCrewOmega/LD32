@@ -1,7 +1,13 @@
 apply plugin: 'java'
 
+repositories {
+	flatDir {
+		dirs 'libs'
+	}
+}
+
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+	compile name: 'BroPalsGameLibrary'
 }
 
 task wrapper(type: Wrapper) {

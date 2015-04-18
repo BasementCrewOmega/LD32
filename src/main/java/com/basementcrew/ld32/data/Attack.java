@@ -56,4 +56,18 @@ public class Attack {
     public Animation getAnimation() {
         return animation;
     }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
+    }
+
+    public void setTimings(int[] timings) {
+        this.timings = timings;
+    }
+    
+    
 }

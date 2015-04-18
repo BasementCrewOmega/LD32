@@ -15,7 +15,7 @@ import bropals.lib.simplegame.state.GameState;
  * @author Kevin
  */
 public class TimedGameStateRunner extends GameStateRunner {
-
+    
     public TimedGameStateRunner(GameWindow window, AssetManager assetManager) {
         super(window, assetManager);
     }
@@ -34,14 +34,18 @@ public class TimedGameStateRunner extends GameStateRunner {
             GameState runState = getCurrentState(); // in case the state is changed
                                               // in the middle of the loop
             getCurrentWindow().flushInput();
-            runState.update();
+            if (runState instanceof TimedGameState) {
+                ((TimedGameState)runState).update(getDiff());
+            } else {
+                runState.update();
+            }
             renderState(runState);
-//            diff = System.currentTimeMillis() - startTime;
-//            if (diff < millisBetweenFrames) {
-//                try {
-//                    Thread.sleep(millisBetweenFrames - diff);
-//                } catch(Exception e) {}
-//            }
+            setDiff(System.currentTimeMillis() - getStartTime());
+            if (getDiff() < getMillisBetweenFrames()) {
+                try {
+                    Thread.sleep(getMillisBetweenFrames() - getDiff());
+                } catch(Exception e) {}
+            }
         }
 //        currentWindow.destroy();
     }

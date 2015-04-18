@@ -1,0 +1,5 @@
+define enemy animation anim_enemy1_idle
+set_bg townBackground
+add enemy 100 200
+move enemy 400 300 5000
+remove enemy 100 200

@@ -5,6 +5,7 @@
  */
 package com.basementcrew.ld32.states;
 
+import bropals.lib.simplegame.state.GameState;
 import com.basementcrew.ld32.movie.Movie;
 import java.awt.Graphics;
 
@@ -15,14 +16,20 @@ import java.awt.Graphics;
 public class TransitionState extends TimedGameState {
 
     private Movie movie;
+    private GameState nextState;
     
-    public TransitionState(Movie play) {
+    public TransitionState(Movie play, GameState nextState) {
         this.movie = play;
+        this.nextState = nextState;
     }
     
     @Override
     public void update(long dt) {
-        movie.updateMovie(dt);
+        if (!movie.isOver()) {
+            movie.updateMovie(dt); 
+        } else {
+            getGameStateRunner().setState(nextState);
+        }
     }
 
     @Override

@@ -7,7 +7,7 @@ repositories {
 }
 
 dependencies {
-	compile name: 'BroPalsGameLibrary'
+	compile name: 'BroPalsGameLibrary', version: '1.0'
 }
 
 task wrapper(type: Wrapper) {

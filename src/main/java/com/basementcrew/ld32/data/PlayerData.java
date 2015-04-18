@@ -38,5 +38,22 @@ public class PlayerData {
     public void completeArea(String area) {
         completedAreas.add(area);
     }
+
+    public ArrayList<String> getCompletedAreas() {
+        return completedAreas;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Consumable> getConsumables() {
+        return consumables;
+    }
+
+    public ArrayList<Weapon> getWeapons() {
+        return weapons;
+    }
+    
     
 }

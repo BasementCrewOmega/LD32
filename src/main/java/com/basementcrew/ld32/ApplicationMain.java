@@ -1,18 +1,36 @@
 package com.basementcrew.ld32;
 
 import bropals.lib.simplegame.AWTGameWindow;
-import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
+import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.io.AssetManager;
+import com.basementcrew.ld32.data.Area;
+import com.basementcrew.ld32.data.Enemy;
+import com.basementcrew.ld32.data.PlayerData;
+import com.basementcrew.ld32.data.Weapon;
+import com.basementcrew.ld32.data.loaders.AnimationLoader;
+import com.basementcrew.ld32.data.loaders.AreaLoader;
+import com.basementcrew.ld32.data.loaders.EnemyLoader;
+import com.basementcrew.ld32.data.loaders.MovieLoader;
+import com.basementcrew.ld32.data.loaders.PlayerDataLoader;
+import com.basementcrew.ld32.data.loaders.WeaponLoader;
+import com.basementcrew.ld32.movie.Movie;
 import com.basementcrew.ld32.states.MainMenuState;
 import com.basementcrew.ld32.states.TimedGameStateRunner;
-import java.io.File;
 
 public class ApplicationMain {
 
 	public static void main(String[] args) {
             AssetManager assetManager = new AssetManager(ApplicationMain.class, true);
             
+            //Register the loaders
+            assetManager.addAssetLoader(new AnimationLoader(assetManager), Animation.class);
+            assetManager.addAssetLoader(new AreaLoader(assetManager), Area.class);
+            assetManager.addAssetLoader(new EnemyLoader(assetManager), Enemy.class);
+            assetManager.addAssetLoader(new MovieLoader(assetManager), Movie.class);
+            assetManager.addAssetLoader(new PlayerDataLoader(assetManager), PlayerData.class);
+            assetManager.addAssetLoader(new WeaponLoader(), Weapon.class);
+
             //Load all assets
             assetManager.loadImage("assets/img/mainMenu/playDown.png", "playDown");
             assetManager.loadImage("assets/img/mainMenu/playUp.png", "playUp");

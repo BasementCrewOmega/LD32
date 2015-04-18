@@ -5,32 +5,38 @@
  */
 package com.basementcrew.ld32.states;
 
-import bropals.lib.simplegame.state.GameState;
+import com.basementcrew.ld32.movie.Movie;
+import java.awt.Graphics;
 
 /**
  * This state that will play a video in between menus and battle sequences
  * @author Kevin
  */
-public class TransitionState extends GameState {
+public class TransitionState extends TimedGameState {
 
+    private Movie movie;
+    
+    public TransitionState(Movie play) {
+        this.movie = play;
+    }
+    
     @Override
-    public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(long dt) {
+        movie.updateMovie(dt);
     }
 
     @Override
     public void render(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        movie.renderMovie((Graphics)o);
     }
 
     @Override
     public void onEnter() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        movie.reset();
     }
 
     @Override
     public void onExit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

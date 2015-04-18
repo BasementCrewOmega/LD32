@@ -87,7 +87,13 @@ public class PlayerDataLoader extends AssetLoader<PlayerData> {
                             areas.add(buffer);
                         } else if (block.equals("consumables")) {
                             //Consumable parsing
-                            
+                            if (buffer.equals("health_potion")) {
+                                consumables.add(Consumable.HEALTH_POTION);
+                            } else if (buffer.equals("dodge_potion")) {
+                                consumables.add(Consumable.DODGE_POTION);
+                            } else if (buffer.equals("accuracy_potion")) {
+                                consumables.add(Consumable.ACCURACY_POTION);
+                            }
                         }
                     } else {
                         if (property.equals("gold")) {

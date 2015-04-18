@@ -83,7 +83,18 @@ public class MainMenuState extends GameState {
         @Override
         public void onButtonPress() {
             //When the player presses play
-            
+            playIntroMovie();
+            startGame();
         }
+    }
+    
+    public void playIntroMovie() {
+        
+    }
+    
+    public void startGame() {
+        TownState townState = new TownState();
+        
+        getGameStateRunner().setState(townState);
     }
 }

@@ -50,6 +50,13 @@ public class BattleSequenceState extends TimedGameState {
     private Animation playerAnimation;
     private Point playerRenderPosition;
     
+    //Enemy animations
+    /** 
+     * The animation for the enemy. 
+     */
+    private Animation enemyAnimation;
+    private Point enemyRenderPosition;
+    
     //Other
     private boolean dodgedEnemyAttack = false;
     private boolean enemyAttackInRegion = false;

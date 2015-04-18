@@ -82,10 +82,10 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                     }
                     buffer = "";
                 } else if (current == '}') {
-                    currentBlock = null;
                     if (currentBlock.equals("attack")) {
                         attacks.add(currentAttack);
                     }
+                    currentBlock = null;
                     buffer = "";
                 } else if (current == ':') {
                     currentProperty = buffer;

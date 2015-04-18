@@ -1,0 +1,9 @@
+attack {
+	damage:6;
+	animation:anim_boss1_idle;
+	timings:1200 2500;
+}
+data {
+	health:20;
+	idle:anim_boss1_idle;
+}

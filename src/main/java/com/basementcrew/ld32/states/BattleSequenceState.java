@@ -29,7 +29,9 @@ public class BattleSequenceState extends TimedGameState {
     private BufferedImage selector;
     private BufferedImage backgroundImage;
     
+    // variables to manage the turns
     private int turnCount;
+    private boolean playerTurn; // true when the player's turn; false when the enemy's turn
     
     //Enemy attack management
     private int[] enemyAttackTiming = null;

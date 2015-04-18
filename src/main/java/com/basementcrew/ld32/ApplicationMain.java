@@ -5,6 +5,7 @@ import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.io.AssetManager;
 import com.basementcrew.ld32.states.MainMenuState;
+import com.basementcrew.ld32.states.TimedGameStateRunner;
 import java.io.File;
 
 public class ApplicationMain {
@@ -16,7 +17,7 @@ public class ApplicationMain {
             assetManager.loadImagesInDirectories("assets/img", true);
             
             GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
-            GameStateRunner runner = new GameStateRunner(window, assetManager);
+            TimedGameStateRunner runner = new TimedGameStateRunner(window, assetManager);
             runner.setState(new MainMenuState());
             runner.loop();
 	}

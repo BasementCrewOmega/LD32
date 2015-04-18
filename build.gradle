@@ -13,3 +13,15 @@ dependencies {
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.2'
 }
+
+task buildLibs(type: Exec) {
+	workingDir '../BroPalsGameLibrary'
+	commandLine 'cmd', '/c', 'gradle', 'build'
+}
+
+task updateLibs(type: Copy) {
+	dependsOn buildLibs
+	from '../BroPalsGameLibrary/build/libs'
+	into 'libs'
+	include '**.*'
+}

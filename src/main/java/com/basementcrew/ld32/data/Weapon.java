@@ -5,6 +5,9 @@
  */
 package com.basementcrew.ld32.data;
 
+import bropals.lib.simplegame.sound.SoundEffect;
+import java.awt.image.BufferedImage;
+
 /**
  *
  * @author Jonathon
@@ -15,12 +18,18 @@ public class Weapon {
     private Effect effect;
     private int[] timings;
     private int cooldown;
+    private BufferedImage image;
+    private SoundEffect sound;
+    private String name;
     
-    public Weapon(int attackDamage, Effect effect, int[] timings, int cooldown) {
+    public Weapon(String name, int attackDamage, Effect effect, int[] timings, int cooldown, BufferedImage image, SoundEffect sound) {
         this.attackDamage = attackDamage;
         this.effect = effect;
         this.timings = timings;
         this.cooldown = cooldown;
+        this.sound = sound;
+        this.image = image;
+        this.name = name;
     }    
     
     public Effect getEffect() {
@@ -30,7 +39,15 @@ public class Weapon {
     public int getAttackDamage() {
         return attackDamage;
     }
-    
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public String getName() {
+        return name;
+    }
+        
     /**
      * Gets the start time at the specified time slot.
      * @param timing the timing slot to get

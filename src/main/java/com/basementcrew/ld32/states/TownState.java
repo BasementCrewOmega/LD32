@@ -50,7 +50,10 @@ public class TownState extends GameState {
     @Override
     public void onEnter() {
         //Add areas to the list of areas.
-        areas.add(getAssetManager().getAsset("area_area1", Area.class));
+        //areas.add(assetManager.getAsset("swamp", Area.class));
+        //areas.add(assetManager.getAsset("savanna", Area.class));
+        //areas.add(assetManager.getAsset("fire", Area.class));
+        //areas.add(assetManager.getAsset("ice", Area.class));
         
         //Main town area GUI
         GuiGroup main = new GuiGroup();

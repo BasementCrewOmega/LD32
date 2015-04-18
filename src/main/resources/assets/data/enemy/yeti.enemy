@@ -1,0 +1,9 @@
+attack {
+	damage:3;
+	animation:yeti_attack;
+	timings:1600,2000;
+}
+data {
+	health:7;
+	idle:yeti_idle;
+}

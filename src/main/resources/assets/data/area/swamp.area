@@ -1,0 +1,8 @@
+enemies {
+	goblin;
+}
+boss:goblin;
+background_image:swamp_background;
+weapon:goblin_carcass;
+icon_image:swamp_icon;
+button_location:100,100;

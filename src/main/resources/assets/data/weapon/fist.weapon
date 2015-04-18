@@ -1,0 +1,6 @@
+cooldown:200;
+attack:1;
+effect:none;
+timings:400,800;
+image:fist_icon;
+sound:fist_sound;

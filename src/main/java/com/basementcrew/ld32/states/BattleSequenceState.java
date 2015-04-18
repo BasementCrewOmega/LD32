@@ -26,7 +26,7 @@ public class BattleSequenceState extends TimedGameState {
     private BufferedImage lowerMenuBackground;
     private BufferedImage selector;
     private BufferedImage backgroundImage;
-    private boolean playersTurn;
+    private boolean playersTurn; //Wait the game is turn based right?
     private int delayBetweenActions = 1000;
     private int actionCounter = 0;
     private int[] currentTimings;

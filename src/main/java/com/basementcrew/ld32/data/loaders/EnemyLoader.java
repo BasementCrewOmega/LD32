@@ -9,6 +9,7 @@ import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.io.AssetLoader;
 import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.sound.SoundEffect;
 import com.basementcrew.ld32.data.Attack;
 import com.basementcrew.ld32.data.Enemy;
 import java.io.BufferedReader;
@@ -28,6 +29,7 @@ import java.util.regex.Pattern;
  *  &nbsp;&nbsp;&nbsp;&nbsp;damage:&lt;damage&gt;;<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;animation:&lt;animation&gt;;<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;timings:&lt;start_time&gt;&lt;end_time&gt;,...;<br />
+ *  &nbsp;&nbsp;&nbsp;&nbsp;sound:&lt;sound&gt;;<br />
  *  }<br />
  *  attack {<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;...<br />
@@ -68,6 +70,7 @@ public class EnemyLoader extends AssetLoader<Enemy> {
             Attack currentAttack = null;
             int health = 0;
             Animation animation = null;
+            SoundEffect sound = null;
             
             String currentBlock = null;
             String currentProperty = null;
@@ -78,7 +81,7 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                     //Starting a new block
                     currentBlock = buffer;
                     if (currentBlock.equals("attack")) {
-                        currentAttack = new Attack(0, null, null);
+                        currentAttack = new Attack(0, null, null, null);
                     }
                     buffer = "";
                 } else if (current == '}') {
@@ -107,6 +110,8 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                                 timings[j] = Integer.parseInt(timingsSplit[j]);
                             }
                             currentAttack.setTimings(timings);
+                        } else if (currentProperty.equals("sound")) {
+                            currentAttack.setSound(assetManager.getSoundEffect(buffer));
                         }
                     } else if (currentBlock.equals("data")) {
                         if (currentProperty.equals("health")) {

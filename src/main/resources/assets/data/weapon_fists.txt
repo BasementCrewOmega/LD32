@@ -1,4 +1,0 @@
-attack:4;
-effect:DOUBLE_DAMAGE;
-cooldown:0;
-timings:1200 1600;

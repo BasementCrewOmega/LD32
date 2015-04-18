@@ -6,9 +6,12 @@
 package com.basementcrew.ld32.data.loaders;
 
 import bropals.lib.simplegame.io.AssetLoader;
+import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.sound.SoundEffect;
 import com.basementcrew.ld32.data.Effect;
 import com.basementcrew.ld32.data.Weapon;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,10 +27,20 @@ import java.util.regex.Pattern;
  *  effect:&lt;effect&gt;;<br />
  *  cooldown:&lt;cooldown_turns&gt;;<br />
  *  timings:&lt;start_time&gt;&lt;end_time&gt;,...;<br />
+ *  image:&lt;image&gt;;
+ *  sound:&lt;sound&gt;;
  * </code>
  * @author Jonathon
  */
 public class WeaponLoader extends AssetLoader<Weapon> {
+    
+    private AssetManager assetManager;
+
+    public WeaponLoader(AssetManager assetManager) {
+        this.assetManager = assetManager;
+    }
+    
+    
     
     @Override
     public void loadAsset(String key, InputStream in) {
@@ -50,6 +63,8 @@ public class WeaponLoader extends AssetLoader<Weapon> {
             int attack = 0;
             Effect effect = null;
             int[] timings = null;
+            BufferedImage image = null;
+            SoundEffect sound = null;
             
             for (int i=0; i<src.length; i++) {
                 if (src[i] == ';') {
@@ -70,6 +85,10 @@ public class WeaponLoader extends AssetLoader<Weapon> {
                             timings[j] = Integer.parseInt(timingsSplit[j]);
                         }
                         buffer = "";
+                    } else if (property.equals("image")) {
+                        image = assetManager.getImage(buffer);
+                    } else if (property.equals("sound")) {
+                        sound = assetManager.getSoundEffect(buffer);
                     }
                 } else if (src[i] == ':') {
                     property = buffer;
@@ -78,7 +97,7 @@ public class WeaponLoader extends AssetLoader<Weapon> {
                     buffer += src[i];
                 }
             }
-            add(key, new Weapon(attack, effect, timings, cooldown));
+            add(key, new Weapon(key, attack, effect, timings, cooldown, image, sound));
         } catch (IOException e) {
             ErrorLogger.println("Unable to load weapon file with key " + key + ": " + e);
         }

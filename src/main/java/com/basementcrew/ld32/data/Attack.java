@@ -6,6 +6,7 @@
 package com.basementcrew.ld32.data;
 
 import bropals.lib.simplegame.animation.Animation;
+import bropals.lib.simplegame.sound.SoundEffect;
 
 /**
  *
@@ -16,11 +17,13 @@ public class Attack {
     private int damage;
     private Animation animation;
     private int[] timings;
+    private SoundEffect sound;
     
-    public Attack(int damage, Animation animation, int[] timings) {
+    public Attack(int damage, Animation animation, int[] timings, SoundEffect sound) {
         this.damage = damage;
         this.animation = animation;
         this.timings = timings;
+        this.sound = sound;
     }
 
     public int getDamage() {
@@ -67,6 +70,14 @@ public class Attack {
 
     public void setTimings(int[] timings) {
         this.timings = timings;
+    }
+
+    public SoundEffect getSound() {
+        return sound;
+    }
+
+    public void setSound(SoundEffect sound) {
+        this.sound = sound;
     }
     
     

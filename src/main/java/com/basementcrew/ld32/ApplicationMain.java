@@ -31,7 +31,7 @@ public class ApplicationMain {
             assetManager.addAssetLoader(new EnemyLoader(assetManager), Enemy.class);
             assetManager.addAssetLoader(new MovieLoader(assetManager), Movie.class);
             assetManager.addAssetLoader(new PlayerDataLoader(assetManager), PlayerData.class);
-            assetManager.addAssetLoader(new WeaponLoader(), Weapon.class);
+            assetManager.addAssetLoader(new WeaponLoader(assetManager), Weapon.class);
 
             //Load all assets
             assetManager.loadImage("assets/img/mainMenu/playDown.png", "playDown");
@@ -57,32 +57,6 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/battleSequence/healthBarBackground.png", "healthBarBackground");
             assetManager.loadImage("assets/img/battleSequence/selector.png", "selector");
             assetManager.loadImage("assets/img/battleSequence/lowerMenuBackground.png", "lowerMenuBackground");
-            
-            //Movie images
-            assetManager.loadImage("assets/img/movies/enteringBattleBackground.png", "enteringBattleBackground");
-            
-            // enemy1 files
-            assetManager.loadImage("assets/img/entity/enemy1_idle.png", "img_enemy1_idle");
-            assetManager.loadAsset("assets/data/enemy1/anim_idle.txt", "anim_enemy1_idle", Animation.class);
-            assetManager.loadAsset("assets/data/enemy1/enemy.txt", "enemy_enemy1", Enemy.class);
-            
-            // boss1 files
-            assetManager.loadImage("assets/img/entity/boss1_idle.png", "img_boss1_idle");
-            assetManager.loadAsset("assets/data/boss1/anim_idle.txt", "anim_boss1_idle", Animation.class);
-            assetManager.loadAsset("assets/data/boss1/enemy.txt", "enemy_boss1", Enemy.class);
-            
-            // player file
-            assetManager.loadAsset("assets/data/weapon_fists.txt", "weapon_fists", Weapon.class);
-
-            // areas
-            assetManager.loadImage("assets/img/battleSequence/area1_background.png", "area1_background");
-            assetManager.loadImage("assets/img/townMenu/area1_icon.png", "area1_icon");
-            assetManager.loadAsset("assets/data/area_area1.txt", "area_area1", Area.class);
-           
-
-            //Movie files
-            assetManager.loadAsset("assets/data/movies/cool_movie.txt", "cool_movie", Movie.class);
-            assetManager.loadAsset("assets/data/movies/enter_battle.txt", "enter_battle", Movie.class);
             
             GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
             

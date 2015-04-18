@@ -14,6 +14,7 @@ import com.basementcrew.ld32.movie.DelayInstruction;
 import com.basementcrew.ld32.movie.MoveInstruction;
 import com.basementcrew.ld32.movie.Movie;
 import com.basementcrew.ld32.movie.MovieInstruction;
+import com.basementcrew.ld32.movie.PlaySoundInstruction;
 import com.basementcrew.ld32.movie.RemoveInstruction;
 import com.basementcrew.ld32.movie.SetBackgroundInstruction;
 import java.io.BufferedReader;
@@ -36,6 +37,7 @@ import java.util.regex.Pattern;
  *  <li>delay &lt;milliseconds&gt;</li>
  *  <li>set_bg &lt;background_image&gt;</li>
  *  <li>move &lt;name&gt; &lt;goalX&gt; &lt;goalY&gt; &lt;milliseconds&gt;</li>
+ *  <li>play_sound &lt;sound&gt;</li>
  * </ul>
  * @author Jonathon
  */
@@ -89,6 +91,9 @@ public class MovieLoader extends AssetLoader {
                                 Integer.parseInt(split[3]),
                                 Integer.parseInt(split[4])
                         ));
+                        break;
+                    case "play_sound":
+                        instructions.add(new PlaySoundInstruction(assetManager.getSoundEffect(split[1])));
                         break;
                 }
             }

@@ -1,5 +1,5 @@
 weapons {
-	weapon_fists;
+	fist;
 }
 completed_areas {
 
@@ -7,5 +7,5 @@ completed_areas {
 consumables {
 
 }
-gold:10;
-name:Brian;
+gold:100;
+name:Tim;

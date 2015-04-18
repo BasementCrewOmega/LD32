@@ -5,6 +5,10 @@
  */
 package com.basementcrew.ld32.data;
 
+import bropals.lib.simplegame.logger.ErrorLogger;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -55,5 +59,39 @@ public class PlayerData {
         return weapons;
     }
     
-    
+    /**
+     * Saves the player data so it can be read by the player data loader again.
+     * @param output 
+     */
+    public void writeTo(OutputStream output) {
+        try {
+            PrintWriter writer = new PrintWriter(output);
+            
+            writer.println("weapons {");
+            for (Weapon w : weapons) {
+                writer.println(w.getName() + ";");
+            }
+            writer.println("}");
+            
+            writer.println("completed_areas {");
+            for (String areaName : completedAreas) {
+                writer.println(areaName + ";");
+            }
+            writer.println("}");
+            
+            writer.println("consumables {");
+            for (Consumable c : consumables) {
+                writer.println(Consumable.toString(c) + ";");
+            }
+            writer.println("}");
+            
+            writer.println("gold:" + gold + ";");
+            writer.println("name:" + name + ";");
+            
+            writer.flush();
+            writer.close();
+        } catch(Exception e) {
+            ErrorLogger.println("Unable to save player data: " + e);
+        }
+    }
 }

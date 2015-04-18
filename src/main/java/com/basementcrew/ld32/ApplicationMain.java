@@ -18,6 +18,7 @@ import com.basementcrew.ld32.data.loaders.WeaponLoader;
 import com.basementcrew.ld32.movie.Movie;
 import com.basementcrew.ld32.states.MainMenuState;
 import com.basementcrew.ld32.states.TimedGameStateRunner;
+import com.basementcrew.ld32.states.TransitionState;
 
 public class ApplicationMain {
 
@@ -65,9 +66,15 @@ public class ApplicationMain {
             // player file
             assetManager.loadAsset("assets/data/weapon_fists.txt", "weapon_fists", Weapon.class);
 
+            //Movie files
+            assetManager.loadAsset("assets/data/movies/cool_movie.txt", "cool_movie", Movie.class);
+            
             GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
             TimedGameStateRunner runner = new TimedGameStateRunner(window, assetManager);
+            /*
             runner.setState(new MainMenuState());
+            */
+            runner.setState(new TransitionState(assetManager.getAsset("cool_movie", Movie.class), new MainMenuState()));
             runner.loop();
 	}
 

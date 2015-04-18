@@ -50,6 +50,10 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/townMenu/toTownUp.png", "toTownUp");
             assetManager.loadImage("assets/img/townMenu/townBackground.png", "townBackground");
             assetManager.loadImage("assets/img/townMenu/townIcon.png", "townIcon");
+            assetManager.loadImage("assets/img/townMenu/swamp_icon.png", "swamp_icon");
+            assetManager.loadImage("assets/img/townMenu/fire_icon.png", "fire_icon");
+            assetManager.loadImage("assets/img/townMenu/ice_icon.png", "ice_icon");
+            assetManager.loadImage("assets/img/townMenu/savanna_icon.png", "savanna_icon");
             
             assetManager.loadImage("assets/img/battleSequence/cooldownBar.png", "cooldownBar");
             assetManager.loadImage("assets/img/battleSequence/cooldownBarBackground.png", "cooldownBarBackground");
@@ -57,6 +61,55 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/battleSequence/healthBarBackground.png", "healthBarBackground");
             assetManager.loadImage("assets/img/battleSequence/selector.png", "selector");
             assetManager.loadImage("assets/img/battleSequence/lowerMenuBackground.png", "lowerMenuBackground");
+            assetManager.loadImage("assets/img/battleSequence/swamp_background.png", "swamp_background");
+            assetManager.loadImage("assets/img/battleSequence/ice_background.png", "ice_background");
+            assetManager.loadImage("assets/img/battleSequence/fire_background.png", "fire_background");
+            assetManager.loadImage("assets/img/battleSequence/savanna_background.png", "savanna_background");
+            
+            assetManager.loadImage("assets/img/entity/goblin_idle.png", "goblin_idle");
+            assetManager.loadImage("assets/img/entity/goblin_attack.png", "goblin_attack");
+            assetManager.loadImage("assets/img/entity/yeti_idle.png", "yeti_idle");
+            assetManager.loadImage("assets/img/entity/yeti_attack.png", "yeti_attack");
+            assetManager.loadImage("assets/img/entity/warthog_idle.png", "warthog_idle");
+            assetManager.loadImage("assets/img/entity/warthog_attack.png", "warthog_attack");
+            assetManager.loadImage("assets/img/entity/imp_idle.png", "imp_idle");
+            assetManager.loadImage("assets/img/entity/imp_attack.png", "imp_attack");
+            assetManager.loadImage("assets/img/entity/player_idle.png", "player_idle");
+            assetManager.loadImage("assets/img/entity/player_attack.png", "player_attack");
+            
+            //Load animations
+            assetManager.loadAsset("assets/data/animation/goblin_attack.animation", "goblin_attack", Animation.class);
+            assetManager.loadAsset("assets/data/animation/goblin_idle.animation", "goblin_idle", Animation.class);
+            assetManager.loadAsset("assets/data/animation/yeti_attack.animation", "yeti_attack", Animation.class);
+            assetManager.loadAsset("assets/data/animation/yeti_idle.animation", "yeti_idle", Animation.class);
+            assetManager.loadAsset("assets/data/animation/warthog_attack.animation", "warthog_attack", Animation.class);
+            assetManager.loadAsset("assets/data/animation/warthog_idle.animation", "warthog_idle", Animation.class);
+            assetManager.loadAsset("assets/data/animation/imp_attack.animation", "imp_attack", Animation.class);
+            assetManager.loadAsset("assets/data/animation/imp_idle.animation", "imp_idle", Animation.class);
+            assetManager.loadAsset("assets/data/animation/player_attack.animation", "player_attack", Animation.class);
+            assetManager.loadAsset("assets/data/animation/player_idle.animation", "player_idle", Animation.class);
+            
+            //Load enemies
+            assetManager.loadAsset("assets/data/enemy/goblin.enemy", "goblin", Enemy.class);
+            assetManager.loadAsset("assets/data/enemy/yeti.enemy", "yeti", Enemy.class);
+            assetManager.loadAsset("assets/data/enemy/warthog.enemy", "warthog", Enemy.class);
+            assetManager.loadAsset("assets/data/enemy/imp.enemy", "imp", Enemy.class);
+            
+            //Load areas
+            assetManager.loadAsset("assets/data/area/fire.area", "fire", Area.class);
+            assetManager.loadAsset("assets/data/area/ice.area", "ice", Area.class);
+            assetManager.loadAsset("assets/data/area/savanna.area", "savanna", Area.class);
+            assetManager.loadAsset("assets/data/area/swamp.area", "swamp", Area.class);
+            
+            //Load weapons
+            assetManager.loadAsset("assets/data/weapon/fist.weapon", "fist", Weapon.class);
+            
+            //Load Movies
+            assetManager.loadAsset("assets/data/movie/intro.movie", "intro", Movie.class);
+            assetManager.loadAsset("assets/data/movie/enter_battle.movie", "enter_battle", Movie.class);
+            assetManager.loadAsset("assets/data/movie/win_battle.movie", "win_battle", Movie.class);
+            assetManager.loadAsset("assets/data/movie/lose_battle.movie", "lose_battle", Movie.class);
+            assetManager.loadAsset("assets/data/movie/win_game.movie", "win_game", Movie.class);
             
             GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
             
@@ -64,7 +117,7 @@ public class ApplicationMain {
             /*
             runner.setState(new MainMenuState());
             */
-            runner.setState(new TransitionState(assetManager.getAsset("cool_movie", Movie.class), new MainMenuState()));
+            runner.setState(new TransitionState(assetManager.getAsset("intro", Movie.class), new MainMenuState()));
             runner.loop();
 	}
 

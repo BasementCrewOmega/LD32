@@ -6,6 +6,7 @@
 package com.basementcrew.ld32.movie;
 
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.logger.InfoLogger;
 
 /**
  *
@@ -41,8 +42,8 @@ public class MoveInstruction extends MovieInstruction {
             ErrorLogger.println("No object in scene with the name " + movingName + 
                     " for moving instruction");
         }
-        deltaX = (float)( (goalX - moving.getX())/milliseconds );
-        deltaY = (float)( (goalY - moving.getY())/milliseconds );
+        deltaX = (float)( ((float)goalX - (float)moving.getX())/(float)milliseconds );
+        deltaY = (float)( ((float)goalY - (float)moving.getY())/(float)milliseconds );
         movie.addMoveInstruction(this);
     }
 
@@ -53,9 +54,14 @@ public class MoveInstruction extends MovieInstruction {
 
     @Override
     public void updateInstruction(Movie movie, long dt) {
-        millisecondProgress += dt;
-        if (millisecondProgress >= milliseconds) {
-            movie.removeMoveInstruction(this);
+        if (moving != null) {
+            millisecondProgress += dt;
+            moving.translate(deltaX*dt, deltaY*dt);
+            if (millisecondProgress >= milliseconds) {
+                moving = null;
+                movie.forceNext();
+                movie.removeMoveInstruction(this);
+            }
         }
     }
     

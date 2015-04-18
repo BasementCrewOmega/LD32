@@ -65,7 +65,7 @@ public class ApplicationMain {
             
             // boss1 files
             assetManager.loadImage("assets/img/entity/boss1_idle.png", "img_boss1_idle");
-            assetManager.loadAsset("assets/data/boss1/anim_idle.txt", "anim_enemy1_idle", Animation.class);
+            assetManager.loadAsset("assets/data/boss1/anim_idle.txt", "anim_boss1_idle", Animation.class);
             assetManager.loadAsset("assets/data/boss1/enemy.txt", "enemy_boss1", Enemy.class);
             
             // player file

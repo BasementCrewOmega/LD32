@@ -10,6 +10,7 @@ import bropals.lib.simplegame.animation.Track;
 import bropals.lib.simplegame.io.AssetLoader;
 import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.logger.InfoLogger;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,14 +60,23 @@ public class AnimationLoader extends AssetLoader<Animation> {
             for (int i=0; i<src.length; i++) {
                 if (src[i] == ';') {
                     if (image == null) {
-                        image = assetManager.getImage(key);
+                        image = assetManager.getImage(buffer);
+                        if (image == null) {
+                            ErrorLogger.println("No image with key " + buffer + " as requested by animation " + key);
+                        } else {
+                            InfoLogger.println("Setting image");
+                        }
                     } else if (width == -1) {
                         width = Integer.parseInt(buffer);
+                            InfoLogger.println("Setting width to " + width);
                     } else if (height == -1) {
                         height = Integer.parseInt(buffer);
+                            InfoLogger.println("Setting height to " + height);
                     } else if (millisBetween == -1) {
                         millisBetween = Integer.parseInt(buffer);
+                        InfoLogger.println("Setting millisBetween to " + millisBetween);
                     } else {
+                        InfoLogger.println("Making track");
                         tracks.add(new Track(image, width, height, millisBetween));
                         
                         image = null;
@@ -79,9 +89,15 @@ public class AnimationLoader extends AssetLoader<Animation> {
                     buffer += src[i];
                 }
             }
+            InfoLogger.println("Loaded animation " + key + " with " + tracks.size() + " tracks");
             add(key, new Animation(tracks));
         } catch (IOException e) {
             ErrorLogger.println("Unable to load area file with key " + key + ": " + e);
         }
     }
+
+    @Override
+    public Animation getAsset(String key) {
+        return (Animation)super.getAsset(key).clone();
+    }    
 }

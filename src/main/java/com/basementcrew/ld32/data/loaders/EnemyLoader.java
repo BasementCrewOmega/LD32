@@ -95,7 +95,11 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                         if (currentProperty.equals("damage")) {
                             currentAttack.setDamage(Integer.parseInt(buffer));
                         } else if (currentProperty.equals("animation")) {
-                            currentAttack.setAnimation(assetManager.getAsset(buffer, Animation.class));
+                            Animation anim;
+                            currentAttack.setAnimation(anim = assetManager.getAsset(buffer, Animation.class));
+                            if (anim == null) {
+                                ErrorLogger.println("No animation of key " + buffer + " in enemy file of key " + key);
+                            }
                         } else if (currentProperty.equals("timings")) {
                             String[] timingsSplit = buffer.split(Pattern.quote(","));
                             int[] timings = new int[timingsSplit.length];

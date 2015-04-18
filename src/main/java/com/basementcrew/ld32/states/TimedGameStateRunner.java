@@ -35,7 +35,7 @@ public class TimedGameStateRunner extends GameStateRunner {
                                               // in the middle of the loop
             getCurrentWindow().flushInput();
             if (runState instanceof TimedGameState) {
-                ((TimedGameState)runState).update(getDiff());
+                ((TimedGameState)runState).update(getMillisBetweenFrames());
             } else {
                 runState.update();
             }

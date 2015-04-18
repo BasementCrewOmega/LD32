@@ -18,9 +18,8 @@ public class AnimationMovieObject extends MovieObject {
 
     public AnimationMovieObject(Animation animation) {
         this.animation = animation;
+        this.animation.setTrack(0);
     }
-    
-    
     
     @Override
     public void update(long dt) {

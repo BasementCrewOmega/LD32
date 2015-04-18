@@ -5,8 +5,8 @@
  */
 package com.basementcrew.ld32.movie;
 
-import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.io.AssetManager;
+import bropals.lib.simplegame.logger.ErrorLogger;
 
 /**
  *
@@ -32,6 +32,8 @@ public class DefineInstruction extends MovieInstruction {
             movie.defineImageObject(name, param);
         } else if (type.equals("animation")) {
             movie.defineAnimationObject(name, param);
+        } else {
+            ErrorLogger.println("Invalid movie object type: " + type);
         }
     }
 

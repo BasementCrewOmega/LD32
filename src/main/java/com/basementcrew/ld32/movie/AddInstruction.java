@@ -25,7 +25,6 @@ public class AddInstruction extends MovieInstruction {
     
     @Override
     public void startInstruction(Movie movie) {
-        MovieObject obj = movie.getDefinedObject(adding);
         movie.addToScene(adding, x, y);
     }
 

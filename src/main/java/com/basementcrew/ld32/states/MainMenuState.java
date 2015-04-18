@@ -10,8 +10,9 @@ import bropals.lib.simplegame.gui.GuiButton;
 import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiGroup;
 import bropals.lib.simplegame.gui.GuiImage;
-import bropals.lib.simplegame.logger.InfoLogger;
 import bropals.lib.simplegame.state.GameState;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 
 /**
@@ -32,6 +33,10 @@ public class MainMenuState extends GameState {
 
     @Override
     public void render(Object o) {
+        Graphics g = (Graphics)o;
+        g.setColor(Color.BLUE);
+        g.fillRect(0, 0, 800, 600);
+        
         gui.render(o);
     }
 

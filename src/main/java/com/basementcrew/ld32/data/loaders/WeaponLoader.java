@@ -98,6 +98,7 @@ public class WeaponLoader extends AssetLoader<Weapon> {
                 }
             }
             add(key, new Weapon(key, attack, effect, timings, cooldown, image, sound));
+             System.out.println("Created a new weapon with the key " + key);
         } catch (IOException e) {
             ErrorLogger.println("Unable to load weapon file with key " + key + ": " + e);
         }

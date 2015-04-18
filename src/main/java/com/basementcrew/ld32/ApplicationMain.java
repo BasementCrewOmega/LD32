@@ -86,8 +86,7 @@ public class ApplicationMain {
             assetManager.loadAsset("assets/data/animation/warthog_idle.animation", "warthog_idle", Animation.class);
             assetManager.loadAsset("assets/data/animation/imp_attack.animation", "imp_attack", Animation.class);
             assetManager.loadAsset("assets/data/animation/imp_idle.animation", "imp_idle", Animation.class);
-            assetManager.loadAsset("assets/data/animation/player_attack.animation", "player_attack", Animation.class);
-            assetManager.loadAsset("assets/data/animation/player_idle.animation", "player_idle", Animation.class);
+            assetManager.loadAsset("assets/data/animation/player.animation", "player", Animation.class);
             
             //Load enemies
             assetManager.loadAsset("assets/data/enemy/goblin.enemy", "goblin", Enemy.class);
@@ -104,6 +103,10 @@ public class ApplicationMain {
             //Load weapons
             assetManager.loadAsset("assets/data/weapon/fist.weapon", "fist", Weapon.class);
             
+            
+            //Load player data
+            assetManager.loadAsset("assets/data/playerdata/default.playerdata", "default_playerdata", PlayerData.class);
+            
             //Load Movies
             assetManager.loadAsset("assets/data/movie/intro.movie", "intro", Movie.class);
             assetManager.loadAsset("assets/data/movie/enter_battle.movie", "enter_battle", Movie.class);
@@ -118,7 +121,14 @@ public class ApplicationMain {
             runner.setState(new MainMenuState());
             */
             runner.setState(new TransitionState(assetManager.getAsset("intro", Movie.class), new MainMenuState()));
-            runner.loop();
+            try {
+                runner.loop();
+            } catch(Exception e) {
+                System.out.println("THERE WAS AN EXCEPTION \n CLOSING WINDOW");
+                e.printStackTrace();
+            }
+            window.destroy();
+            
 	}
 
 }

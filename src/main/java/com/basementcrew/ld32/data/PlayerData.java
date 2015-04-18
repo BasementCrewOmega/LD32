@@ -20,15 +20,19 @@ public class PlayerData {
     private ArrayList<Weapon> weapons;
     private ArrayList<String> completedAreas;
     private ArrayList<Consumable> consumables;
+    private int health;
     private String name;
     private int gold;
 
-    public PlayerData(ArrayList<Weapon> weapons, ArrayList<String> completedAreas, ArrayList<Consumable> consumables, int gold, String name) {
+    public PlayerData(ArrayList<Weapon> weapons, ArrayList<String> completedAreas, 
+            ArrayList<Consumable> consumables, int gold, String name, int health) {
+        System.out.println("This player data class has " + weapons.size() + " weapon(s)");
         this.weapons = weapons;
         this.completedAreas = completedAreas;
         this.consumables = consumables;
         this.gold = gold;
         this.name = name;
+        this.health = health;
     }
     
     public int getGold() {
@@ -58,6 +62,15 @@ public class PlayerData {
     public ArrayList<Weapon> getWeapons() {
         return weapons;
     }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+    
     
     /**
      * Saves the player data so it can be read by the player data loader again.

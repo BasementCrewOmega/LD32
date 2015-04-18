@@ -9,3 +9,4 @@ consumables {
 }
 gold:100;
 name:Tim;
+health:40;

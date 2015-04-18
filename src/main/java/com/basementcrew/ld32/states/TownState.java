@@ -49,6 +49,9 @@ public class TownState extends GameState {
     
     @Override
     public void onEnter() {
+        // get the player data
+        playerData = getAssetManager().getAsset("default_playerdata", PlayerData.class);
+        
         //Add areas to the list of areas.
         areas.add(getAssetManager().getAsset("swamp", Area.class));
         areas.add(getAssetManager().getAsset("savanna", Area.class));

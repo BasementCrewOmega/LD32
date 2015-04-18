@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * </code>
  * @author Jonathon
  */
-public class EnemyLoader extends AssetLoader {
+public class EnemyLoader extends AssetLoader<Enemy> {
 
     private AssetManager assetManager;
     

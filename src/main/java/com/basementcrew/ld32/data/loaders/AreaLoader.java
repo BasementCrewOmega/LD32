@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * </code>
  * @author Jonathon
  */
-public class AreaLoader extends AssetLoader {
+public class AreaLoader extends AssetLoader<Area> {
     
     private AssetManager assetManager;
     

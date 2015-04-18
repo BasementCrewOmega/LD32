@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * 
  * @author Jonathon
  */
-public class AnimationLoader extends AssetLoader {
+public class AnimationLoader extends AssetLoader<Animation> {
 
     private AssetManager assetManager;
     

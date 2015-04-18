@@ -10,6 +10,7 @@ import bropals.lib.simplegame.gui.GuiButton;
 import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiGroup;
 import bropals.lib.simplegame.gui.GuiImage;
+import bropals.lib.simplegame.logger.InfoLogger;
 import bropals.lib.simplegame.state.GameState;
 import java.awt.Point;
 
@@ -43,7 +44,7 @@ public class MainMenuState extends GameState {
                 getAssetManager().getImage("playHover"),
                 new PlayButton()
         );
-        GuiButton quitButton = new GuiButton(80, 300, 120, 80,
+        GuiButton quitButton = new GuiButton(80, 450, 120, 80,
                 getAssetManager().getImage("quitUp"),
                 getAssetManager().getImage("quitUp"),
                 getAssetManager().getImage("quitHover"),
@@ -73,6 +74,8 @@ public class MainMenuState extends GameState {
             //When the player pressed quit
             //Quit
             getWindow().requestToClose();
+            System.exit(0);
+            
         }
     }
     

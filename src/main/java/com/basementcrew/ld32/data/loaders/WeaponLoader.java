@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * </code>
  * @author Jonathon
  */
-public class WeaponLoader extends AssetLoader {
+public class WeaponLoader extends AssetLoader<Weapon> {
     
     @Override
     public void loadAsset(String key, InputStream in) {

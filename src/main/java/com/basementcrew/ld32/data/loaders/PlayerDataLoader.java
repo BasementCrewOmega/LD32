@@ -39,7 +39,7 @@ import java.util.ArrayList;
  *
  * @author Jonathon
  */
-public class PlayerDataLoader extends AssetLoader {
+public class PlayerDataLoader extends AssetLoader<PlayerData> {
 
     private AssetManager assetManager;
     

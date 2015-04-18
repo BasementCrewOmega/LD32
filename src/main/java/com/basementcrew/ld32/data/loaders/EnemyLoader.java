@@ -116,7 +116,7 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                     buffer += current;
                 }
             }
-            Enemy enemy = new Enemy((Attack[])attacks.toArray(new Attack[0]), health, animation);
+            Enemy enemy = new Enemy(key, (Attack[])attacks.toArray(new Attack[0]), health, animation);
             add(key, enemy);
         } catch(IOException e) {
             ErrorLogger.println("Unable to load enemy file with key " + key +  ": " + e);

@@ -5,7 +5,12 @@
  */
 package com.basementcrew.ld32.states;
 
-import bropals.lib.simplegame.state.GameState;
+import bropals.lib.simplegame.gui.Gui;
+import bropals.lib.simplegame.gui.GuiGroup;
+import com.basementcrew.ld32.data.Enemy;
+import com.basementcrew.ld32.data.PlayerData;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 /**
  * The main state - the state where you go through the sequence of the battle
@@ -13,24 +18,44 @@ import bropals.lib.simplegame.state.GameState;
  */
 public class BattleSequenceState extends TimedGameState {
 
+    private PlayerData playerData;
+    private Enemy fighting;
+    private BufferedImage lowerMenuBackground;
+    private BufferedImage selector;
+    private BufferedImage backgroundImage;
+    
+    private Gui gui = new Gui();
+    
+    public BattleSequenceState(Enemy fighting, PlayerData playerData, BufferedImage backgroundImage) {
+        this.playerData = playerData;
+        this.fighting = fighting;
+        this.backgroundImage = backgroundImage;
+    }
+    
     @Override
     public void update(long dt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void render(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Graphics g = (Graphics)o;
+        g.drawImage(backgroundImage, 0, 0, null);
+        g.drawImage(lowerMenuBackground, 0, 350, null);
+        
     }
 
     @Override
     public void onEnter() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        lowerMenuBackground = getImage("lowerMenuBackground");
+        selector = getImage("selector");
+        
+        GuiGroup main = new GuiGroup();
+        //Make the health bars and other Gui elements
+        
     }
 
     @Override
     public void onExit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

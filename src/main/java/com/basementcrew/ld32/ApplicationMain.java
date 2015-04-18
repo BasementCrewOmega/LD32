@@ -31,6 +31,13 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/townMenu/townBackground.png", "townBackground");
             assetManager.loadImage("assets/img/townMenu/townIcon.png", "townIcon");
             
+            assetManager.loadImage("assets/img/battleSequence/cooldownBar.png", "cooldownBar");
+            assetManager.loadImage("assets/img/battleSequence/cooldownBarBackground.png", "cooldownBarBackground");
+            assetManager.loadImage("assets/img/battleSequence/healthBar.png", "healthBar");
+            assetManager.loadImage("assets/img/battleSequence/healthBarBackground.png", "healthBarBackground");
+            assetManager.loadImage("assets/img/battleSequence/selector.png", "selector");
+            assetManager.loadImage("assets/img/battleSequence/lowerMenuBackground.png", "lowerMenuBackground");
+            
             GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
             TimedGameStateRunner runner = new TimedGameStateRunner(window, assetManager);
             runner.setState(new MainMenuState());

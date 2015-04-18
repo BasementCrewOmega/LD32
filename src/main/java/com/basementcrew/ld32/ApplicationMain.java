@@ -22,6 +22,15 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/mainMenu/quitHover.png", "quitHover");
             assetManager.loadImage("assets/img/mainMenu/titleBanner.png", "titleBanner");
             
+            assetManager.loadImage("assets/img/townMenu/shopDown.png", "shopDown");
+            assetManager.loadImage("assets/img/townMenu/shopHover.png", "shopHover");
+            assetManager.loadImage("assets/img/townMenu/shopUp.png", "shopUp");
+            assetManager.loadImage("assets/img/townMenu/toTownDown.png", "toTownDown");
+            assetManager.loadImage("assets/img/townMenu/toTownHover.png", "toTownHover");
+            assetManager.loadImage("assets/img/townMenu/toTownUp.png", "toTownUp");
+            assetManager.loadImage("assets/img/townMenu/townBackground.png", "townBackground");
+            assetManager.loadImage("assets/img/townMenu/townIcon.png", "townIcon");
+            
             GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
             TimedGameStateRunner runner = new TimedGameStateRunner(window, assetManager);
             runner.setState(new MainMenuState());

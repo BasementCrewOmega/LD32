@@ -16,12 +16,19 @@ public class Area {
     private Enemy[] possibleEnemies;
     private Enemy boss;
     private BufferedImage backgroundImage;
+    private BufferedImage iconImage;
+    private int iconX, iconY;
     private Weapon rewardWeapon;
+    private String name;
 
-    public Area(Enemy[] possibleEnemies, Enemy boss, BufferedImage backgroundImage, Weapon rewardWeapon) {
+    public Area(String name, Enemy[] possibleEnemies, Enemy boss, BufferedImage backgroundImage, BufferedImage iconImage, int iconX, int iconY, Weapon rewardWeapon) {
+        this.name=name;
         this.possibleEnemies = possibleEnemies;
         this.boss = boss;
         this.backgroundImage = backgroundImage;
+        this.iconImage = iconImage;
+        this.iconX = iconX;
+        this.iconY = iconY;
         this.rewardWeapon = rewardWeapon;
     }
     
@@ -44,4 +51,18 @@ public class Area {
     public Enemy getRandomEnemy() {
         return possibleEnemies[(int)(Math.random()*possibleEnemies.length)];
     }
+
+    public int getIconX() {
+        return iconX;
+    }
+
+    public int getIconY() {
+        return iconY;
+    }
+
+    public BufferedImage getIconImage() {
+        return iconImage;
+    }
+    
+    
 }

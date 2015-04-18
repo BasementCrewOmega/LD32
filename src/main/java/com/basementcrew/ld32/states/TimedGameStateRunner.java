@@ -25,7 +25,7 @@ public class TimedGameStateRunner extends GameStateRunner {
         boolean running = true;
         while(running) {
             if (getCurrentState() == null || getCurrentWindow() == null || 
-                    getCurrentState().isRequestingToClose()) {
+                    getCurrentWindow().isRequestingToClose()) {
                 running = false;
                 continue;
             }
@@ -36,14 +36,14 @@ public class TimedGameStateRunner extends GameStateRunner {
             getCurrentWindow().flushInput();
             runState.update();
             renderState(runState);
-            diff = System.currentTimeMillis() - startTime;
-            if (diff < millisBetweenFrames) {
-                try {
-                    Thread.sleep(millisBetweenFrames - diff);
-                } catch(Exception e) {}
-            }
+//            diff = System.currentTimeMillis() - startTime;
+//            if (diff < millisBetweenFrames) {
+//                try {
+//                    Thread.sleep(millisBetweenFrames - diff);
+//                } catch(Exception e) {}
+//            }
         }
-        currentWindow.destroy();
+//        currentWindow.destroy();
     }
     
     

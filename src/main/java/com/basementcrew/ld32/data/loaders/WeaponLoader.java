@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
  * <code>
  *  attack:&lt;attack_damage&gt;;<br />
  *  effect:&lt;effect&gt;;<br />
+ *  cooldown:&lt;cooldown_turns&gt;;<br />
  *  timings:&lt;start_time&gt;&lt;end_time&gt;,...;<br />
  * </code>
  * @author Jonathon

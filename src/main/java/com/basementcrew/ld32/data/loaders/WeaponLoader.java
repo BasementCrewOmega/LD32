@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * Loads .weapon files.
+ * Loads weapon files.
  * <p>
  * 
  * <code>
@@ -29,8 +29,18 @@ public class WeaponLoader extends AssetLoader {
     public void loadAsset(String key, InputStream in) {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
+            StringBuilder srcBuilder = new  StringBuilder(100); //Source without whitespace
+            int num;
+            while ((num = reader.read()) != -1) {
+                if (!Character.isWhitespace((char)num)) {
+                    srcBuilder.append((char)num);
+                }
+            }
             reader.close();
+            char[] src = srcBuilder.toString().toCharArray();
+            
+            
+            
         } catch (IOException e) {
             ErrorLogger.println("Unable to load weapon file with key " + key + ": " + e);
         }

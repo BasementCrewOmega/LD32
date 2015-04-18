@@ -5,15 +5,15 @@
  */
 package com.basementcrew.ld32.states;
 
+import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.gui.Gui;
 import bropals.lib.simplegame.gui.GuiGroup;
-import bropals.lib.simplegame.logger.InfoLogger;
-import com.basementcrew.ld32.data.Effect;
+import com.basementcrew.ld32.data.Attack;
 import com.basementcrew.ld32.data.Enemy;
 import com.basementcrew.ld32.data.PlayerData;
+import com.basementcrew.ld32.data.Weapon;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 /**
  * The main state - the state where you go through the sequence of the battle
@@ -26,20 +26,21 @@ public class BattleSequenceState extends TimedGameState {
     private BufferedImage lowerMenuBackground;
     private BufferedImage selector;
     private BufferedImage backgroundImage;
-    private boolean playersTurn; //Wait the game is turn based right?
-    private int delayBetweenActions = 1000;
-    private int actionCounter = 0;
-    private int[] currentTimings;
-    private int timingCounter = 0;
-    private int lastPressedSpace = 0; //The timingCounter value when the player pressed space.
     
-    //Current status effects of each side.
-    private ArrayList<Effect> playerEffects = new ArrayList<>();
-    private ArrayList<Effect> enemyEffects = new ArrayList<>();
+    //Enemy attack management
+    private int[] enemyAttackTiming = null;
+    private int enemyAttackProgress = 0; //Milliseconds the attack has been occuring
+    private Attack enemyAttack;
     
-    //Attack selectors for each side
-    private int enemyAttack = 0;
-    private int playerWeapon = 0;
+    //Player attack management
+    private int[] playerAttackTiming = null;
+    private int playerAttackProgress = 0;
+    private Weapon playerWeapon;
+    private int[] cooldownCounters;
+    
+    //Other
+    private boolean dodgedEnemyAttack = false;
+    private boolean enemyAttackInRegion = false;
     
     private Gui gui = new Gui();
     
@@ -47,60 +48,59 @@ public class BattleSequenceState extends TimedGameState {
         this.playerData = playerData;
         this.fighting = fighting;
         this.backgroundImage = backgroundImage;
+        
+        enemyAttack = fighting.getAttack(0);
+        playerWeapon = playerData.getWeapons().get(0);
+        cooldownCounters = new int[playerData.getWeapons().size()];
+        
     }
     
     @Override
     public void update(long dt) {
-        if (currentTimings == null) {
-            if (!playersTurn) {
-                actionCounter += dt;
-                if (actionCounter > delayBetweenActions) {
-                    //Have the enemy do their action
-                    //Set the timings variable
-                }
-            } else {
-                //Its the players turn, wait for them to do their action.
-                //Have the player set the timings variable when its ready
+        //Update cooldown counters. When the cooldownCounter == the weapon
+        //cooldown then the weapon is available to be used
+        for (int i=0; i<cooldownCounters.length; i++) {
+            cooldownCounters[i] += dt;
+            //Stop the cooldown from going over 100%
+            if (playerData.getWeapons().get(i).getCooldown() > cooldownCounters[i]) {
+                cooldownCounters[i] = playerData.getWeapons().get(i).getCooldown();
             }
-        } else {
-            //Timings exists, which means that the player is currently 
-            //Trying to time something
-            
-            timingCounter += dt;
-            
-            if (!playersTurn) {
-                //Enemy is attacking.
-                //Check spacebar press with region.
-                if (inTimingRegion(lastPressedSpace, currentTimings)) {
-                    //Dodge the attack.
-                    InfoLogger.println("Dodged");
-                }
-            } else {
-                //Player is attacking.
-                //Check spacebar press with region.
-                if (inTimingRegion(lastPressedSpace, currentTimings)) {
-                    //Do the special effect of the attack.
-                    InfoLogger.println("Special hit");
-                }
+        }
+        //Handle player attack timing
+        if (playerAttackTiming != null) {
+            playerAttackProgress += dt;
+            if (inTimingRegion(playerAttackProgress, playerAttackTiming)) {
+                //Got the correct timing, do the effect
+                
             }
-            
-            //See if the animations are done, and end the timing event if they
-            //are
-            if (!playersTurn) {
-                //Did the enemy finish attacking?
-                if (timingCounter >= fighting.getAttack(enemyAttack).getAnimation().getTrackOn().getTotalTrackTime()) {
-                    currentTimings = null;
+        }
+        //Handle enemy attack timing
+        if (enemyAttackTiming != null) {
+            enemyAttackProgress += dt;
+            if (enemyAttackInRegion && 
+                    !(enemyAttackInRegion = inTimingRegion(enemyAttackProgress, enemyAttackTiming))) {
+                //Just left the region, deal damage if the player hasn't dodged
+                if (!dodgedEnemyAttack) {
+                    //Damage!
                 }
-            } else {
-                //Did the player finish attacking?
-                //What is the attack animation for the player?
             }
         }
     }
     
-    public boolean inTimingRegion(int space, int[] timing) {
+    /**
+     * Checks to see if the point in time is inside a region of time in
+     * the "timing" array.
+     * <p>
+     * The "timing" array takes the form of { min, max, min, max } where each
+     * min, max pair defines a region.
+     * @param time the point in time to test
+     * @param timing the array that defines the regions of time that make 
+     * this check true.
+     * @return if the given point of time is in any region of "timing."
+     */
+    public boolean inTimingRegion(int time, int[] timing) {
         for (int i=0; i<timing.length; i += 2) {
-            if (space > timing[i] && space < timing[i+1]) {
+            if (time > timing[i] && time < timing[i+1]) {
                 return true;
             }
         }
@@ -113,8 +113,12 @@ public class BattleSequenceState extends TimedGameState {
         g.drawImage(backgroundImage, 0, 0, null);
         g.drawImage(lowerMenuBackground, 0, 350, null);
         
+        //Draw the player
+        
+        //Draw the enemy
+        
     }
-
+    
     @Override
     public void onEnter() {
         lowerMenuBackground = getImage("lowerMenuBackground");
@@ -129,5 +133,22 @@ public class BattleSequenceState extends TimedGameState {
     @Override
     public void onExit() {
     }
-    
+
+    @Override
+    public void key(int keycode, boolean pressed) {
+        if (keycode == KeyCode.KEY_SPACE && pressed) {
+            if (playerAttackTiming != null) {
+                if (inTimingRegion(playerAttackProgress, playerAttackTiming)) {
+                    //Do special effect for the current player attack
+                    
+                }
+            }
+            if (enemyAttackTiming != null) {
+                if (inTimingRegion(enemyAttackProgress, enemyAttackTiming)) {
+                    //Dodge the enemy attack
+                    dodgedEnemyAttack = true;
+                }
+            }
+        }
+    }    
 }

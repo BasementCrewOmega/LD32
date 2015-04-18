@@ -24,6 +24,9 @@ import java.util.regex.Pattern;
  * 
  * The format of enemy files:
  * <p>
+ *  "Attack time" is the amount of milliseconds before each attack the enemy
+ * does.
+ * <p>
  * <code>
  *  attack {<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;damage:&lt;damage&gt;;<br />
@@ -37,6 +40,7 @@ import java.util.regex.Pattern;
  * data {<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;health:&lt;health&gt;;<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;idle:&lt;idle_animation&gt;;<br />
+ *  &nbsp;&nbsp;&nbsp;&nbsp;attack_time:&lt;attack_time&gt;;<br />
  *  }<br />
  * </code>
  * @author Jonathon
@@ -71,6 +75,7 @@ public class EnemyLoader extends AssetLoader<Enemy> {
             int health = 0;
             Animation animation = null;
             SoundEffect sound = null;
+            int attackTime = 0;
             
             String currentBlock = null;
             String currentProperty = null;
@@ -118,6 +123,10 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                             health = Integer.parseInt(buffer);
                         } else if (currentProperty.equals("idle")) {
                             animation = assetManager.getAsset(buffer, Animation.class);
+                        } else if (currentProperty.equals("idle")) {
+                            animation = assetManager.getAsset(buffer, Animation.class);
+                        } else if (currentProperty.equals("attack_time")) {
+                            attackTime = Integer.parseInt(buffer);
                         }
                     }
                     buffer = "";
@@ -125,7 +134,7 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                     buffer += current;
                 }
             }
-            Enemy enemy = new Enemy(key, (Attack[])attacks.toArray(new Attack[0]), health, animation);
+            Enemy enemy = new Enemy(key, (Attack[])attacks.toArray(new Attack[0]), health, animation, attackTime);
             add(key, enemy);
         } catch(IOException e) {
             ErrorLogger.println("Unable to load enemy file with key " + key +  ": " + e);

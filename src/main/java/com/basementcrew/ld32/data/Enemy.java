@@ -16,8 +16,10 @@ public class Enemy {
     private Attack[] attacks;
     private int health;
     private Animation idleAnimation;
-
-    public Enemy(Attack[] attacks, int health, Animation idleAnimation) {
+    private String name;
+    
+    public Enemy(String name, Attack[] attacks, int health, Animation idleAnimation) {
+        this.name = name;
         this.attacks = attacks;
         this.health = health;
         this.idleAnimation = idleAnimation;
@@ -38,4 +40,10 @@ public class Enemy {
     public Attack getAttack(int count) {
         return attacks[count];
     }
+
+    public String getName() {
+        return name;
+    }
+    
+    
 }

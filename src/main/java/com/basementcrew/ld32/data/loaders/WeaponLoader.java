@@ -22,11 +22,12 @@ import java.util.regex.Pattern;
  * <code>
  *  attack:&lt;attack_damage&gt;;<br />
  *  effect:&lt;effect&gt;;<br />
+ *  cooldown:&lt;cooldown_turns&gt;;<br />
  *  timings:&lt;start_time&gt;&lt;end_time&gt;,...;<br />
  * </code>
  * @author Jonathon
  */
-public class WeaponLoader extends AssetLoader {
+public class WeaponLoader extends AssetLoader<Weapon> {
     
     @Override
     public void loadAsset(String key, InputStream in) {

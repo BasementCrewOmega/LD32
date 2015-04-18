@@ -10,6 +10,7 @@ import bropals.lib.simplegame.animation.Track;
 import bropals.lib.simplegame.io.AssetLoader;
 import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.logger.InfoLogger;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,9 +21,13 @@ import java.util.ArrayList;
 /**
  * Loads animation files.
  * 
+ * Format:
+ * ``
+ * ImageKey;widthOfEachTile;heighOfEachTile;millisecondsBetweenFrames;
+ * ``
  * @author Jonathon
  */
-public class AnimationLoader extends AssetLoader {
+public class AnimationLoader extends AssetLoader<Animation> {
 
     private AssetManager assetManager;
     
@@ -50,30 +55,49 @@ public class AnimationLoader extends AssetLoader {
             BufferedImage image = null;
             int width = -1;
             int height = -1;
+            int millisBetween = -1;
             
             for (int i=0; i<src.length; i++) {
                 if (src[i] == ';') {
                     if (image == null) {
-                        image = assetManager.getImage(key);
+                        image = assetManager.getImage(buffer);
+                        if (image == null) {
+                            ErrorLogger.println("No image with key " + buffer + " as requested by animation " + key);
+                        } else {
+                            InfoLogger.println("Setting image");
+                        }
                     } else if (width == -1) {
                         width = Integer.parseInt(buffer);
+                            InfoLogger.println("Setting width to " + width);
                     } else if (height == -1) {
                         height = Integer.parseInt(buffer);
+                            InfoLogger.println("Setting height to " + height);
+                    } else if (millisBetween == -1) {
+                        millisBetween = Integer.parseInt(buffer);
+                        InfoLogger.println("Setting millisBetween to " + millisBetween);
                     } else {
-                        tracks.add(new Track(image, width, height));
+                        InfoLogger.println("Making track");
+                        tracks.add(new Track(image, width, height, millisBetween));
                         
                         image = null;
                         width = -1;
                         height = -1;
+                        millisBetween = -1;
                     }
                     buffer = "";
                 } else {
                     buffer += src[i];
                 }
             }
+            InfoLogger.println("Loaded animation " + key + " with " + tracks.size() + " tracks");
             add(key, new Animation(tracks));
         } catch (IOException e) {
             ErrorLogger.println("Unable to load area file with key " + key + ": " + e);
         }
     }
+
+    @Override
+    public Animation getAsset(String key) {
+        return (Animation)super.getAsset(key).clone();
+    }    
 }

@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * </code>
  * @author Jonathon
  */
-public class EnemyLoader extends AssetLoader {
+public class EnemyLoader extends AssetLoader<Enemy> {
 
     private AssetManager assetManager;
     
@@ -82,10 +82,10 @@ public class EnemyLoader extends AssetLoader {
                     }
                     buffer = "";
                 } else if (current == '}') {
-                    currentBlock = null;
                     if (currentBlock.equals("attack")) {
                         attacks.add(currentAttack);
                     }
+                    currentBlock = null;
                     buffer = "";
                 } else if (current == ':') {
                     currentProperty = buffer;
@@ -95,7 +95,11 @@ public class EnemyLoader extends AssetLoader {
                         if (currentProperty.equals("damage")) {
                             currentAttack.setDamage(Integer.parseInt(buffer));
                         } else if (currentProperty.equals("animation")) {
-                            currentAttack.setAnimation(assetManager.getAsset(buffer, Animation.class));
+                            Animation anim;
+                            currentAttack.setAnimation(anim = assetManager.getAsset(buffer, Animation.class));
+                            if (anim == null) {
+                                ErrorLogger.println("No animation of key " + buffer + " in enemy file of key " + key);
+                            }
                         } else if (currentProperty.equals("timings")) {
                             String[] timingsSplit = buffer.split(Pattern.quote(","));
                             int[] timings = new int[timingsSplit.length];
@@ -116,7 +120,7 @@ public class EnemyLoader extends AssetLoader {
                     buffer += current;
                 }
             }
-            Enemy enemy = new Enemy((Attack[])attacks.toArray(new Attack[0]), health, animation);
+            Enemy enemy = new Enemy(key, (Attack[])attacks.toArray(new Attack[0]), health, animation);
             add(key, enemy);
         } catch(IOException e) {
             ErrorLogger.println("Unable to load enemy file with key " + key +  ": " + e);

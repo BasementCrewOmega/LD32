@@ -39,7 +39,7 @@ import java.util.ArrayList;
  *
  * @author Jonathon
  */
-public class PlayerDataLoader extends AssetLoader {
+public class PlayerDataLoader extends AssetLoader<PlayerData> {
 
     private AssetManager assetManager;
     
@@ -66,6 +66,7 @@ public class PlayerDataLoader extends AssetLoader {
             ArrayList<Consumable> consumables = new ArrayList<>();
             
             int gold = 0;
+            String name = "Tim";
             
             String block = null;
             String property = null;
@@ -86,11 +87,19 @@ public class PlayerDataLoader extends AssetLoader {
                             areas.add(buffer);
                         } else if (block.equals("consumables")) {
                             //Consumable parsing
-                            
+                            if (buffer.equals("health_potion")) {
+                                consumables.add(Consumable.HEALTH_POTION);
+                            } else if (buffer.equals("dodge_potion")) {
+                                consumables.add(Consumable.DODGE_POTION);
+                            } else if (buffer.equals("accuracy_potion")) {
+                                consumables.add(Consumable.ACCURACY_POTION);
+                            }
                         }
                     } else {
                         if (property.equals("gold")) {
                             gold = Integer.parseInt(buffer);
+                        } else if (property.equals("name")) {
+                            name = buffer;
                         }
                         property = null;
                     }
@@ -102,7 +111,7 @@ public class PlayerDataLoader extends AssetLoader {
                     buffer += src[i];
                 }
             }
-            add(key, new PlayerData(weapons, areas, consumables, gold));
+            add(key, new PlayerData(weapons, areas, consumables, gold, name));
         } catch (IOException e) {
             ErrorLogger.println("Unable to load player data file with key " + key + ": " + e);
         }

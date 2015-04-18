@@ -11,6 +11,8 @@ import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiGroup;
 import bropals.lib.simplegame.gui.GuiImage;
 import bropals.lib.simplegame.state.GameState;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 
 /**
@@ -31,6 +33,10 @@ public class MainMenuState extends GameState {
 
     @Override
     public void render(Object o) {
+        Graphics g = (Graphics)o;
+        g.setColor(Color.BLUE);
+        g.fillRect(0, 0, 800, 600);
+        
         gui.render(o);
     }
 
@@ -43,7 +49,7 @@ public class MainMenuState extends GameState {
                 getAssetManager().getImage("playHover"),
                 new PlayButton()
         );
-        GuiButton quitButton = new GuiButton(80, 300, 120, 80,
+        GuiButton quitButton = new GuiButton(80, 450, 120, 80,
                 getAssetManager().getImage("quitUp"),
                 getAssetManager().getImage("quitUp"),
                 getAssetManager().getImage("quitHover"),
@@ -73,6 +79,8 @@ public class MainMenuState extends GameState {
             //When the player pressed quit
             //Quit
             getWindow().requestToClose();
+            System.exit(0);
+            
         }
     }
     
@@ -80,7 +88,18 @@ public class MainMenuState extends GameState {
         @Override
         public void onButtonPress() {
             //When the player presses play
-            
+            playIntroMovie();
+            startGame();
         }
+    }
+    
+    public void playIntroMovie() {
+        
+    }
+    
+    public void startGame() {
+        TownState townState = new TownState();
+        
+        getGameStateRunner().setState(townState);
     }
 }

@@ -1,0 +1,11 @@
+weapons {
+	weapon_fists;
+}
+completed_areas {
+
+}
+consumables {
+
+}
+gold:10;
+name:Brian;

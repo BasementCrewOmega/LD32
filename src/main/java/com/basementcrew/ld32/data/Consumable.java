@@ -10,5 +10,7 @@ package com.basementcrew.ld32.data;
  * @author Jonathon
  */
 public enum Consumable {
-    
+    HEALTH_POTION, 
+    DODGE_POTION,
+    ACCURACY_POTION;
 }

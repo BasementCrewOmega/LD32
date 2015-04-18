@@ -92,7 +92,11 @@ public class PlayerDataLoader extends AssetLoader {
                         if (property.equals("gold")) {
                             gold = Integer.parseInt(buffer);
                         }
+                        property = null;
                     }
+                    buffer = "";
+                } else if (src[i] == ':') {
+                    property = buffer;
                     buffer = "";
                 } else {
                     buffer += src[i];

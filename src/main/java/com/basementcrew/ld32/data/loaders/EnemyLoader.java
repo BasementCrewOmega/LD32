@@ -102,6 +102,7 @@ public class EnemyLoader extends AssetLoader {
                             for (int j=0; j<timings.length; j++) {
                                 timings[j] = Integer.parseInt(timingsSplit[j]);
                             }
+                            currentAttack.setTimings(timings);
                         }
                     } else if (currentBlock.equals("data")) {
                         if (currentProperty.equals("health")) {

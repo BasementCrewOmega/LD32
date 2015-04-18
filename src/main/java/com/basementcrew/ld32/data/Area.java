@@ -18,6 +18,13 @@ public class Area {
     private BufferedImage backgroundImage;
     private Weapon rewardWeapon;
 
+    public Area(Enemy[] possibleEnemies, Enemy boss, BufferedImage backgroundImage, Weapon rewardWeapon) {
+        this.possibleEnemies = possibleEnemies;
+        this.boss = boss;
+        this.backgroundImage = backgroundImage;
+        this.rewardWeapon = rewardWeapon;
+    }
+    
     public BufferedImage getBackgroundImage() {
         return backgroundImage;
     }

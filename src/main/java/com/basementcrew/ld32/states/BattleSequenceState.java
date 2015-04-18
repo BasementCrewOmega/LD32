@@ -11,10 +11,10 @@ import bropals.lib.simplegame.state.GameState;
  * The main state - the state where you go through the sequence of the battle
  * @author Kevin
  */
-public class BattleSequenceState extends GameState {
+public class BattleSequenceState extends TimedGameState {
 
     @Override
-    public void update() {
+    public void update(long dt) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

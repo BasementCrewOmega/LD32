@@ -24,8 +24,8 @@ import java.util.regex.Pattern;
  * <p>
  * <code>
  *  enemies {<br />
- *  &lt;weapon&gt;;<br />
- *  &lt;weapon&gt;;<br />
+ *  &lt;enemy&gt;;<br />
+ *  &lt;enemy&gt;;<br />
  *  }<br />
  *  boss:&lt;boss&gt;;<br />
  *  background_image:&lt;image&gt;;<br />

@@ -14,11 +14,13 @@ public class Weapon {
     private int attackDamage;
     private Effect effect;
     private int[] timings;
-
-    public Weapon(int attackDamage, Effect effect, int[] timings) {
+    private int cooldown;
+    
+    public Weapon(int attackDamage, Effect effect, int[] timings, int cooldown) {
         this.attackDamage = attackDamage;
         this.effect = effect;
         this.timings = timings;
+        this.cooldown = cooldown;
     }    
     
     public Effect getEffect() {
@@ -54,4 +56,9 @@ public class Weapon {
     public int getTimingSlotCount() {
         return timings.length/2;
     }
+
+    public int getCooldown() {
+        return cooldown;
+    }
+    
 }

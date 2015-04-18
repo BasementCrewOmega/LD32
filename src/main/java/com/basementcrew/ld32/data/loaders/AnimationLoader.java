@@ -5,6 +5,7 @@
  */
 package com.basementcrew.ld32.data.loaders;
 
+import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.animation.Track;
 import bropals.lib.simplegame.io.AssetLoader;
 import bropals.lib.simplegame.io.AssetManager;
@@ -14,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Loads animation files.
@@ -42,6 +44,8 @@ public class AnimationLoader extends AssetLoader {
             reader.close();
             char[] src = srcBuilder.toString().toCharArray();
             
+            ArrayList<Track> tracks = new ArrayList<>();
+            
             String buffer = "";
             BufferedImage image = null;
             int width = -1;
@@ -55,12 +59,19 @@ public class AnimationLoader extends AssetLoader {
                         width = Integer.parseInt(buffer);
                     } else if (height == -1) {
                         height = Integer.parseInt(buffer);
+                    } else {
+                        tracks.add(new Track(image, width, height));
+                        
+                        image = null;
+                        width = -1;
+                        height = -1;
                     }
                     buffer = "";
                 } else {
                     buffer += src[i];
                 }
             }
+            add(key, new Animation(tracks));
         } catch (IOException e) {
             ErrorLogger.println("Unable to load area file with key " + key + ": " + e);
         }

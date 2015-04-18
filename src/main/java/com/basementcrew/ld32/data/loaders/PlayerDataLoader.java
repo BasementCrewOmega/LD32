@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * Loads .playerdata files, which are in the format of.
+ * Loads playerdata files, which are in the format of.
  * <p>
  *
  * <code>
@@ -40,8 +40,17 @@ public class PlayerDataLoader extends AssetLoader {
     public void loadAsset(String key, InputStream in) {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
+            StringBuilder srcBuilder = new  StringBuilder(100); //Source without whitespace
+            int num;
+            while ((num = reader.read()) != -1) {
+                if (!Character.isWhitespace((char)num)) {
+                    srcBuilder.append((char)num);
+                }
+            }
             reader.close();
+            char[] src = srcBuilder.toString().toCharArray();
+            
+            
         } catch (IOException e) {
             ErrorLogger.println("Unable to load player data file with key " + key + ": " + e);
         }

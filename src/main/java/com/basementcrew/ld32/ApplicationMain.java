@@ -14,7 +14,12 @@ public class ApplicationMain {
             AssetManager assetManager = new AssetManager(ApplicationMain.class, true);
             
             //Load all assets
-            assetManager.loadImagesInDirectories("assets/img", true);
+            assetManager.loadImage("/assets/img/mainMenu/playDown.png", "playDown");
+            assetManager.loadImage("/assets/img/mainMenu/playDown.png", "playDown");
+            assetManager.loadImage("/assets/img/mainMenu/playDown.png", "playDown");
+            assetManager.loadImage("/assets/img/mainMenu/playDown.png", "playDown");
+            assetManager.loadImage("/assets/img/mainMenu/playDown.png", "playDown");
+            assetManager.loadImage("/assets/img/mainMenu/playDown.png", "playDown");
             
             GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
             TimedGameStateRunner runner = new TimedGameStateRunner(window, assetManager);

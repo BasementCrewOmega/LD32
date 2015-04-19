@@ -45,6 +45,7 @@ public class BattleSequenceState extends TimedGameState {
     private int[] enemyAttackTiming = null;
     private int enemyAttackProgress = 0; //Milliseconds the attack has been occuring
     private Attack enemyAttack;
+    private int enemyMaxHealth;
     
     //Player attack management
     private int[] playerAttackTiming = null;
@@ -53,6 +54,7 @@ public class BattleSequenceState extends TimedGameState {
     private int playerAttackProgress = 0;
     /** The weapon the player as chosen for that attack*/
     private Weapon playerWeapon;
+    private int playerMaxHealth;
     /** An array to keep track of the cooldowns*/
     private int[] cooldownCounters;
     
@@ -124,12 +126,13 @@ public class BattleSequenceState extends TimedGameState {
                 
                 if (playerAttackTiming == null) {
                     playerAttackTiming = new int[]{playerWeapon.getTimingStart(0),
-                        playerWeapon.getTimingEnd(0)};
+                        playerWeapon.getTimingEnd(0), playerWeapon.getTimingEntireEnded(0)};
                 }
                 playerAttackProgress += dt; // update how long the attack has been going on for.
                 if (playerAttackProgress > 
-                        startAttackTime + playerAnimation.getTrackOn().getTotalTrackTime()) { // see if the attack is done yet
+                        startAttackTime + playerAttackTiming[2]) { // see if the attack is done yet
                     // finish the ability
+                    System.out.println("Player has attacked the player");
                     fighting.damage(playerWeapon.getAttackDamage()); // do the damage
                     alreadyPressedAKey = false; // reset the lock after the ability has finished
                     pressedKeyInRegion = false;
@@ -139,6 +142,7 @@ public class BattleSequenceState extends TimedGameState {
                 } else { // if the attack is not done yet
                     if (pressedKeyInRegion) { // see if the player has pressed the key at the right time
                         // bonus effect!
+                        System.out.println("This is our special effect");
                         playerWeapon.getEffect().doEffect(playerWeapon, fighting, playerData);
                         pressedKeyInRegion = false; // so it can't happen again for this attack
                     }
@@ -153,11 +157,11 @@ public class BattleSequenceState extends TimedGameState {
             if (enemyAttack != null) { // does the enemy have an attack?
                 if (enemyAttackTiming == null) {
                     enemyAttackTiming = new int[]{enemyAttack.getTimingStart(0),
-                      enemyAttack.getTimingEnd(0)};
+                      enemyAttack.getTimingEnd(0), enemyAttack.getTimingEntireEnded(0)};
                 }
                 enemyAttackProgress += dt;
                 if (enemyAttackProgress >
-                        startAttackTime + enemyAnimation.getTrackOn().getTotalTrackTime()) {
+                        startAttackTime + enemyAttackTiming[2]) {
                     if (!dodgedEnemyAttack) {
                         // get damaged when you don't dodge
                         playerData.setHealth(playerData.getHealth() - enemyAttack.getDamage());
@@ -225,8 +229,11 @@ public class BattleSequenceState extends TimedGameState {
         
         // debug drawing
         if (playerTurn) {
-            if (playerAttackTiming != null && inTimingRegion(playerAttackProgress, playerAttackTiming)) {
+            if (playerAttackTiming != null) {
                 g.setColor(Color.RED);
+                if (inTimingRegion(playerAttackProgress, playerAttackTiming)) {
+                    g.setColor(Color.GREEN);
+                }
                 g.fillRect((int)playerRenderPosition.getX(), 
                         (int)playerRenderPosition.getY(), 200, 50);
             }
@@ -246,11 +253,35 @@ public class BattleSequenceState extends TimedGameState {
 //            System.out.println(gb.toString());
 //            System.out.println(gb.getX() + ", " + gb.getY() + ", " + 
 //                    gb.getWidth() + ", " + gb.getHeight());
-            //gb.render(o);
+           
             g.setColor(Color.BLACK);
             g.fillRect(gb.getX(), gb.getY(), 
                     gb.getWidth(), gb.getHeight());
+            gb.render(o);
         }
+        
+        // draw the health bar for the player
+        g.drawImage(getAssetManager().getImage("healthBar"), 
+                (int)playerRenderPosition.getX(),
+                (int)playerRenderPosition.getY() - 30, null);
+        g.setColor(Color.RED);
+        // 144x24
+        g.fillRect((int)playerRenderPosition.getX() + 3, 
+                (int)playerRenderPosition.getY() - 27, 
+                (int)(144 * ((double)playerData.getHealth() / playerMaxHealth)), 
+                24);
+        
+        
+        // draw the health bar for the enemy
+        g.drawImage(getAssetManager().getImage("healthBar"), 
+                (int)enemyRenderPosition.getX(),
+                (int)enemyRenderPosition.getY() - 30, null);
+        g.setColor(Color.RED);
+        // 144x24
+        g.fillRect((int)enemyRenderPosition.getX() + 3, 
+                (int)enemyRenderPosition.getY() - 27, 
+                (int)(144 * ((double)fighting.getHealth() / fighting.getHealth())), 
+                24);
     }
     
     @Override
@@ -289,6 +320,9 @@ public class BattleSequenceState extends TimedGameState {
             abilityActions.add(action);
         }
         
+        // set the max healths
+        playerMaxHealth = playerData.getHealth();
+        enemyMaxHealth = fighting.getHealth();
     }
 
     class ChosePlayerAbilityAction implements GuiButtonAction {

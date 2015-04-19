@@ -9,6 +9,7 @@ import bropals.lib.simplegame.io.AssetLoader;
 import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.logger.ErrorLogger;
 import com.basementcrew.ld32.movie.AddInstruction;
+import com.basementcrew.ld32.movie.CleanInstruction;
 import com.basementcrew.ld32.movie.DefineInstruction;
 import com.basementcrew.ld32.movie.DelayInstruction;
 import com.basementcrew.ld32.movie.MoveInstruction;
@@ -38,6 +39,7 @@ import java.util.regex.Pattern;
  *  <li>set_bg &lt;background_image&gt;</li>
  *  <li>move &lt;name&gt; &lt;goalX&gt; &lt;goalY&gt; &lt;milliseconds&gt;</li>
  *  <li>play_sound &lt;sound&gt;</li>
+ *  <li>clean</li>
  * </ul>
  * @author Jonathon
  */
@@ -94,6 +96,9 @@ public class MovieLoader extends AssetLoader {
                         break;
                     case "play_sound":
                         instructions.add(new PlaySoundInstruction(assetManager.getSoundEffect(split[1])));
+                        break;
+                    case "clean":
+                        instructions.add(new CleanInstruction());
                         break;
                 }
             }

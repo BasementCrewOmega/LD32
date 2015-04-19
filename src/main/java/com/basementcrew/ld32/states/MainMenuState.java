@@ -27,12 +27,19 @@ import com.basementcrew.ld32.MusicPlayer;
 public class MainMenuState extends GameState {
 
     private Gui gui = new Gui();
+    private int alpha = 255;
     
     @Override
     public void update() {
         Point mouse = getWindow().getMousePosition();
         if (mouse!=null) {
             gui.update(mouse.x, mouse.y);
+        }
+        if (alpha > 0) {
+            alpha -= 12;
+            if (alpha < 0){
+                alpha = 0;
+            }
         }
     }
 
@@ -43,18 +50,22 @@ public class MainMenuState extends GameState {
         g.fillRect(0, 0, 800, 600);
         
         gui.render(o);
+        if (alpha > 0) {
+            g.setColor(new Color(255, 255, 255, alpha));
+            g.fillRect(0, 0, 800, 600);
+        }
     }
 
     @Override
     public void onEnter() {
         GuiGroup group = new GuiGroup();
-        GuiButton playButton = new GuiButton(80, 300, 120, 80,
+        GuiButton playButton = new GuiButton(80, 300, 120, 60,
                 getAssetManager().getImage("playUp"),
                 getAssetManager().getImage("playUp"),
                 getAssetManager().getImage("playHover"),
                 new PlayButton()
         );
-        GuiButton quitButton = new GuiButton(80, 450, 120, 80,
+        GuiButton quitButton = new GuiButton(80, 450, 120, 60,
                 getAssetManager().getImage("quitUp"),
                 getAssetManager().getImage("quitUp"),
                 getAssetManager().getImage("quitHover"),
@@ -108,9 +119,10 @@ public class MainMenuState extends GameState {
         TownState townState = new TownState();
         
         getGameStateRunner().setState(townState);
-        
+        /*
         Sequence seq = getAssetManager().getAsset("main_song", Sequence.class);
 		MusicPlayer player = MusicPlayer.getInstance();
 		player.play(seq, true, 0, 15, 25530);
+        */
     }
 }

@@ -23,7 +23,7 @@ public class AnimationMovieObject extends MovieObject {
     
     @Override
     public void update(long dt) {
-        animation.update();
+        animation.update((int)dt);
     }
 
     @Override

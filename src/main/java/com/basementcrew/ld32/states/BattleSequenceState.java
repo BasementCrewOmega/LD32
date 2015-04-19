@@ -132,9 +132,10 @@ public class BattleSequenceState extends TimedGameState {
                 }
                 
                 playerAttackProgress += dt; // update how long the attack has been going on for.
-                if (playerAnimation.getCurrentTrackIndex() != 1)
+                if (playerAnimation.getCurrentTrackIndex() != 1) {
                     playerAnimation.setTrack(1); // set the animation to the attack animation
-                
+                    playerAnimation.getTrackOn().resetCounter();
+                }
                 if (playerAttackProgress > 
                         playerWeapon.getTimingEntireEnded()) { // see if the attack is done yet
                     // finish the ability
@@ -145,6 +146,7 @@ public class BattleSequenceState extends TimedGameState {
                     playerAttackTiming = null;
                     playerAttackProgress = 0;
                     playerAnimation.setTrack(0); // back to idle animation
+                    playerAnimation.getTrackOn().resetCounter();
                 } else { // if the attack is not done yet
                     // track what region of time we're in right now
                     if (regionCounter != -1 && playerAttackProgress > playerWeapon.getTimingEnd(regionCounter)) {
@@ -157,7 +159,7 @@ public class BattleSequenceState extends TimedGameState {
                     }
                     
                     // if you pressed the key in the right region
-                    if (pressedKeyInRegion == regionCounter) {
+                    if (regionCounter!= -1 && pressedKeyInRegion == regionCounter) {
                         // bonus effect!
                         System.out.println("you pressed the key in the right region!");
                         playerWeapon.getEffect().doEffect(playerWeapon, fighting, playerData);
@@ -178,9 +180,10 @@ public class BattleSequenceState extends TimedGameState {
                 }
                 
                 enemyAttackProgress += dt;
-                if (enemyAnimation.getCurrentTrackIndex() != 1)
+                if (enemyAnimation.getCurrentTrackIndex() != 1) {
                     enemyAnimation.setTrack(1); // set the animation to the attack animation
-                
+                    enemyAnimation.getTrackOn().resetCounter();
+                }
                 if (enemyAttackProgress >
                         enemyAttack.getTimingEntireEnded()) {
                     //System.out.println("THe enemy has finished its attack");
@@ -191,6 +194,7 @@ public class BattleSequenceState extends TimedGameState {
                     pressedKeyInRegion = -1; // reset the status of pressing a key
                     enemyAttackProgress = 0;
                     enemyAnimation.setTrack(0); // back to idle animation
+                    enemyAnimation.getTrackOn().resetCounter();
                 } else { // the attack is not done yet
                     if (regionCounter != -1 && enemyAttackProgress > enemyAttack.getTimingEnd(regionCounter)) {
                         regionCounter++;
@@ -206,7 +210,7 @@ public class BattleSequenceState extends TimedGameState {
                     }
                     
                     // if you pressed the key in the right region
-                    if (pressedKeyInRegion == regionCounter) {
+                    if (regionCounter!= -1 && pressedKeyInRegion == regionCounter) {
                         System.out.println("you pressed the key in the right region!");
                         dodgedEnemyAttack = true;
                         pressedKeyInRegion = -2; // lock the interval of tiome again
@@ -220,10 +224,10 @@ public class BattleSequenceState extends TimedGameState {
         
         // update the animations
         if (playerAnimation != null)
-            playerAnimation.update();
+            playerAnimation.update((int)dt);
         
         if (enemyAnimation != null) 
-            enemyAnimation.update();
+            enemyAnimation.update((int)dt);
         
         // make the state change if you win or lose battles
         if (fighting.getHealth() <= 0) {
@@ -237,9 +241,9 @@ public class BattleSequenceState extends TimedGameState {
                     getAssetManager().getAsset("win_battle", Movie.class), 
                        nextBattleTransition));
         } else if (playerData.getHealth() <= 0) {
-            TransitionState nextState = new TransitionState(
+            getGameStateRunner().setState(new TransitionState(
                     getAssetManager().getAsset("lose_battle", Movie.class),
-                    new MainMenuState()); // lose and go to the main menu
+                    new MainMenuState())); // lose and go to the main menu
         }
     }
     
@@ -344,12 +348,12 @@ public class BattleSequenceState extends TimedGameState {
         
         playerAnimation = getAssetManager().getAsset("player", Animation.class);
         playerAnimation.setTrack(0); // the idle animations
-        playerAnimation.update(); // to set the image
+        playerAnimation.update(0); // to set the image
         playerRenderPosition = new Point(60, 100); // can change because you might be moving to hit the enemy
         
         enemyAnimation = fighting.getAnimation();
         enemyAnimation.setTrack(0);
-        enemyAnimation.update();
+        enemyAnimation.update(0);
         enemyRenderPosition = new Point(500, 100);
         
         GuiGroup main = new GuiGroup();

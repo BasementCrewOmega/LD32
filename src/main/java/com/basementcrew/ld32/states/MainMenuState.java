@@ -29,7 +29,7 @@ import com.basementcrew.ld32.MusicPlayer;
 public class MainMenuState extends GameState {
 
     private Gui gui = new Gui();
-    protected boolean isQuiet;
+    protected boolean isQuiet = false;
     private int alpha = 255;
     
     public MainMenuState() {
@@ -42,6 +42,7 @@ public class MainMenuState extends GameState {
 				isQuiet = Boolean.parseBoolean((String) flag);
 			}
 		}
+                isQuiet = true;
 	}
 	
     @Override

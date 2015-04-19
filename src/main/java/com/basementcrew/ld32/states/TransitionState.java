@@ -58,13 +58,15 @@ public class TransitionState extends TimedGameState {
 
     @Override
     public void key(int keycode, boolean pressed) {
-        if (keycode == KeyCode.KEY_SPACE) {
+        if (keycode == KeyCode.KEY_SPACE && pressed) {
             end();
         }
     }
 
     @Override
     public void mouse(int mousebutton, int x, int y, boolean pressed) {
-        end();
+        if (pressed) {
+            end();
+        }
     }    
 }

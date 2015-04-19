@@ -145,6 +145,7 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/movies/burningTown.png", "burningTown");
         assetManager.loadImage("assets/img/movies/mountainsStatic.png", "mountainsStatic");
         assetManager.loadImage("assets/img/movies/darkFace.png", "darkFace");
+        assetManager.loadImage("assets/img/movies/verses.png", "verses");
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 200, 28); //Max size is 350
@@ -159,6 +160,7 @@ public class ApplicationMain {
         assetManager.loadAsset("assets/data/animation/player.animation", "player", Animation.class);
         assetManager.loadAsset("assets/data/animation/introMountains.animation", "introMountains", Animation.class);
         assetManager.loadAsset("assets/data/animation/burningBuildings.animation", "burningBuildings", Animation.class);
+        assetManager.loadAsset("assets/data/animation/verses.animation", "verses", Animation.class);
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 220, 28); //Max size is 350
@@ -206,7 +208,10 @@ public class ApplicationMain {
 
         //Load Movies
         assetManager.loadAsset("assets/data/movie/intro.movie", "intro", Movie.class);
-        assetManager.loadAsset("assets/data/movie/enter_battle.movie", "enter_battle", Movie.class);
+        assetManager.loadAsset("assets/data/movie/enter_battle_goblin.movie", "enter_battle_goblin", Movie.class);
+        assetManager.loadAsset("assets/data/movie/enter_battle_imp.movie", "enter_battle_imp", Movie.class);
+        assetManager.loadAsset("assets/data/movie/enter_battle_yeti.movie", "enter_battle_yeti", Movie.class);
+        assetManager.loadAsset("assets/data/movie/enter_battle_warthog.movie", "enter_battle_warthog", Movie.class);
         assetManager.loadAsset("assets/data/movie/win_battle.movie", "win_battle", Movie.class);
         assetManager.loadAsset("assets/data/movie/lose_battle.movie", "lose_battle", Movie.class);
         assetManager.loadAsset("assets/data/movie/win_game.movie", "win_game", Movie.class);
@@ -244,7 +249,7 @@ public class ApplicationMain {
          */
                 
         // Skip constant caller arg TODO: Replace with public domain flag parsing code
-        for (int i = 1; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
         	String param = args[i];
         	param = param.trim();
         	if (param.charAt(0) == '-') {
@@ -253,7 +258,7 @@ public class ApplicationMain {
         			key = key.substring(0, key.indexOf('='));	// TODO: if value is a "string" that might break this type
         			String value = key.substring(key.indexOf('=') + 1);
         			flags.put(key, value);
-        		} else if (args[i+1].charAt(0) != '-') {	// -key value
+        		} else if ((i+1 < args.length) && args[i+1].charAt(0) != '-') {	// -key value
         			String value = args[i+1];
         			i++; // Skip next arg since we already handle it as a value
         			flags.put(key, value);

@@ -41,15 +41,17 @@ public class Movie {
     public void updateMovie(long dt) {
         delayLeft -= dt;
         if (delayLeft <= 0) {
-            if (current >= 0 && current < instructions.length) {
-                instructions[current].endInstruction(this);
-            }
-            if (current < instructions.length) {
-                current++;
-            }
-            if (!isOver()) {
+            while (delayLeft <= 0 && current < instructions.length) {
+                if (current >= 0 && current < instructions.length) {
+                    instructions[current].endInstruction(this);
+                }
                 if (current < instructions.length) {
-                    instructions[current].startInstruction(this);
+                    current++;
+                }
+                if (!isOver()) {
+                    if (current < instructions.length) {
+                        instructions[current].startInstruction(this);
+                    }
                 }
             }
         } else {
@@ -129,6 +131,13 @@ public class Movie {
         MovieObject obj = getObjectInScene(name);
         if (obj != null) {
             scene.remove(obj);
+//            for (MoveInstruction mi : moveInstructions) {
+//                if (mi.getMoving() == obj) {
+//                    moveInstructions.remove(mi);
+//                    mi.stop();
+//                    break;
+//                }
+//            }
         } else {
             ErrorLogger.println("No object of the name " + name + " in the scene");
         }

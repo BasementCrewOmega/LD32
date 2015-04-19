@@ -1,11 +1,16 @@
 define sun image dieSonne
 define mountains animation introMountains
 define text1 image text1
+define burningBuildings animation burningBuildings
 set_bg introMovieBackground1
 add sun 250 400
 add text1 100 80
 add mountains 0 300
-move sun 250 300 4500
-delay 4500
-clean
+move sun 250 300 4000
+delay 4000
+remove sun
+remove text1
+remove mountains
 set_bg introMovieBackground2
+add burningBuildings 48 291
+delay 3000

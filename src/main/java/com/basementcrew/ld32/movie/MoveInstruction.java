@@ -49,7 +49,6 @@ public class MoveInstruction extends MovieInstruction {
 
     @Override
     public void endInstruction(Movie movie) {
-        
     }
 
     @Override
@@ -59,10 +58,17 @@ public class MoveInstruction extends MovieInstruction {
             moving.translate(deltaX*dt, deltaY*dt);
             if (millisecondProgress >= milliseconds) {
                 moving = null;
-                movie.forceNext();
                 movie.removeMoveInstruction(this);
             }
         }
+    }
+
+    public MovieObject getMoving() {
+        return moving;
+    }
+
+    public void stop() {
+        moving = null;
     }
     
 }

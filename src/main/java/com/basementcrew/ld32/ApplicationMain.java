@@ -7,6 +7,7 @@ import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.logger.InfoLogger;
 
 import com.basementcrew.ld32.data.Area;
 import com.basementcrew.ld32.data.Enemy;
@@ -30,6 +31,8 @@ import java.awt.SplashScreen;
 public class ApplicationMain {
 
     public static void main(String[] args) {
+        InfoLogger.setSilent(true);
+        
         AssetManager assetManager = new AssetManager(ApplicationMain.class, true);
 
         //Splash screen
@@ -104,9 +107,11 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/entity/player_attack.png", "player_attack");
 
         assetManager.loadImage("assets/img/movies/introMovieBackground1.png", "introMovieBackground1");
+        assetManager.loadImage("assets/img/movies/introMovieBackground2.png", "introMovieBackground2");
         assetManager.loadImage("assets/img/movies/introMountains.png", "introMountains");
         assetManager.loadImage("assets/img/movies/dieSonne.png", "dieSonne");
-
+        assetManager.loadImage("assets/img/movies/text1.png", "text1");
+        
         if (splash != null && g != null) {
             g.fillRect(26, 189, 200, 28); //Max size is 350
             splash.update();

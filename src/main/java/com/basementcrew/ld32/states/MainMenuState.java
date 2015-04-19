@@ -27,12 +27,19 @@ import com.basementcrew.ld32.MusicPlayer;
 public class MainMenuState extends GameState {
 
     private Gui gui = new Gui();
+    private int alpha = 255;
     
     @Override
     public void update() {
         Point mouse = getWindow().getMousePosition();
         if (mouse!=null) {
             gui.update(mouse.x, mouse.y);
+        }
+        if (alpha > 0) {
+            alpha -= 12;
+            if (alpha < 0){
+                alpha = 0;
+            }
         }
     }
 
@@ -43,6 +50,10 @@ public class MainMenuState extends GameState {
         g.fillRect(0, 0, 800, 600);
         
         gui.render(o);
+        if (alpha > 0) {
+            g.setColor(new Color(255, 255, 255, alpha));
+            g.fillRect(0, 0, 800, 600);
+        }
     }
 
     @Override

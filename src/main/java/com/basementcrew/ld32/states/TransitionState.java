@@ -5,6 +5,7 @@
  */
 package com.basementcrew.ld32.states;
 
+import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
 import com.basementcrew.ld32.movie.Movie;
 import java.awt.Graphics;
@@ -33,8 +34,12 @@ public class TransitionState extends TimedGameState {
         if (!movie.isOver()) {
             movie.updateMovie(dt); 
         } else {
-            getGameStateRunner().setState(nextState);
+            end();
         }
+    }
+    
+    public void end() {
+        getGameStateRunner().setState(nextState);
     }
 
     @Override
@@ -50,5 +55,16 @@ public class TransitionState extends TimedGameState {
     @Override
     public void onExit() {
     }
-    
+
+    @Override
+    public void key(int keycode, boolean pressed) {
+        if (keycode == KeyCode.KEY_SPACE) {
+            end();
+        }
+    }
+
+    @Override
+    public void mouse(int mousebutton, int x, int y, boolean pressed) {
+        end();
+    }    
 }

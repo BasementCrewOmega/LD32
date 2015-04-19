@@ -74,6 +74,11 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/mainMenu/titleBanner.png", "titleBanner");
         assetManager.loadImage("assets/img/mainMenu/mainMenuBackground.png", "mainMenuBackground");
 
+        if (splash != null && g != null) {
+            g.fillRect(26, 189, 25, 28); //Max size is 350
+            splash.update();
+        }
+        
         assetManager.loadImage("assets/img/townMenu/shopDown.png", "shopDown");
         assetManager.loadImage("assets/img/townMenu/shopHover.png", "shopHover");
         assetManager.loadImage("assets/img/townMenu/shopUp.png", "shopUp");
@@ -86,6 +91,11 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/townMenu/ice_icon.png", "ice_icon");
         assetManager.loadImage("assets/img/townMenu/savanna_icon.png", "savanna_icon");
 
+        if (splash != null && g != null) {
+            g.fillRect(26, 189, 70, 28); //Max size is 350
+            splash.update();
+        }
+        
         assetManager.loadImage("assets/img/battleSequence/cooldownBar.png", "cooldownBar");
         assetManager.loadImage("assets/img/battleSequence/cooldownBarBackground.png", "cooldownBarBackground");
         assetManager.loadImage("assets/img/battleSequence/healthBar.png", "healthBar");
@@ -101,6 +111,11 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/battleSequence/abilityButtonFists.png", "fist_button");
         assetManager.loadImage("assets/img/battleSequence/abilityButtonFistsHover.png", "hover_fist_button");
             
+        if (splash != null && g != null) {
+            g.fillRect(26, 189, 120, 28); //Max size is 350
+            splash.update();
+        }
+        
         assetManager.loadImage("assets/img/entity/goblin_idle.png", "goblin_idle");
         assetManager.loadImage("assets/img/entity/goblin_attack.png", "goblin_attack");
         assetManager.loadImage("assets/img/entity/yeti_idle.png", "yeti_idle");
@@ -112,6 +127,11 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/entity/player_idle.png", "player_idle");
         assetManager.loadImage("assets/img/entity/player_attack.png", "player_attack");
 
+        if (splash != null && g != null) {
+            g.fillRect(26, 189, 160, 28); //Max size is 350
+            splash.update();
+        }
+        
         assetManager.loadImage("assets/img/movies/introMovieBackground1.png", "introMovieBackground1");
         assetManager.loadImage("assets/img/movies/introMovieBackground2.png", "introMovieBackground2");
         assetManager.loadImage("assets/img/movies/introMountains.png", "introMountains");

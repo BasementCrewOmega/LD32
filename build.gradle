@@ -20,7 +20,7 @@ task buildLibs(type: Exec) {
 }
 
 task updateLibs(type: Copy) {
-	dependsOn buildLibs
+	//dependsOn buildLibs
 	from '../BroPalsGameLibrary/build/libs'
 	into 'libs'
 	include '**.*'

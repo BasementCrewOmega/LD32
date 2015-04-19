@@ -65,6 +65,9 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/battleSequence/ice_background.png", "ice_background");
             assetManager.loadImage("assets/img/battleSequence/fire_background.png", "fire_background");
             assetManager.loadImage("assets/img/battleSequence/savanna_background.png", "savanna_background");
+            assetManager.loadImage("assets/img/battleSequence/abilityButtonTemplate.png", "abilityButtonTemplate");
+            assetManager.loadImage("assets/img/battleSequence/abilityButtonTemplateHover.png", "abilityButtonTemplateHover");
+
             
             assetManager.loadImage("assets/img/entity/goblin_idle.png", "goblin_idle");
             assetManager.loadImage("assets/img/entity/goblin_attack.png", "goblin_attack");

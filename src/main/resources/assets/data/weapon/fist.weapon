@@ -1,6 +1,6 @@
 cooldown:200;
 attack:1;
 effect:DOUBLE_DAMAGE;
-timings:400,800,1000;
+timings:400,800,1200,1600,2000;
 image:fist_icon;
 sound:fist_sound;

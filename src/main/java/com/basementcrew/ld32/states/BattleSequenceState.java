@@ -34,12 +34,10 @@ public class BattleSequenceState extends TimedGameState {
     private BufferedImage backgroundImage;
     
     // variables to manage the turns
-    private int turnCount;
     private boolean playerTurn; // true when the player's turn; false when the enemy's turn
     /**
      * Keeps track of when the current attack has started.
      */
-    private long startAttackTime;
     
     //Enemy attack management
     private int[] enemyAttackTiming = null;
@@ -80,8 +78,8 @@ public class BattleSequenceState extends TimedGameState {
     
     //Other
     private boolean dodgedEnemyAttack = false;
-    private boolean pressedKeyInRegion = false;
-    private boolean alreadyPressedAKey = false;
+    private int pressedKeyInRegion = -1; // -1 for no region, -2 for failing to press in region
+    private int regionCounter; // count what region is being tested
     
     private Gui gui = new Gui();
     
@@ -93,9 +91,7 @@ public class BattleSequenceState extends TimedGameState {
         enemyAttack = fighting.getAttack(0);
         playerWeapon = null;
         if (playerData.getWeapons().size() > 0) {
-            cooldownCounters = new int[playerData.
-                    getWeapons().
-                    size()];
+            cooldownCounters = new int[playerData.getWeapons().size()];
         }
         
     }
@@ -120,35 +116,48 @@ public class BattleSequenceState extends TimedGameState {
         
         if (playerTurn) { // is it the players turn?
             if (playerWeapon != null) { // has the player chosen a weapon?
-                System.out.println("PLAYER is attacking");
+                //System.out.println("PLAYER is attacking");
                 if (abilityButtonsGroup.isEnabled()) { // remove the gui for chosing abilities after you chose an ability
                     abilityButtonsGroup.setEnabled(false);
                 }
                 
                 if (playerAttackTiming == null) {
-                    playerAttackTiming = new int[]{playerWeapon.getTimingStart(0),
-                        playerWeapon.getTimingEnd(0), playerWeapon.getTimingEntireEnded(0)};
+                    regionCounter = 0; // reset the region counter with a new atttack
+                    playerAttackTiming = playerWeapon.getTimings();
                 }
                 
                 playerAttackProgress += dt; // update how long the attack has been going on for.
+                if (playerAnimation.getCurrentTrackIndex() != 1)
+                    playerAnimation.setTrack(1); // set the animation to the attack animation
+                
                 if (playerAttackProgress > 
-                        playerAttackTiming[2]) { // see if the attack is done yet
+                        playerWeapon.getTimingEntireEnded()) { // see if the attack is done yet
                     // finish the ability
-                    System.out.println("Player has attacked the enemy");
-                    fighting.damage(playerWeapon.getAttackDamage()); // do the damage
-                    alreadyPressedAKey = false; // reset the lock after the ability has finished
-                    pressedKeyInRegion = false;
+                    //System.out.println("Player has attacked the enemy");
+                    pressedKeyInRegion = -1; // no zone pressed
                     playerTurn = false;
                     playerWeapon = null;
                     playerAttackTiming = null;
                     playerAttackProgress = 0;
+                    playerAnimation.setTrack(0); // back to idle animation
                 } else { // if the attack is not done yet
-                    if (pressedKeyInRegion) { // see if the player has pressed the key at the right time
-                        // bonus effect!
-                        System.out.println("This is our special effect");
-                        playerWeapon.getEffect().doEffect(playerWeapon, fighting, playerData);
-                        pressedKeyInRegion = false; // so it can't happen again for this attack
+                    // track what region of time we're in right now
+                    if (regionCounter != -1 && playerAttackProgress > playerWeapon.getTimingEnd(regionCounter)) {
+                        regionCounter++;
+                        if (regionCounter > (int)(playerAttackTiming.length/2)-1)
+                            regionCounter = -1; // done with regions
+                        
+                        pressedKeyInRegion = -1;
+                        fighting.damage(playerWeapon.getAttackDamage()); // do the damage
                     }
+                    
+                    // if you pressed the key in the right region
+                    if (pressedKeyInRegion == regionCounter) {
+                        // bonus effect!
+                        System.out.println("you pressed the key in the right region!");
+                        playerWeapon.getEffect().doEffect(playerWeapon, fighting, playerData);
+                        pressedKeyInRegion = -2; // lock the interval of tiome again
+                    } 
                 }
             } else {
                 if (!abilityButtonsGroup.isEnabled()) { // enable the GUI when you don't have a weapon
@@ -157,35 +166,50 @@ public class BattleSequenceState extends TimedGameState {
             }
         } else { // the enemy's turn
             if (enemyAttack != null) { // does the enemy have an attack?
-                System.out.println("ENEMY is attacking");
+                //System.out.println("ENEMY is attacking");
                 if (enemyAttackTiming == null) {
-                    enemyAttackTiming = new int[]{enemyAttack.getTimingStart(0),
-                      enemyAttack.getTimingEnd(0), enemyAttack.getTimingEntireEnded(0)};
+                    regionCounter = 0; // reset the region counter with a new attack
+                    enemyAttackTiming = enemyAttack.getTimings();
                 }
                 
                 enemyAttackProgress += dt;
+                if (enemyAnimation.getCurrentTrackIndex() != 1)
+                    enemyAnimation.setTrack(1); // set the animation to the attack animation
+                
                 if (enemyAttackProgress >
-                        enemyAttackTiming[2]) {
-                    if (!dodgedEnemyAttack) {
-                        // get damaged when you don't dodge
-                        playerData.setHealth(playerData.getHealth() - enemyAttack.getDamage());
-                    }
-                    System.out.println("THe enemy has finished its attack");
+                        enemyAttack.getTimingEntireEnded()) {
+                    //System.out.println("THe enemy has finished its attack");
                     playerTurn = true; // it's now the player's turn
                     enemyAttack = null;
                     enemyAttackTiming = null;
-                    alreadyPressedAKey = false; // reset the lock after the ability has finished
-                    pressedKeyInRegion = false;
+                    dodgedEnemyAttack = false; // reset dodging the attack
+                    pressedKeyInRegion = -1; // reset the status of pressing a key
                     enemyAttackProgress = 0;
+                    enemyAnimation.setTrack(0); // back to idle animation
                 } else { // the attack is not done yet
-                    if (pressedKeyInRegion) {
-                        dodgedEnemyAttack = true;
+                    if (regionCounter != -1 && enemyAttackProgress > enemyAttack.getTimingEnd(regionCounter)) {
+                        regionCounter++;
+                        if (regionCounter > (int)(enemyAttackTiming.length/2)-1)
+                            regionCounter = -1; // done with regions
+                        
+                        pressedKeyInRegion = -1; // undo the lock to press again
+                        if (!dodgedEnemyAttack) {
+                            // get damaged when you don't dodge by the end of the interval
+                            playerData.setHealth(playerData.getHealth() - enemyAttack.getDamage());
+                        }
+                        dodgedEnemyAttack = false;
                     }
+                    
+                    // if you pressed the key in the right region
+                    if (pressedKeyInRegion == regionCounter) {
+                        System.out.println("you pressed the key in the right region!");
+                        dodgedEnemyAttack = true;
+                        pressedKeyInRegion = -2; // lock the interval of tiome again
+                    } 
                 }
             } else {
                 // need to chose the attack they're doing
                 enemyAttack = fighting.getRandomAttack();
-                dodgedEnemyAttack = false; // reset that you dodged the attack
             }
         }
         
@@ -207,15 +231,16 @@ public class BattleSequenceState extends TimedGameState {
      * @param time the point in time to test
      * @param timing the array that defines the regions of time that make 
      * this check true.
-     * @return if the given point of time is in any region of "timing."
+     * @return Returns which region that the timing was inside of. If there was 
+     *  not region then it returns -2
      */
-    public boolean inTimingRegion(int time, int[] timing) {
-        for (int i=0; i<timing.length; i += 3) {
-            if (time > timing[i] && time < timing[i+1]) {
-                return true;
+    public int inTimingRegion(int time, int[] timing) {
+        for (int i=0; i<(int)(timing.length/2); i++) {
+            if (time > timing[i*2] && time < timing[(i*2)+1]) {
+                return i;
             }
         }
-        return false;
+        return -2;
     }
 
     @Override
@@ -230,14 +255,17 @@ public class BattleSequenceState extends TimedGameState {
         }
         
         //Draw the enemy
-        
+        if (enemyAnimation != null && enemyAnimation.getCurrentImage() != null) {
+            g.drawImage(enemyAnimation.getCurrentImage(), 
+                    (int)enemyRenderPosition.getX(), (int)enemyRenderPosition.getY(), null);
+        }
         
         
         // debug drawing
         if (playerTurn) {
             if (playerAttackTiming != null) {
                 g.setColor(Color.RED);
-                if (inTimingRegion(playerAttackProgress, playerAttackTiming)) {
+                if (inTimingRegion(playerAttackProgress, playerAttackTiming) > -1) {
                     g.setColor(Color.GREEN);
                 }
                 g.fillRect((int)playerRenderPosition.getX(), 
@@ -246,7 +274,7 @@ public class BattleSequenceState extends TimedGameState {
         } else {
             if (enemyAttackTiming != null) {
                 g.setColor(Color.BLUE);
-                if (inTimingRegion(enemyAttackProgress, enemyAttackTiming)) {
+                if (inTimingRegion(enemyAttackProgress, enemyAttackTiming) > -1) {
                     g.setColor(Color.CYAN);
                 }
                 g.fillRect((int)enemyRenderPosition.getX(), 
@@ -308,7 +336,6 @@ public class BattleSequenceState extends TimedGameState {
         enemyAnimation.update();
         enemyRenderPosition = new Point(500, 100);
         
-        turnCount = 0;
         GuiGroup main = new GuiGroup();
         //Make the health bars and other Gui elements
         
@@ -317,7 +344,7 @@ public class BattleSequenceState extends TimedGameState {
         abilityButtons = new ArrayList<>();
         abilityActions = new ArrayList<>();
         for (int i=0; i<playerData.getWeapons().size(); i++) {
-            System.out.println("Adding a weapon BUTTON");
+            //System.out.println("Adding a weapon BUTTON");
             ChosePlayerAbilityAction action = new ChosePlayerAbilityAction(i);
             GuiButton newGuiButton = new GuiButton(250, 390 + (i * 40),
                 240, 30, getAssetManager().getImage("abilityButtonTemplate"), 
@@ -376,19 +403,12 @@ public class BattleSequenceState extends TimedGameState {
     @Override
     public void key(int keycode, boolean pressed) {
         if ( keycode == KeyCode.KEY_SPACE && pressed) {
-            if (!alreadyPressedAKey) {
+            if (pressedKeyInRegion != -2) { // if you did not try to press the key yet
                 if (playerAttackTiming != null) { // if the player was attacking
-                    if (inTimingRegion(playerAttackProgress, playerAttackTiming)) {
-                        pressedKeyInRegion = true;
-                    }
+                    pressedKeyInRegion = inTimingRegion(playerAttackProgress, playerAttackTiming);
                 } else if (enemyAttackTiming != null) { // if the enemy was attacking
-                    if (inTimingRegion(enemyAttackProgress, enemyAttackTiming)) {
-                        //Dodge the enemy attack
-                        System.out.println("Dodged the attack");
-                        dodgedEnemyAttack = true;
-                    }
+                    pressedKeyInRegion = inTimingRegion(enemyAttackProgress, enemyAttackTiming);
                 }
-                alreadyPressedAKey = true;
             }
             
         }

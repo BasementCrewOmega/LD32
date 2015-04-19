@@ -160,4 +160,9 @@ public class Movie {
     public void forceNext() {
         current++;
     }
+    
+    public void clean() {
+        scene.clear();
+        moveInstructions.clear();
+    }
 }

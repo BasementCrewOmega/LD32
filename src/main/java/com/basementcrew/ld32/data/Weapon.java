@@ -54,7 +54,7 @@ public class Weapon {
      * @return the start time of the specified time slot, in milliseconds.
      */
     public int getTimingStart(int timing) {
-        return timings[timing*3];
+        return timings[timing*2];
     }
     
     /**
@@ -63,7 +63,7 @@ public class Weapon {
      * @return the end time of the specified time slot, in milliseconds.
      */
     public int getTimingEnd(int timing) {
-        return timings[(timing*3) + 1];
+        return timings[(timing*2) + 1];
     }
     
     /**
@@ -71,8 +71,12 @@ public class Weapon {
      * @param timing The timing slot (whatever that is)
      * @return The time the entire attack ends in milliseconds
      */
-    public int getTimingEntireEnded(int timing) {
-        return timings[(timing*3) + 2];
+    public int getTimingEntireEnded() {
+        return timings[timings.length - 1]; // the last element of the array
+    }
+    
+    public int[] getTimings() {
+        return timings;
     }
     
     /**

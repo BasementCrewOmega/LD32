@@ -36,7 +36,7 @@ public class Attack {
      * @return the start time of the specified time slot, in milliseconds.
      */
     public int getTimingStart(int timing) {
-        return timings[timing*3];
+        return timings[timing*2];
     }
     
     /**
@@ -45,11 +45,15 @@ public class Attack {
      * @return the end time of the specified time slot, in milliseconds.
      */
     public int getTimingEnd(int timing) {
-        return timings[(timing*3) + 1];
+        return timings[(timing*2) + 1];
     }
     
-    public int getTimingEntireEnded(int timing) {
-        return timings[(timing*3) + 2];
+    public int getTimingEntireEnded() {
+        return timings[timings.length - 1];
+    }
+    
+    public int[] getTimings() {
+        return timings;
     }
     
     /**

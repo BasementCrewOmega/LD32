@@ -11,9 +11,14 @@ import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiGroup;
 import bropals.lib.simplegame.gui.GuiImage;
 import bropals.lib.simplegame.state.GameState;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+
+import javax.sound.midi.Sequence;
+
+import com.basementcrew.ld32.MusicPlayer;
 
 /**
  * The main menu
@@ -101,5 +106,9 @@ public class MainMenuState extends GameState {
         TownState townState = new TownState();
         
         getGameStateRunner().setState(townState);
+        
+        Sequence seq = getAssetManager().getAsset("main_song", Sequence.class);
+		MusicPlayer player = MusicPlayer.getInstance();
+		player.play(seq, true, 0, 15, 25530);
     }
 }

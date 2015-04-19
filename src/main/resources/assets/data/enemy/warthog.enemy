@@ -1,8 +1,8 @@
 attack {
 	damage:2;
-	timings:1200,1600,1900;
+	timings:800,1400,1800;
 }
 data {
-	health:4;
+	health:30;
 	animation:warthog;
 }

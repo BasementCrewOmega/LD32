@@ -104,6 +104,7 @@ public class BattleSequenceState extends TimedGameState {
     public void update(long dt) {
         Point mousePos = getWindow().getMousePosition();
         gui.update((int)mousePos.getX(), (int)mousePos.getY());
+        abilityButtonsGroup.update((int)mousePos.getX(), (int)mousePos.getY());
         
         //Update cooldown counters. When the cooldownCounter == the weapon
         //cooldown then the weapon is available to be used
@@ -119,7 +120,7 @@ public class BattleSequenceState extends TimedGameState {
         
         if (playerTurn) { // is it the players turn?
             if (playerWeapon != null) { // has the player chosen a weapon?
-                System.out.println("The weapon is chosen");
+                System.out.println("PLAYER is attacking");
                 if (abilityButtonsGroup.isEnabled()) { // remove the gui for chosing abilities after you chose an ability
                     abilityButtonsGroup.setEnabled(false);
                 }
@@ -128,9 +129,10 @@ public class BattleSequenceState extends TimedGameState {
                     playerAttackTiming = new int[]{playerWeapon.getTimingStart(0),
                         playerWeapon.getTimingEnd(0), playerWeapon.getTimingEntireEnded(0)};
                 }
+                
                 playerAttackProgress += dt; // update how long the attack has been going on for.
                 if (playerAttackProgress > 
-                        startAttackTime + playerAttackTiming[2]) { // see if the attack is done yet
+                        playerAttackTiming[2]) { // see if the attack is done yet
                     // finish the ability
                     System.out.println("Player has attacked the enemy");
                     fighting.damage(playerWeapon.getAttackDamage()); // do the damage
@@ -139,6 +141,7 @@ public class BattleSequenceState extends TimedGameState {
                     playerTurn = false;
                     playerWeapon = null;
                     playerAttackTiming = null;
+                    playerAttackProgress = 0;
                 } else { // if the attack is not done yet
                     if (pressedKeyInRegion) { // see if the player has pressed the key at the right time
                         // bonus effect!
@@ -148,26 +151,32 @@ public class BattleSequenceState extends TimedGameState {
                     }
                 }
             } else {
-                playerAttackProgress = 0; // reset the progress when there is none
                 if (!abilityButtonsGroup.isEnabled()) { // enable the GUI when you don't have a weapon
                     abilityButtonsGroup.setEnabled(true);
                 }
             }
         } else { // the enemy's turn
             if (enemyAttack != null) { // does the enemy have an attack?
+                System.out.println("ENEMY is attacking");
                 if (enemyAttackTiming == null) {
                     enemyAttackTiming = new int[]{enemyAttack.getTimingStart(0),
                       enemyAttack.getTimingEnd(0), enemyAttack.getTimingEntireEnded(0)};
                 }
+                
                 enemyAttackProgress += dt;
                 if (enemyAttackProgress >
-                        startAttackTime + enemyAttackTiming[2]) {
+                        enemyAttackTiming[2]) {
                     if (!dodgedEnemyAttack) {
                         // get damaged when you don't dodge
                         playerData.setHealth(playerData.getHealth() - enemyAttack.getDamage());
-                        playerTurn = true; // it's now the player's turn
-                        enemyAttackTiming = null;
                     }
+                    System.out.println("THe enemy has finished its attack");
+                    playerTurn = true; // it's now the player's turn
+                    enemyAttack = null;
+                    enemyAttackTiming = null;
+                    alreadyPressedAKey = false; // reset the lock after the ability has finished
+                    pressedKeyInRegion = false;
+                    enemyAttackProgress = 0;
                 } else { // the attack is not done yet
                     if (pressedKeyInRegion) {
                         dodgedEnemyAttack = true;
@@ -176,10 +185,6 @@ public class BattleSequenceState extends TimedGameState {
             } else {
                 // need to chose the attack they're doing
                 enemyAttack = fighting.getRandomAttack();
-                enemyAttackTiming = new int[]{
-                  enemyAttack.getTimingStart(0), enemyAttack.getTimingEnd(0)
-                };
-                enemyAttackProgress = 0; // reset the progress when there is no attack
                 dodgedEnemyAttack = false; // reset that you dodged the attack
             }
         }
@@ -190,6 +195,7 @@ public class BattleSequenceState extends TimedGameState {
         
         if (enemyAnimation != null) 
             enemyAnimation.update();
+        
     }
     
     /**
@@ -204,7 +210,7 @@ public class BattleSequenceState extends TimedGameState {
      * @return if the given point of time is in any region of "timing."
      */
     public boolean inTimingRegion(int time, int[] timing) {
-        for (int i=0; i<timing.length; i += 2) {
+        for (int i=0; i<timing.length; i += 3) {
             if (time > timing[i] && time < timing[i+1]) {
                 return true;
             }
@@ -257,9 +263,9 @@ public class BattleSequenceState extends TimedGameState {
 //            System.out.println(gb.getX() + ", " + gb.getY() + ", " + 
 //                    gb.getWidth() + ", " + gb.getHeight());
            
-            g.setColor(Color.BLACK);
-            g.fillRect(gb.getX(), gb.getY(), 
-                    gb.getWidth(), gb.getHeight());
+//            g.setColor(Color.BLACK);
+//            g.fillRect(gb.getX(), gb.getY(), 
+//                    gb.getWidth(), gb.getHeight());
             gb.render(o);
         }
         
@@ -340,7 +346,7 @@ public class BattleSequenceState extends TimedGameState {
         
         @Override
         public void onButtonPress() {
-            System.out.println("THIS IS BEING PRESSED ITS SO COOL");
+//            System.out.println("THIS IS BEING PRESSED ITS SO COOL");
             if (playerTurn && playerWeapon == null) { // if it's the player's turn and there is no weapon yet
                 playerWeapon = playerData.getWeapons().get(indexNum);
             }
@@ -357,8 +363,8 @@ public class BattleSequenceState extends TimedGameState {
         //System.out.println(mousebutton);
         if (mousebutton == 0) {
             if (pressed) {
-                System.out.println("This totally happened");
-                System.out.println(x + ", " + y);
+//                System.out.println("This totally happened");
+//                System.out.println(x + ", " + y);
                 for (GuiButton gb : abilityButtons) {
                     gb.mouseInput(x, y);
                 }

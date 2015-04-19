@@ -53,7 +53,6 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/townMenu/toTownHover.png", "toTownHover");
             assetManager.loadImage("assets/img/townMenu/toTownUp.png", "toTownUp");
             assetManager.loadImage("assets/img/townMenu/townBackground.png", "townBackground");
-            assetManager.loadImage("assets/img/townMenu/townIcon.png", "townIcon");
             assetManager.loadImage("assets/img/townMenu/swamp_icon.png", "swamp_icon");
             assetManager.loadImage("assets/img/townMenu/fire_icon.png", "fire_icon");
             assetManager.loadImage("assets/img/townMenu/ice_icon.png", "ice_icon");

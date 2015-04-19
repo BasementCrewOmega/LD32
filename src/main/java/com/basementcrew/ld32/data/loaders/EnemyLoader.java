@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
  * <code>
  *  attack {<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;damage:&lt;damage&gt;;<br />
- *  &nbsp;&nbsp;&nbsp;&nbsp;animation:&lt;animation&gt;;<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;timings:&lt;start_time&gt;&lt;end_time&gt;,...;<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;sound:&lt;sound&gt;;<br />
  *  }<br />
@@ -39,7 +38,7 @@ import java.util.regex.Pattern;
  * }<br />
  * data {<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;health:&lt;health&gt;;<br />
- *  &nbsp;&nbsp;&nbsp;&nbsp;idle:&lt;idle_animation&gt;;<br />
+ *  &nbsp;&nbsp;&nbsp;&nbsp;animation:&lt;animation&gt;;<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;attack_time:&lt;attack_time&gt;;<br />
  *  }<br />
  * </code>
@@ -102,12 +101,6 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                     if (currentBlock.equals("attack")) {
                         if (currentProperty.equals("damage")) {
                             currentAttack.setDamage(Integer.parseInt(buffer));
-                        } else if (currentProperty.equals("animation")) {
-                            Animation anim;
-                            currentAttack.setAnimation(anim = assetManager.getAsset(buffer, Animation.class));
-                            if (anim == null) {
-                                ErrorLogger.println("No animation of key " + buffer + " in enemy file of key " + key);
-                            }
                         } else if (currentProperty.equals("timings")) {
                             String[] timingsSplit = buffer.split(Pattern.quote(","));
                             int[] timings = new int[timingsSplit.length];
@@ -121,9 +114,7 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                     } else if (currentBlock.equals("data")) {
                         if (currentProperty.equals("health")) {
                             health = Integer.parseInt(buffer);
-                        } else if (currentProperty.equals("idle")) {
-                            animation = assetManager.getAsset(buffer, Animation.class);
-                        } else if (currentProperty.equals("idle")) {
+                        } else if (currentProperty.equals("animation")) {
                             animation = assetManager.getAsset(buffer, Animation.class);
                         } else if (currentProperty.equals("attack_time")) {
                             attackTime = Integer.parseInt(buffer);

@@ -61,7 +61,7 @@ public class WeaponLoader extends AssetLoader<Weapon> {
             
             int cooldown = 0;
             int attack = 0;
-            Effect effect = null;
+            Effect effect = Effect.NONE;
             int[] timings = null;
             BufferedImage image = null;
             SoundEffect sound = null;
@@ -76,7 +76,8 @@ public class WeaponLoader extends AssetLoader<Weapon> {
                         buffer = "";
                     } else if (property.equals("effect")) {
                         //Parse the effect
-                        
+                        if (buffer.equals("DOUBLE_DAMAGE"))
+                            effect = Effect.DOUBLE_DAMAGE;
                         buffer = "";
                     } else if (property.equals("timings")) {
                         String[] timingsSplit = buffer.split(Pattern.quote(","));

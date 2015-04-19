@@ -59,6 +59,7 @@ public class BattleSequenceState extends TimedGameState {
     private GuiGroup abilityButtonsGroup;
     /** The array of buttons for selecting what ability you'll do */
     private ArrayList<GuiButton> abilityButtons;
+    private ArrayList<ChosePlayerAbilityAction> abilityActions;
     
     //Player animations
     /** 
@@ -132,6 +133,9 @@ public class BattleSequenceState extends TimedGameState {
                     fighting.damage(playerWeapon.getAttackDamage()); // do the damage
                     alreadyPressedAKey = false; // reset the lock after the ability has finished
                     pressedKeyInRegion = false;
+                    playerTurn = false;
+                    playerWeapon = null;
+                    playerAttackTiming = null;
                 } else { // if the attack is not done yet
                     if (pressedKeyInRegion) { // see if the player has pressed the key at the right time
                         // bonus effect!
@@ -158,6 +162,7 @@ public class BattleSequenceState extends TimedGameState {
                         // get damaged when you don't dodge
                         playerData.setHealth(playerData.getHealth() - enemyAttack.getDamage());
                         playerTurn = true; // it's now the player's turn
+                        enemyAttackTiming = null;
                     }
                 } else { // the attack is not done yet
                     if (pressedKeyInRegion) {
@@ -270,15 +275,18 @@ public class BattleSequenceState extends TimedGameState {
         // Gui elements for selecting weapons.
         abilityButtonsGroup = new GuiGroup();
         abilityButtons = new ArrayList<>();
+        abilityActions = new ArrayList<>();
         for (int i=0; i<playerData.getWeapons().size(); i++) {
             System.out.println("Adding a weapon BUTTON");
+            ChosePlayerAbilityAction action = new ChosePlayerAbilityAction(i);
             GuiButton newGuiButton = new GuiButton(250, 390 + (i * 40),
                 240, 30, getAssetManager().getImage("abilityButtonTemplate"), 
                     getAssetManager().getImage("abilityButtonTemplate"), 
                     getAssetManager().getImage("abilityButtonTemplateHover"), 
-                    new ChosePlayerAbilityAction(i)); // make a button to chose the weapon
+                    action); // make a button to chose the weapon
             abilityButtonsGroup.addElement(newGuiButton);
             abilityButtons.add(newGuiButton);
+            abilityActions.add(action);
         }
         
     }
@@ -293,6 +301,7 @@ public class BattleSequenceState extends TimedGameState {
         
         @Override
         public void onButtonPress() {
+            System.out.println("THIS IS BEING PRESSED ITS SO COOL");
             if (playerTurn && playerWeapon == null) { // if it's the player's turn and there is no weapon yet
                 playerWeapon = playerData.getWeapons().get(indexNum);
             }
@@ -309,8 +318,11 @@ public class BattleSequenceState extends TimedGameState {
         //System.out.println(mousebutton);
         if (mousebutton == 0) {
             if (pressed) {
-                System.out.println("THis totally happened");
-                 gui.mouseInput(x, y);
+                System.out.println("This totally happened");
+                System.out.println(x + ", " + y);
+                for (GuiButton gb : abilityButtons) {
+                    gb.mouseInput(x, y);
+                }
             }
         }
     }

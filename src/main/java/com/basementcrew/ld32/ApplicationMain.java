@@ -113,7 +113,11 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/movies/introMountains.png", "introMountains");
         assetManager.loadImage("assets/img/movies/dieSonne.png", "dieSonne");
         assetManager.loadImage("assets/img/movies/text1.png", "text1");
+        assetManager.loadImage("assets/img/movies/text2.png", "text2");
+        assetManager.loadImage("assets/img/movies/text3.png", "text3");
         assetManager.loadImage("assets/img/movies/burningTown.png", "burningTown");
+        assetManager.loadImage("assets/img/movies/mountainsStatic.png", "mountainsStatic");
+        assetManager.loadImage("assets/img/movies/darkFace.png", "darkFace");
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 200, 28); //Max size is 350

@@ -116,7 +116,7 @@ public class MainMenuState extends GameState {
     }
     
     public void startGame() {
-        TownState townState = new TownState();
+        TownState townState = new TownState(null);
         
         getGameStateRunner().setState(townState);
         /*

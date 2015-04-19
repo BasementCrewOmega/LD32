@@ -32,6 +32,14 @@ public class TownState extends GameState {
     private BufferedImage background;
     private PlayerData playerData;
 
+    public TownState(PlayerData data) {
+        if (data == null) {
+            playerData = getAssetManager().getAsset("default_playerdata", PlayerData.class);
+        } else {
+            playerData = data;
+        }
+    }
+    
     @Override
     public void update() {
         Point p = getWindow().getMousePosition();
@@ -49,9 +57,7 @@ public class TownState extends GameState {
     
     @Override
     public void onEnter() {
-        // get the player data
-        playerData = getAssetManager().getAsset("default_playerdata", PlayerData.class);
-        
+
         //Add areas to the list of areas.
         areas.add(getAssetManager().getAsset("swamp", Area.class));
         areas.add(getAssetManager().getAsset("savanna", Area.class));
@@ -126,7 +132,7 @@ public class TownState extends GameState {
             getGameStateRunner().setState(new TransitionState(
                     getAssetManager().getAsset("enter_battle", Movie.class),
                     new BattleSequenceState(area.getRandomEnemy(), playerData, 
-                            area.getBackgroundImage(), area)
+                            area.getBackgroundImage(), area, 1) // enemyOn is 1 because you will be on your first enemy
             ));
         }
 

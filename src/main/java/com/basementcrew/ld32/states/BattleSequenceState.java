@@ -11,6 +11,7 @@ import bropals.lib.simplegame.gui.Gui;
 import bropals.lib.simplegame.gui.GuiButton;
 import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiGroup;
+import bropals.lib.simplegame.state.GameState;
 import com.basementcrew.ld32.data.Area;
 import com.basementcrew.ld32.data.Attack;
 import com.basementcrew.ld32.data.Enemy;
@@ -32,6 +33,8 @@ public class BattleSequenceState extends TimedGameState {
     private PlayerData playerData;
     private Enemy fighting;
     private Area areaInside;
+    /** Which number enemy you are currently fighting. Used to keep track of enemies to the boss fight*/
+    private int enemyFightingOn;
     private BufferedImage lowerMenuBackground;
     private BufferedImage selector;
     private BufferedImage backgroundImage;
@@ -87,18 +90,21 @@ public class BattleSequenceState extends TimedGameState {
     private Gui gui = new Gui();
     
     public BattleSequenceState(Enemy fighting, PlayerData playerData,
-            BufferedImage backgroundImage, Area areaInside) {
+            BufferedImage backgroundImage, Area areaInsid, int enemyOn) {
         this.playerData = playerData;
         this.fighting = fighting;
         this.backgroundImage = backgroundImage;
-        this.areaInside = areaInside;
+        this.areaInside = areaInsid;
         
         enemyAttack = fighting.getAttack(0);
         playerWeapon = null;
         if (playerData.getWeapons().size() > 0) {
             cooldownCounters = new int[playerData.getWeapons().size()];
         }
-        
+        enemyFightingOn = enemyOn;
+        if (enemyFightingOn > areaInside.getEnemiesToBoss()) {
+            fighting = areaInside.getBoss();
+        }
     }
     
     @Override
@@ -233,14 +239,23 @@ public class BattleSequenceState extends TimedGameState {
         // make the state change if you win or lose battles
         if (fighting.getHealth() <= 0) {
             // transition into a transition state.
-            TransitionState nextBattleTransition = new TransitionState(
+            GameState nextState = null;
+            
+            // if you killed teh boss
+            if (fighting == areaInside.getBoss()) {
+                playerData.completeArea(areaInside.getName());
+                nextState = new TownState(playerData);
+            } else {
+                // if you did not kill the boss
+                nextState = new TransitionState(
                     getAssetManager().getAsset("enter_battle", Movie.class),
                     new BattleSequenceState(areaInside.getRandomEnemy(), playerData, 
-                            backgroundImage, areaInside));
+                            backgroundImage, areaInside, enemyFightingOn + 1));
+            }
             
             getGameStateRunner().setState(new TransitionState(
                     getAssetManager().getAsset("win_battle", Movie.class), 
-                       nextBattleTransition));
+                       nextState));
         } else if (playerData.getHealth() <= 0) {
             getGameStateRunner().setState(new TransitionState(
                     getAssetManager().getAsset("lose_battle", Movie.class),
@@ -384,6 +399,7 @@ public class BattleSequenceState extends TimedGameState {
         // set the max healths
         playerMaxHealth = playerData.getHealth();
         enemyMaxHealth = fighting.getHealth();
+        
     }
 
     class ChosePlayerAbilityAction implements GuiButtonAction {

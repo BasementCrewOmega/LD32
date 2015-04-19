@@ -61,7 +61,7 @@ public class AreaLoader extends AssetLoader<Area> {
             ArrayList<Enemy> enemies = new ArrayList<Enemy>();
             Enemy boss = null;
             Weapon weapon = null;
-            int iconX = 0, iconY = 0;
+            int iconX = 0, iconY = 0, enemiesToBoss = 1;
             BufferedImage backgroundImage = null, iconImage = null;
             
             for (int i=0; i<src.length; i++) {
@@ -83,6 +83,8 @@ public class AreaLoader extends AssetLoader<Area> {
                         String[] split = buffer.split(Pattern.quote(","));
                         iconX = Integer.parseInt(split[0]);
                         iconY = Integer.parseInt(split[1]);
+                    } else if (currentProperty.equals("enemiesToBoss")) {
+                        enemiesToBoss = Integer.parseInt(buffer);
                     }
                     buffer = "";
                 } else {
@@ -90,7 +92,7 @@ public class AreaLoader extends AssetLoader<Area> {
                 }
             }
             
-            add(key, new Area(key, (Enemy[])enemies.toArray(new Enemy[0]), boss, backgroundImage, iconImage, iconX, iconY, weapon));
+            add(key, new Area(key, (Enemy[])enemies.toArray(new Enemy[0]), boss, backgroundImage, iconImage, iconX, iconY, weapon, enemiesToBoss));
         } catch (IOException e) {
             ErrorLogger.println("Unable to load area file with key " + key + ": " + e);
         }

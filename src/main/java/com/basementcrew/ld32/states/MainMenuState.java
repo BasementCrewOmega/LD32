@@ -48,13 +48,13 @@ public class MainMenuState extends GameState {
     @Override
     public void onEnter() {
         GuiGroup group = new GuiGroup();
-        GuiButton playButton = new GuiButton(80, 300, 120, 80,
+        GuiButton playButton = new GuiButton(80, 300, 120, 60,
                 getAssetManager().getImage("playUp"),
                 getAssetManager().getImage("playUp"),
                 getAssetManager().getImage("playHover"),
                 new PlayButton()
         );
-        GuiButton quitButton = new GuiButton(80, 450, 120, 80,
+        GuiButton quitButton = new GuiButton(80, 450, 120, 60,
                 getAssetManager().getImage("quitUp"),
                 getAssetManager().getImage("quitUp"),
                 getAssetManager().getImage("quitHover"),
@@ -108,9 +108,10 @@ public class MainMenuState extends GameState {
         TownState townState = new TownState();
         
         getGameStateRunner().setState(townState);
-        
+        /*
         Sequence seq = getAssetManager().getAsset("main_song", Sequence.class);
 		MusicPlayer player = MusicPlayer.getInstance();
 		player.play(seq, true, 0, 15, 25530);
+        */
     }
 }

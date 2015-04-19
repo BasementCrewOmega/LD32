@@ -1,5 +1,7 @@
 package com.basementcrew.ld32;
 
+import javax.sound.midi.Sequence;
+
 import bropals.lib.simplegame.AWTGameWindow;
 import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.animation.Animation;
@@ -14,6 +16,7 @@ import com.basementcrew.ld32.data.loaders.AreaLoader;
 import com.basementcrew.ld32.data.loaders.EnemyLoader;
 import com.basementcrew.ld32.data.loaders.MovieLoader;
 import com.basementcrew.ld32.data.loaders.PlayerDataLoader;
+import com.basementcrew.ld32.data.loaders.SequenceLoader;
 import com.basementcrew.ld32.data.loaders.WeaponLoader;
 import com.basementcrew.ld32.movie.Movie;
 import com.basementcrew.ld32.states.MainMenuState;
@@ -32,6 +35,7 @@ public class ApplicationMain {
             assetManager.addAssetLoader(new MovieLoader(assetManager), Movie.class);
             assetManager.addAssetLoader(new PlayerDataLoader(assetManager), PlayerData.class);
             assetManager.addAssetLoader(new WeaponLoader(assetManager), Weapon.class);
+            assetManager.addAssetLoader(new SequenceLoader(), Sequence.class);
 
             //Load all assets
             assetManager.loadImage("assets/img/mainMenu/playDown.png", "playDown");
@@ -112,6 +116,9 @@ public class ApplicationMain {
             assetManager.loadAsset("assets/data/movie/win_battle.movie", "win_battle", Movie.class);
             assetManager.loadAsset("assets/data/movie/lose_battle.movie", "lose_battle", Movie.class);
             assetManager.loadAsset("assets/data/movie/win_game.movie", "win_game", Movie.class);
+            
+            // Load Music
+            assetManager.loadAsset("assets/music/song_20150419_054852_239.mid", "main_song", Sequence.class);
             
             GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
             

@@ -49,7 +49,9 @@ public class Area {
     }
     
     public Enemy getRandomEnemy() {
-        return possibleEnemies[(int)(Math.random()*possibleEnemies.length)];
+        Enemy enem = possibleEnemies[(int)(Math.random()*possibleEnemies.length)];
+        enem.healCompletely(); // heal the new enemy
+        return enem;
     }
 
     public int getIconX() {

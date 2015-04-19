@@ -14,7 +14,7 @@ import bropals.lib.simplegame.animation.Animation;
 public class Enemy {
     
     private Attack[] attacks;
-    private int health;
+    private int health, maxHealth;
     private Animation animation;
     private String name;
     private int attackTime;
@@ -24,9 +24,14 @@ public class Enemy {
         this.attacks = attacks;
         this.attackTime = attackTime;
         this.health = health;
+        this.maxHealth = health;
         this.animation = animation;
     }
 
+    public void healCompletely() {
+        this.health = this.maxHealth;
+    }
+    
     public void damage(int hp) {
         health -= hp;
     }

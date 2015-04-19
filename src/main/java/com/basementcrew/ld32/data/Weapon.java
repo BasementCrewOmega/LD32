@@ -18,17 +18,19 @@ public class Weapon {
     private Effect effect;
     private int[] timings;
     private int cooldown;
-    private BufferedImage image;
+    private BufferedImage image, himage;
     private SoundEffect sound;
     private String name;
     
-    public Weapon(String name, int attackDamage, Effect effect, int[] timings, int cooldown, BufferedImage image, SoundEffect sound) {
+    public Weapon(String name, int attackDamage, Effect effect, int[] timings, int cooldown, 
+            BufferedImage image, BufferedImage himage, SoundEffect sound) {
         this.attackDamage = attackDamage;
         this.effect = effect;
         this.timings = timings;
         this.cooldown = cooldown;
         this.sound = sound;
         this.image = image;
+        this.himage = himage;
         this.name = name;
     }    
     
@@ -42,6 +44,10 @@ public class Weapon {
 
     public BufferedImage getImage() {
         return image;
+    }
+    
+    public BufferedImage getHoverImage() {
+        return himage;
     }
 
     public String getName() {

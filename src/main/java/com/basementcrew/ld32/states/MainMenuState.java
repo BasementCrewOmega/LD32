@@ -136,10 +136,10 @@ public class MainMenuState extends GameState {
         
         getGameStateRunner().setState(townState);
        
-        if (!isQuiet) {
-	        Sequence seq = getAssetManager().getAsset("main_song", Sequence.class);
-			MusicPlayer player = MusicPlayer.getInstance();
-			player.play(seq, true, 0, 15, 25530);
-        }
+//        if (!isQuiet) {
+//	        Sequence seq = getAssetManager().getAsset("main_song", Sequence.class);
+//			MusicPlayer player = MusicPlayer.getInstance();
+//			player.play(seq, true, 0, 15, 25530);
+//        }
     }
 }

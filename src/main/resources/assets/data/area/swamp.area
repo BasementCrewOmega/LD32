@@ -1,6 +1,7 @@
 enemies {
 	goblin;
 }
+enemiesToBoss:4;
 boss:goblin;
 background_image:swamp_background;
 weapon:goblin_carcass;

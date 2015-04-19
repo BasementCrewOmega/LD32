@@ -17,13 +17,13 @@ public class Weapon {
     private int attackDamage;
     private Effect effect;
     private int[] timings;
-    private int cooldown;
+    private int cooldown, attackAnimationTrack;
     private BufferedImage image, himage;
     private SoundEffect sound;
     private String name;
     
     public Weapon(String name, int attackDamage, Effect effect, int[] timings, int cooldown, 
-            BufferedImage image, BufferedImage himage, SoundEffect sound) {
+            BufferedImage image, BufferedImage himage, SoundEffect sound, int attackAnimationTrack) {
         this.attackDamage = attackDamage;
         this.effect = effect;
         this.timings = timings;
@@ -32,7 +32,12 @@ public class Weapon {
         this.image = image;
         this.himage = himage;
         this.name = name;
+        this.attackAnimationTrack = attackAnimationTrack;
     }    
+    
+    public int getAttackAnimationTrack() {
+        return attackAnimationTrack;
+    }
     
     public Effect getEffect() {
         return effect;

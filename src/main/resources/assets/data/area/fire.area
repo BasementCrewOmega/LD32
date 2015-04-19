@@ -1,6 +1,7 @@
 enemies {
 	imp;
 }
+enemiesToBoss:6;
 boss:imp;
 background_image:fire_background;
 weapon:broken_imp_wings;

@@ -1,6 +1,7 @@
 enemies {
 	warthog;
 }
+enemiesToBoss:3;
 boss:warthog;
 background_image:savanna_background;
 weapon:warthog_tusk_shiv;

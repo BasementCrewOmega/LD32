@@ -1,6 +1,7 @@
 enemies {
 	yeti;
 }
+enemiesToBoss:4;
 boss:yeti;
 background_image:ice_background;
 weapon:yeti_arm_club;

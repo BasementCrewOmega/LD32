@@ -61,6 +61,7 @@ public class WeaponLoader extends AssetLoader<Weapon> {
             
             int cooldown = 0;
             int attack = 0;
+            int attackAnimationTrack = 0;
             Effect effect = Effect.NONE;
             int[] timings = null;
             BufferedImage image = null, himage = null;
@@ -97,6 +98,9 @@ public class WeaponLoader extends AssetLoader<Weapon> {
                     } else if (property.equals("sound")) {
                         sound = assetManager.getSoundEffect(buffer);
                         buffer = "";
+                    } else if (property.equals("attackAnimationTrack")) {
+                        attackAnimationTrack = Integer.parseInt(buffer);
+                        buffer = "";
                     }
                 } else if (src[i] == ':') {
                     property = buffer;
@@ -105,7 +109,7 @@ public class WeaponLoader extends AssetLoader<Weapon> {
                     buffer += src[i];
                 }
             }
-            add(key, new Weapon(key, attack, effect, timings, cooldown, image, himage, sound));
+            add(key, new Weapon(key, attack, effect, timings, cooldown, image, himage, sound, attackAnimationTrack));
              System.out.println("Created a new weapon with the key " + key);
         } catch (IOException e) {
             ErrorLogger.println("Unable to load weapon file with key " + key + ": " + e);

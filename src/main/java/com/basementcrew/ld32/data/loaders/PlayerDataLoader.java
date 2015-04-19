@@ -95,14 +95,18 @@ public class PlayerDataLoader extends AssetLoader<PlayerData> {
                             } else if (buffer.equals("accuracy_potion")) {
                                 consumables.add(Consumable.ACCURACY_POTION);
                             }
+                            buffer = "";
                         }
                     } else {
                         if (property.equals("gold")) {
                             gold = Integer.parseInt(buffer);
+                            buffer = "";
                         } else if (property.equals("name")) {
                             name = buffer;
+                            buffer = "";
                         } else if (property.equals("health")) {
                             health = Integer.parseInt(buffer);
+                            buffer = "";
                         }
                         property = null;
                     }

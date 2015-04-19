@@ -132,8 +132,9 @@ public class BattleSequenceState extends TimedGameState {
                 }
                 
                 playerAttackProgress += dt; // update how long the attack has been going on for.
-                if (playerAnimation.getCurrentTrackIndex() != 1) {
-                    playerAnimation.setTrack(1); // set the animation to the attack animation
+                // change the animation to the track according to the weapon being used
+                if (playerAnimation.getCurrentTrackIndex() != playerWeapon.getAttackAnimationTrack()) {
+                    playerAnimation.setTrack( playerWeapon.getAttackAnimationTrack()); // set the animation to the attack animation
                     playerAnimation.getTrackOn().resetCounter();
                 }
                 if (playerAttackProgress > 

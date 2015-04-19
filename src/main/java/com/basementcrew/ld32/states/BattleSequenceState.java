@@ -11,10 +11,12 @@ import bropals.lib.simplegame.gui.Gui;
 import bropals.lib.simplegame.gui.GuiButton;
 import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiGroup;
+import com.basementcrew.ld32.data.Area;
 import com.basementcrew.ld32.data.Attack;
 import com.basementcrew.ld32.data.Enemy;
 import com.basementcrew.ld32.data.PlayerData;
 import com.basementcrew.ld32.data.Weapon;
+import com.basementcrew.ld32.movie.Movie;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -29,6 +31,7 @@ public class BattleSequenceState extends TimedGameState {
 
     private PlayerData playerData;
     private Enemy fighting;
+    private Area areaInside;
     private BufferedImage lowerMenuBackground;
     private BufferedImage selector;
     private BufferedImage backgroundImage;
@@ -83,10 +86,12 @@ public class BattleSequenceState extends TimedGameState {
     
     private Gui gui = new Gui();
     
-    public BattleSequenceState(Enemy fighting, PlayerData playerData, BufferedImage backgroundImage) {
+    public BattleSequenceState(Enemy fighting, PlayerData playerData,
+            BufferedImage backgroundImage, Area areaInside) {
         this.playerData = playerData;
         this.fighting = fighting;
         this.backgroundImage = backgroundImage;
+        this.areaInside = areaInside;
         
         enemyAttack = fighting.getAttack(0);
         playerWeapon = null;
@@ -220,6 +225,22 @@ public class BattleSequenceState extends TimedGameState {
         if (enemyAnimation != null) 
             enemyAnimation.update();
         
+        // make the state change if you win or lose battles
+        if (fighting.getHealth() <= 0) {
+            // transition into a transition state.
+            TransitionState nextBattleTransition = new TransitionState(
+                    getAssetManager().getAsset("enter_battle", Movie.class),
+                    new BattleSequenceState(areaInside.getRandomEnemy(), playerData, 
+                            backgroundImage, areaInside));
+            
+            getGameStateRunner().setState(new TransitionState(
+                    getAssetManager().getAsset("win_battle", Movie.class), 
+                       nextBattleTransition));
+        } else if (playerData.getHealth() <= 0) {
+            TransitionState nextState = new TransitionState(
+                    getAssetManager().getAsset("lose_battle", Movie.class),
+                    new MainMenuState()); // lose and go to the main menu
+        }
     }
     
     /**
@@ -269,7 +290,7 @@ public class BattleSequenceState extends TimedGameState {
                     g.setColor(Color.GREEN);
                 }
                 g.fillRect((int)playerRenderPosition.getX(), 
-                        (int)playerRenderPosition.getY(), 200, 50);
+                        (int)playerRenderPosition.getY(), 10, 10);
             }
         } else {
             if (enemyAttackTiming != null) {
@@ -278,23 +299,17 @@ public class BattleSequenceState extends TimedGameState {
                     g.setColor(Color.CYAN);
                 }
                 g.fillRect((int)enemyRenderPosition.getX(), 
-                        (int)enemyRenderPosition.getY(), 200, 50);
+                        (int)enemyRenderPosition.getY(), 10, 10);
             }
         }
         
         g.drawImage(lowerMenuBackground, 0, 350, null);
         
         gui.render(o);
-        abilityButtonsGroup.render(o);
-        for (GuiButton gb : abilityButtons) {
-//            System.out.println(gb.toString());
-//            System.out.println(gb.getX() + ", " + gb.getY() + ", " + 
-//                    gb.getWidth() + ", " + gb.getHeight());
-           
-//            g.setColor(Color.BLACK);
-//            g.fillRect(gb.getX(), gb.getY(), 
-//                    gb.getWidth(), gb.getHeight());
-            gb.render(o);
+        if (abilityButtonsGroup.isEnabled()) {
+            for (GuiButton gb : abilityButtons) {
+                gb.render(o);
+            }
         }
         
         // draw the health bar for the player
@@ -319,6 +334,7 @@ public class BattleSequenceState extends TimedGameState {
                 (int)enemyRenderPosition.getY() - 27, 
                 (int)(144 * ((double)fighting.getHealth() / enemyMaxHealth)), 
                 24);
+        
     }
     
     @Override
@@ -345,18 +361,20 @@ public class BattleSequenceState extends TimedGameState {
         abilityActions = new ArrayList<>();
         for (int i=0; i<playerData.getWeapons().size(); i++) {
             //System.out.println("Adding a weapon BUTTON");
+            System.out.println("Hover image: " +  playerData.getWeapons().get(i).getHoverImage());
             ChosePlayerAbilityAction action = new ChosePlayerAbilityAction(i);
             GuiButton newGuiButton = new GuiButton(250, 390 + (i * 40),
-                240, 30, getAssetManager().getImage("abilityButtonTemplate"), 
-                    getAssetManager().getImage("abilityButtonTemplate"), 
-                    getAssetManager().getImage("abilityButtonTemplateHover"), 
+                240, 30, playerData.getWeapons().get(i).getImage(), 
+                    playerData.getWeapons().get(i).getImage(), 
+                    playerData.getWeapons().get(i).getHoverImage(), 
                     action); // make a button to chose the weapon
             abilityButtonsGroup.addElement(newGuiButton);
             abilityButtons.add(newGuiButton);
             abilityActions.add(action);
         }
         
-        abilityButtonsGroup.setEnabled(true);
+        abilityButtonsGroup.setEnabled(false);
+        playerTurn = false;
         
         // set the max healths
         playerMaxHealth = playerData.getHealth();

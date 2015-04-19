@@ -125,7 +125,8 @@ public class TownState extends GameState {
         public void onButtonPress() {
             getGameStateRunner().setState(new TransitionState(
                     getAssetManager().getAsset("enter_battle", Movie.class),
-                    new BattleSequenceState(area.getRandomEnemy(), playerData, area.getBackgroundImage())
+                    new BattleSequenceState(area.getRandomEnemy(), playerData, 
+                            area.getBackgroundImage(), area)
             ));
         }
 

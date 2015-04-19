@@ -1,2 +1,2 @@
-player_idle;200;200;400;;
-player_attack;200;200;400;;
+player_idle;80;150;1000;;
+player_attack;80;150;200;;

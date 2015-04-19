@@ -60,7 +60,9 @@ public class MainMenuState extends GameState {
                 getAssetManager().getImage("quitHover"),
                 new QuitButton()
         );
+        GuiImage bg = new GuiImage(0, 0, 800, 600, getAssetManager().getImage("mainMenuBackground"));
         GuiImage title = new GuiImage(0, 0, 800, 200, getAssetManager().getImage("titleBanner"));
+        group.addElement(bg);
         group.addElement(playButton);
         group.addElement(quitButton);
         group.addElement(title);

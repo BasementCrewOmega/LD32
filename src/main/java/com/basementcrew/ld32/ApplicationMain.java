@@ -45,6 +45,7 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/mainMenu/quitUp.png", "quitUp");
             assetManager.loadImage("assets/img/mainMenu/quitHover.png", "quitHover");
             assetManager.loadImage("assets/img/mainMenu/titleBanner.png", "titleBanner");
+            assetManager.loadImage("assets/img/mainMenu/mainMenuBackground.png", "mainMenuBackground");
             
             assetManager.loadImage("assets/img/townMenu/shopDown.png", "shopDown");
             assetManager.loadImage("assets/img/townMenu/shopHover.png", "shopHover");

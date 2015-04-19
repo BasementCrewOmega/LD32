@@ -132,7 +132,7 @@ public class BattleSequenceState extends TimedGameState {
                 if (playerAttackProgress > 
                         startAttackTime + playerAttackTiming[2]) { // see if the attack is done yet
                     // finish the ability
-                    System.out.println("Player has attacked the player");
+                    System.out.println("Player has attacked the enemy");
                     fighting.damage(playerWeapon.getAttackDamage()); // do the damage
                     alreadyPressedAKey = false; // reset the lock after the ability has finished
                     pressedKeyInRegion = false;
@@ -238,8 +238,11 @@ public class BattleSequenceState extends TimedGameState {
                         (int)playerRenderPosition.getY(), 200, 50);
             }
         } else {
-            if (enemyAttackTiming != null && inTimingRegion(enemyAttackProgress, enemyAttackTiming)) {
+            if (enemyAttackTiming != null) {
                 g.setColor(Color.BLUE);
+                if (inTimingRegion(enemyAttackProgress, enemyAttackTiming)) {
+                    g.setColor(Color.CYAN);
+                }
                 g.fillRect((int)enemyRenderPosition.getX(), 
                         (int)enemyRenderPosition.getY(), 200, 50);
             }
@@ -280,7 +283,7 @@ public class BattleSequenceState extends TimedGameState {
         // 144x24
         g.fillRect((int)enemyRenderPosition.getX() + 3, 
                 (int)enemyRenderPosition.getY() - 27, 
-                (int)(144 * ((double)fighting.getHealth() / fighting.getHealth())), 
+                (int)(144 * ((double)fighting.getHealth() / enemyMaxHealth)), 
                 24);
     }
     
@@ -319,6 +322,8 @@ public class BattleSequenceState extends TimedGameState {
             abilityButtons.add(newGuiButton);
             abilityActions.add(action);
         }
+        
+        abilityButtonsGroup.setEnabled(true);
         
         // set the max healths
         playerMaxHealth = playerData.getHealth();
@@ -364,7 +369,7 @@ public class BattleSequenceState extends TimedGameState {
     
     @Override
     public void key(int keycode, boolean pressed) {
-        if (keycode == KeyCode.KEY_SPACE && pressed) {
+        if ( keycode == KeyCode.KEY_SPACE && pressed) {
             if (!alreadyPressedAKey) {
                 if (playerAttackTiming != null) { // if the player was attacking
                     if (inTimingRegion(playerAttackProgress, playerAttackTiming)) {

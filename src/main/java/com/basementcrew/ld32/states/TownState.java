@@ -33,11 +33,7 @@ public class TownState extends GameState {
     private PlayerData playerData;
 
     public TownState(PlayerData data) {
-        if (data == null) {
-            playerData = getAssetManager().getAsset("default_playerdata", PlayerData.class);
-        } else {
-            playerData = data;
-        }
+        playerData = data;
     }
     
     @Override
@@ -57,7 +53,10 @@ public class TownState extends GameState {
     
     @Override
     public void onEnter() {
-
+        if (playerData == null) {
+            playerData = getAssetManager().getAsset("default_playerdata", PlayerData.class);
+        }
+        
         //Add areas to the list of areas.
         areas.add(getAssetManager().getAsset("swamp", Area.class));
         areas.add(getAssetManager().getAsset("savanna", Area.class));

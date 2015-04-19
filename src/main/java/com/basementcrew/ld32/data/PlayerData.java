@@ -20,7 +20,7 @@ public class PlayerData {
     private ArrayList<Weapon> weapons;
     private ArrayList<String> completedAreas;
     private ArrayList<Consumable> consumables;
-    private int health;
+    private int health, maxHealth;
     private String name;
     private int gold;
 
@@ -33,6 +33,11 @@ public class PlayerData {
         this.gold = gold;
         this.name = name;
         this.health = health;
+        this.maxHealth = health;
+    }
+    
+    public int getMaxHealth() {
+        return maxHealth;
     }
     
     public int getGold() {

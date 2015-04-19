@@ -240,7 +240,7 @@ public class ApplicationMain {
          */
                 
         // Skip constant caller arg TODO: Replace with public domain flag parsing code
-        for (int i = 1; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
         	String param = args[i];
         	param = param.trim();
         	if (param.charAt(0) == '-') {
@@ -249,7 +249,7 @@ public class ApplicationMain {
         			key = key.substring(0, key.indexOf('='));	// TODO: if value is a "string" that might break this type
         			String value = key.substring(key.indexOf('=') + 1);
         			flags.put(key, value);
-        		} else if (args[i+1].charAt(0) != '-') {	// -key value
+        		} else if ((i+1 < args.length) && args[i+1].charAt(0) != '-') {	// -key value
         			String value = args[i+1];
         			i++; // Skip next arg since we already handle it as a value
         			flags.put(key, value);

@@ -15,24 +15,28 @@ public class Enemy {
     
     private Attack[] attacks;
     private int health;
-    private Animation idleAnimation;
+    private Animation animation;
     private String name;
     private int attackTime;
     
-    public Enemy(String name, Attack[] attacks, int health, Animation idleAnimation, int attackTime) {
+    public Enemy(String name, Attack[] attacks, int health, Animation animation, int attackTime) {
         this.name = name;
         this.attacks = attacks;
         this.attackTime = attackTime;
         this.health = health;
-        this.idleAnimation = idleAnimation;
+        this.animation = animation;
     }
 
+    public void damage(int hp) {
+        health -= hp;
+    }
+    
     public int getHealth() {
         return health;
     }
 
-    public Animation getIdleAnimation() {
-        return idleAnimation;
+    public Animation getAnimation() {
+        return animation;
     }
 
     public int getAttackTime() {

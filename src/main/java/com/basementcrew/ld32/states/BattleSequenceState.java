@@ -32,6 +32,10 @@ public class BattleSequenceState extends TimedGameState {
     // variables to manage the turns
     private int turnCount;
     private boolean playerTurn; // true when the player's turn; false when the enemy's turn
+    /**
+     * Keeps track of when the current attack has started.
+     */
+    private long startAttackTime;
     
     //Enemy attack management
     private int[] enemyAttackTiming = null;
@@ -40,8 +44,12 @@ public class BattleSequenceState extends TimedGameState {
     
     //Player attack management
     private int[] playerAttackTiming = null;
+    /** How long the player's attack has been taking place.
+        Used to make sure the player hits the spacebar at the right time*/
     private int playerAttackProgress = 0;
+    /** The weapon the player as chosen for that attack*/
     private Weapon playerWeapon;
+    /** An array to keep track of the cooldowns*/
     private int[] cooldownCounters;
     
     //Player animations
@@ -61,7 +69,8 @@ public class BattleSequenceState extends TimedGameState {
     
     //Other
     private boolean dodgedEnemyAttack = false;
-    private boolean enemyAttackInRegion = false;
+    private boolean pressedKeyInRegion = false;
+    private boolean alreadyPressedAKey = false;
     
     private Gui gui = new Gui();
     
@@ -94,33 +103,30 @@ public class BattleSequenceState extends TimedGameState {
             }
         }
         
-        // start doing the attack after the player's weapon is chosen
-        if (playerWeapon != null) {
-            //Handle player attack timing
-            if (playerAttackTiming != null) {
-                playerAttackProgress += dt;
-                if (inTimingRegion(playerAttackProgress, playerAttackTiming)) {
-                    //Got the correct timing, do the effect
-
+        if (playerTurn) { // is it the players turn?
+            if (playerWeapon != null) { // has the player chosen a weapon?
+                playerAttackProgress += dt; // update how long the attack has been going on for.
+                if (playerAttackProgress > 
+                        startAttackTime + playerAnimation.getTrackOn().getTotalTrackTime()) { // see if the attack is done yet
+                    
+                    alreadyPressedAKey = false; // reset the lock
+                } else {
+                    if (pressedKeyInRegion) {
+                        // bonus effect!
+                        playerWeapon.getEffect().doEffect(playerWeapon, fighting, playerData);
+                    }
                 }
             }
-        }
-        
-        //Handle enemy attack timing
-        if (enemyAttackTiming != null) {
-            enemyAttackProgress += dt;
-            if (enemyAttackInRegion && 
-                    !(enemyAttackInRegion = inTimingRegion(enemyAttackProgress, enemyAttackTiming))) {
-                //Just left the region, deal damage if the player hasn't dodged
-                if (!dodgedEnemyAttack) {
-                    playerData.setHealth(playerData.getHealth() - enemyAttack.getDamage()); // take damage
-                } 
-            }
+        } else {
+            
         }
         
         // update the animations
         if (playerAnimation != null)
             playerAnimation.update();
+        
+        if (enemyAnimation != null) 
+            enemyAnimation.update();
     }
     
     /**
@@ -167,7 +173,9 @@ public class BattleSequenceState extends TimedGameState {
         playerAnimation = getAssetManager().getAsset("player", Animation.class);
         playerAnimation.setTrack(0); // the idle animations
         playerAnimation.update(); // to set the image
-        playerRenderPosition = new Point(100, 100); // can change because you might be moving to hit the enemy
+        playerRenderPosition = new Point(60, 100); // can change because you might be moving to hit the enemy
+        
+        enemyAnimation = fighting.getAnimation();
         
         turnCount = 0;
         GuiGroup main = new GuiGroup();
@@ -185,8 +193,7 @@ public class BattleSequenceState extends TimedGameState {
         if (keycode == KeyCode.KEY_SPACE && pressed) {
             if (playerAttackTiming != null) {
                 if (inTimingRegion(playerAttackProgress, playerAttackTiming)) {
-                    //Do special effect for the current player attack
-                    
+                    pressedKeyInRegion = true;
                 }
             }
             if (enemyAttackTiming != null) {
@@ -196,6 +203,7 @@ public class BattleSequenceState extends TimedGameState {
                     dodgedEnemyAttack = true;
                 }
             }
+            alreadyPressedAKey = true;
         }
     }    
 }

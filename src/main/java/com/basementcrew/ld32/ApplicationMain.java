@@ -78,14 +78,10 @@ public class ApplicationMain {
             assetManager.loadImage("assets/img/entity/player_attack.png", "player_attack");
             
             //Load animations
-            assetManager.loadAsset("assets/data/animation/goblin_attack.animation", "goblin_attack", Animation.class);
-            assetManager.loadAsset("assets/data/animation/goblin_idle.animation", "goblin_idle", Animation.class);
-            assetManager.loadAsset("assets/data/animation/yeti_attack.animation", "yeti_attack", Animation.class);
-            assetManager.loadAsset("assets/data/animation/yeti_idle.animation", "yeti_idle", Animation.class);
-            assetManager.loadAsset("assets/data/animation/warthog_attack.animation", "warthog_attack", Animation.class);
-            assetManager.loadAsset("assets/data/animation/warthog_idle.animation", "warthog_idle", Animation.class);
-            assetManager.loadAsset("assets/data/animation/imp_attack.animation", "imp_attack", Animation.class);
-            assetManager.loadAsset("assets/data/animation/imp_idle.animation", "imp_idle", Animation.class);
+            assetManager.loadAsset("assets/data/animation/goblin.animation", "goblin", Animation.class);
+            assetManager.loadAsset("assets/data/animation/yeti.animation", "yeti", Animation.class);
+            assetManager.loadAsset("assets/data/animation/warthog.animation", "warthog", Animation.class);
+            assetManager.loadAsset("assets/data/animation/imp.animation", "imp", Animation.class);
             assetManager.loadAsset("assets/data/animation/player.animation", "player", Animation.class);
             
             //Load enemies

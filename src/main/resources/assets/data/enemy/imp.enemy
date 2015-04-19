@@ -1,9 +1,8 @@
 attack {
 	damage:6;
-	animation:imp_attack;
 	timings:800,1600;
 }
 data {
 	health:1;
-	idle:imp_idle;
+	animation:imp;
 }

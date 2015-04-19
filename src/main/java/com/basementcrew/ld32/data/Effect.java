@@ -10,5 +10,13 @@ package com.basementcrew.ld32.data;
  * @author Jonathon
  */
 public enum Effect {
+    DOUBLE_DAMAGE;
     
+    public void doEffect(Weapon with, Enemy target, PlayerData playerData) {
+        switch (this) {
+            case DOUBLE_DAMAGE:
+                target.damage(with.getAttackDamage());
+                break;
+        }
+    }
 }

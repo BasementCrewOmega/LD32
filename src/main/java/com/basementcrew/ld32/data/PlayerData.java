@@ -94,7 +94,7 @@ public class PlayerData {
             
             writer.println("consumables {");
             for (Consumable c : consumables) {
-                writer.println(Consumable.toString(c) + ";");
+                writer.println(c + ";");
             }
             writer.println("}");
             

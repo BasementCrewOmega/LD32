@@ -14,15 +14,8 @@ public enum Consumable {
     DODGE_POTION,
     ACCURACY_POTION;
     
-    public static String toString(Consumable c) {
-        switch(c) {
-            case HEALTH_POTION:
-                return "health_potion";
-            case DODGE_POTION:
-                return "dodge_potion";
-            case ACCURACY_POTION:
-                return "accuracy_potion";
-        }
-        return null;
+    @Override
+    public String toString() {
+		return name().toLowerCase();
     }
 }

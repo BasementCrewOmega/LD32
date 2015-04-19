@@ -71,8 +71,6 @@ public class TownState extends GameState {
                     new GoToAreaButton(areas.get(i))
             ));
         }
-        main.addElement(new GuiImage(350, 250, 100, 100,
-                getImage("townIcon")));
         main.addElement(new GuiButton(
                 25, 540, 100, 40,
                 getImage("shopDown"),

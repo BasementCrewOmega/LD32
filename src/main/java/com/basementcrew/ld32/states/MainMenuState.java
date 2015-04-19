@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.sound.midi.Sequence;
 
+import com.basementcrew.ld32.ApplicationMain;
 import com.basementcrew.ld32.MusicPlayer;
 
 /**
@@ -31,7 +32,8 @@ public class MainMenuState extends GameState {
     protected boolean isQuiet;
     private int alpha = 255;
     
-    public MainMenuState(Map<String, Object> flags) {
+    public MainMenuState() {
+    	Map<String, Object> flags = ApplicationMain.flags;
 		if (flags.containsKey("quiet")) {
 			Object flag = flags.get("quiet");
 			if (flag instanceof Boolean) {

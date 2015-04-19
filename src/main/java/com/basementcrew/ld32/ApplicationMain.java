@@ -33,10 +33,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ApplicationMain {
+    public static Map<String, Object> flags = new HashMap<String, Object>();
 
     public static void main(String[] args) {
         InfoLogger.setSilent(true);
-        
         AssetManager assetManager = new AssetManager(ApplicationMain.class, true);
 
         //Splash screen
@@ -218,9 +218,7 @@ public class ApplicationMain {
         /*
          runner.setState(new MainMenuState());
          */
-        
-        Map<String, Object> flags = new HashMap<String, Object>();
-        
+                
         // Skip constant caller arg TODO: Replace with public domain flag parsing code
         for (int i = 1; i < args.length; i++) {
         	String param = args[i];
@@ -241,7 +239,7 @@ public class ApplicationMain {
         	}
         }
         
-        runner.setState(new TransitionState(assetManager.getAsset("intro", Movie.class), new MainMenuState(flags)));
+        runner.setState(new TransitionState(assetManager.getAsset("intro", Movie.class), new MainMenuState()));
         try {
             runner.loop();
         } catch (Exception e) {

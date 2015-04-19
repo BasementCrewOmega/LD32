@@ -32,6 +32,7 @@ public class BattleSequenceState extends TimedGameState {
 
     private PlayerData playerData;
     private Enemy fighting;
+    private boolean bossFight;
     private Area areaInside;
     /** Which number enemy you are currently fighting. Used to keep track of enemies to the boss fight*/
     private int enemyFightingOn;
@@ -95,6 +96,7 @@ public class BattleSequenceState extends TimedGameState {
         this.fighting = fighting;
         this.backgroundImage = backgroundImage;
         this.areaInside = areaInsid;
+        this.bossFight = false;
         
         enemyAttack = fighting.getAttack(0);
         playerWeapon = null;
@@ -104,6 +106,7 @@ public class BattleSequenceState extends TimedGameState {
         enemyFightingOn = enemyOn;
         if (enemyFightingOn > areaInside.getEnemiesToBoss()) {
             fighting = areaInside.getBoss();
+            bossFight = true;
         }
     }
     
@@ -242,7 +245,7 @@ public class BattleSequenceState extends TimedGameState {
             GameState nextState = null;
             
             // if you killed teh boss
-            if (fighting == areaInside.getBoss()) {
+            if (bossFight) {
                 playerData.completeArea(areaInside.getName());
                 nextState = new TownState(playerData);
             } else {
@@ -365,8 +368,18 @@ public class BattleSequenceState extends TimedGameState {
         playerAnimation = getAssetManager().getAsset("player", Animation.class);
         playerAnimation.setTrack(0); // the idle animations
         playerAnimation.update(0); // to set the image
-        playerRenderPosition = new Point(60, 100); // can change because you might be moving to hit the enemy
-        
+        playerRenderPosition = new Point(80, 100); // can change because you might be moving to hit the enemy
+        // adjust the render location for the player according to the are you're inside
+        if (areaInside.getName().equals("savanna")) {
+            playerRenderPosition.setLocation(80, 190);
+        } else if (areaInside.getName().equals("fire")) {
+            playerRenderPosition.setLocation(80, 200);
+        } else if (areaInside.getName().equals("ice")) {
+            playerRenderPosition.setLocation(80, 165);
+        } else if (areaInside.getName().equals("swamp")) {
+            playerRenderPosition.setLocation(80, 180);
+        }
+            
         enemyAnimation = fighting.getAnimation();
         enemyAnimation.setTrack(0);
         enemyAnimation.update(0);
@@ -397,7 +410,8 @@ public class BattleSequenceState extends TimedGameState {
         playerTurn = false;
         
         // set the max healths
-        playerMaxHealth = playerData.getHealth();
+        playerMaxHealth = playerData.getMaxHealth();
+        fighting.healCompletely();
         enemyMaxHealth = fighting.getHealth();
         
     }

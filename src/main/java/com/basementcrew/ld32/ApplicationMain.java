@@ -110,6 +110,8 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/battleSequence/abilityButtonTemplateHover.png", "abilityButtonTemplateHover");
         assetManager.loadImage("assets/img/battleSequence/abilityButtonFists.png", "fist_button");
         assetManager.loadImage("assets/img/battleSequence/abilityButtonFistsHover.png", "hover_fist_button");
+        assetManager.loadImage("assets/img/battleSequence/abilityButtonGoblin.png", "goblin_shotput_button");
+        assetManager.loadImage("assets/img/battleSequence/abilityButtonGoblinHover.png", "hover_goblin_shotput_button");
             
         if (splash != null && g != null) {
             g.fillRect(26, 189, 120, 28); //Max size is 350
@@ -126,6 +128,7 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/entity/imp_attack.png", "imp_attack");
         assetManager.loadImage("assets/img/entity/player_idle.png", "player_idle");
         assetManager.loadImage("assets/img/entity/player_attack.png", "player_attack");
+        assetManager.loadImage("assets/img/entity/goblin_shotput.png", "goblin_shotput");
 
         if (splash != null && g != null) {
             g.fillRect(26, 189, 160, 28); //Max size is 350
@@ -186,6 +189,7 @@ public class ApplicationMain {
 
         //Load weapons
         assetManager.loadAsset("assets/data/weapon/fist.weapon", "fist", Weapon.class);
+        assetManager.loadAsset("assets/data/weapon/goblinshotput.weapon", "goblin", Weapon.class);
 
         if (splash != null && g != null) {
             g.fillRect(26, 189, 300, 28); //Max size is 350

@@ -1,0 +1,9 @@
+cooldown:300;
+attack:2;
+effect:DOUBLE_DAMAGE;
+timings:300,800,1100;
+image:goblin_shotput_button;
+hImage:hover_goblin_shotput_button;
+sound:goblin_body_sound;
+attackAnimationTrack:1;
+projectile:goblin_shotput;

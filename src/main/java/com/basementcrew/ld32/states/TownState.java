@@ -10,9 +10,10 @@ import bropals.lib.simplegame.gui.Gui;
 import bropals.lib.simplegame.gui.GuiButton;
 import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiGroup;
-import bropals.lib.simplegame.gui.GuiImage;
+import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.state.GameState;
 import com.basementcrew.ld32.data.Area;
+import com.basementcrew.ld32.data.Enemy;
 import com.basementcrew.ld32.data.PlayerData;
 import com.basementcrew.ld32.movie.Movie;
 import java.awt.Graphics;
@@ -128,11 +129,28 @@ public class TownState extends GameState {
 
         @Override
         public void onButtonPress() {
-            getGameStateRunner().setState(new TransitionState(
-                    getAssetManager().getAsset("enter_battle", Movie.class),
-                    new BattleSequenceState(area.getRandomEnemy(), playerData, 
-                            area.getBackgroundImage(), area, 1) // enemyOn is 1 because you will be on your first enemy
-            ));
+                Enemy enemy = area.getRandomEnemy();
+                Movie movie = null;
+                switch(enemy.getName()) {
+                    case "goblin":
+                        movie = getAssetManager().getAsset("enter_battle_goblin", Movie.class);
+                        break;
+                    case "yeti":
+                        movie = getAssetManager().getAsset("enter_battle_yeti", Movie.class);
+                        break;
+                    case "warthog":
+                        movie = getAssetManager().getAsset("enter_battle_warthog", Movie.class);
+                        break;
+                    case "imp":
+                        movie = getAssetManager().getAsset("enter_battle_imp", Movie.class);
+                        break;
+                    default:
+                        ErrorLogger.println("No enter battle movie for " + enemy.getName());
+                }
+                getGameStateRunner().setState(new TransitionState(
+                    movie,
+                    new BattleSequenceState(enemy, playerData, 
+                            area.getBackgroundImage(), area, 1)));
         }
 
     }

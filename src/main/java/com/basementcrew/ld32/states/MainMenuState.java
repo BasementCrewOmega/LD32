@@ -42,6 +42,7 @@ public class MainMenuState extends GameState {
 				isQuiet = Boolean.parseBoolean((String) flag);
 			}
 		}
+                isQuiet = true;
 	}
 	
     @Override

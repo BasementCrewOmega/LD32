@@ -113,6 +113,7 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/movies/introMountains.png", "introMountains");
         assetManager.loadImage("assets/img/movies/dieSonne.png", "dieSonne");
         assetManager.loadImage("assets/img/movies/text1.png", "text1");
+        assetManager.loadImage("assets/img/movies/burningTown.png", "burningTown");
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 200, 28); //Max size is 350
@@ -126,7 +127,8 @@ public class ApplicationMain {
         assetManager.loadAsset("assets/data/animation/imp.animation", "imp", Animation.class);
         assetManager.loadAsset("assets/data/animation/player.animation", "player", Animation.class);
         assetManager.loadAsset("assets/data/animation/introMountains.animation", "introMountains", Animation.class);
-
+        assetManager.loadAsset("assets/data/animation/burningBuildings.animation", "burningBuildings", Animation.class);
+        
         if (splash != null && g != null) {
             g.fillRect(26, 189, 220, 28); //Max size is 350
             splash.update();

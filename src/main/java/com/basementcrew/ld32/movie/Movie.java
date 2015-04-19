@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 /**
- *
+ * 
  * @author Jonathon
  */
 public class Movie {

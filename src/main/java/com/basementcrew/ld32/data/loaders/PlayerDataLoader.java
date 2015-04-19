@@ -66,6 +66,7 @@ public class PlayerDataLoader extends AssetLoader<PlayerData> {
             ArrayList<Consumable> consumables = new ArrayList<>();
             
             int gold = 0;
+            int health = 0;
             String name = "Tim";
             
             String block = null;
@@ -100,6 +101,8 @@ public class PlayerDataLoader extends AssetLoader<PlayerData> {
                             gold = Integer.parseInt(buffer);
                         } else if (property.equals("name")) {
                             name = buffer;
+                        } else if (property.equals("health")) {
+                            health = Integer.parseInt(buffer);
                         }
                         property = null;
                     }
@@ -111,7 +114,7 @@ public class PlayerDataLoader extends AssetLoader<PlayerData> {
                     buffer += src[i];
                 }
             }
-            add(key, new PlayerData(weapons, areas, consumables, gold, name));
+            add(key, new PlayerData(weapons, areas, consumables, gold, name, health));
         } catch (IOException e) {
             ErrorLogger.println("Unable to load player data file with key " + key + ": " + e);
         }

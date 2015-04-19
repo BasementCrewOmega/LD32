@@ -18,6 +18,11 @@ public class TransitionState extends TimedGameState {
     private Movie movie;
     private GameState nextState;
     
+    /**
+     * Just use this constructor for all transitions.
+     * @param play the movie to play
+     * @param nextState the state to go to after the movie is done playing.
+     */
     public TransitionState(Movie play, GameState nextState) {
         this.movie = play;
         this.nextState = nextState;

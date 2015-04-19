@@ -9,6 +9,7 @@ import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.io.AssetLoader;
 import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.logger.ErrorLogger;
+import bropals.lib.simplegame.sound.SoundEffect;
 import com.basementcrew.ld32.data.Attack;
 import com.basementcrew.ld32.data.Enemy;
 import java.io.BufferedReader;
@@ -23,11 +24,15 @@ import java.util.regex.Pattern;
  * 
  * The format of enemy files:
  * <p>
+ *  "Attack time" is the amount of milliseconds before each attack the enemy
+ * does.
+ * <p>
  * <code>
  *  attack {<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;damage:&lt;damage&gt;;<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;animation:&lt;animation&gt;;<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;timings:&lt;start_time&gt;&lt;end_time&gt;,...;<br />
+ *  &nbsp;&nbsp;&nbsp;&nbsp;sound:&lt;sound&gt;;<br />
  *  }<br />
  *  attack {<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;...<br />
@@ -35,6 +40,7 @@ import java.util.regex.Pattern;
  * data {<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;health:&lt;health&gt;;<br />
  *  &nbsp;&nbsp;&nbsp;&nbsp;idle:&lt;idle_animation&gt;;<br />
+ *  &nbsp;&nbsp;&nbsp;&nbsp;attack_time:&lt;attack_time&gt;;<br />
  *  }<br />
  * </code>
  * @author Jonathon
@@ -68,6 +74,8 @@ public class EnemyLoader extends AssetLoader<Enemy> {
             Attack currentAttack = null;
             int health = 0;
             Animation animation = null;
+            SoundEffect sound = null;
+            int attackTime = 0;
             
             String currentBlock = null;
             String currentProperty = null;
@@ -78,7 +86,7 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                     //Starting a new block
                     currentBlock = buffer;
                     if (currentBlock.equals("attack")) {
-                        currentAttack = new Attack(0, null, null);
+                        currentAttack = new Attack(0, null, null, null);
                     }
                     buffer = "";
                 } else if (current == '}') {
@@ -107,12 +115,18 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                                 timings[j] = Integer.parseInt(timingsSplit[j]);
                             }
                             currentAttack.setTimings(timings);
+                        } else if (currentProperty.equals("sound")) {
+                            currentAttack.setSound(assetManager.getSoundEffect(buffer));
                         }
                     } else if (currentBlock.equals("data")) {
                         if (currentProperty.equals("health")) {
                             health = Integer.parseInt(buffer);
                         } else if (currentProperty.equals("idle")) {
                             animation = assetManager.getAsset(buffer, Animation.class);
+                        } else if (currentProperty.equals("idle")) {
+                            animation = assetManager.getAsset(buffer, Animation.class);
+                        } else if (currentProperty.equals("attack_time")) {
+                            attackTime = Integer.parseInt(buffer);
                         }
                     }
                     buffer = "";
@@ -120,7 +134,7 @@ public class EnemyLoader extends AssetLoader<Enemy> {
                     buffer += current;
                 }
             }
-            Enemy enemy = new Enemy(key, (Attack[])attacks.toArray(new Attack[0]), health, animation);
+            Enemy enemy = new Enemy(key, (Attack[])attacks.toArray(new Attack[0]), health, animation, attackTime);
             add(key, enemy);
         } catch(IOException e) {
             ErrorLogger.println("Unable to load enemy file with key " + key +  ": " + e);

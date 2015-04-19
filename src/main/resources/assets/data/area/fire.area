@@ -1,0 +1,8 @@
+enemies {
+	imp;
+}
+boss:imp;
+background_image:fire_background;
+weapon:broken_imp_wings;
+icon_image:fire_icon;
+button_location:100,400;

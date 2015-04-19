@@ -1,2 +1,0 @@
-set_bg enteringBattleBackground
-delay 1000

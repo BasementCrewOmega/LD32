@@ -1,0 +1,9 @@
+attack {
+	damage:1;
+	animation:goblin_attack;
+	timings:800,1200;
+}
+data {
+	health:3;
+	idle:goblin_idle;
+}

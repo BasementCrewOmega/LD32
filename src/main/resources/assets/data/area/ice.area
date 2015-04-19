@@ -1,0 +1,8 @@
+enemies {
+	yeti;
+}
+boss:yeti;
+background_image:ice_background;
+weapon:yeti_arm_club;
+icon_image:ice_icon;
+button_location:600,400;

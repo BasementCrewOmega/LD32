@@ -17,10 +17,12 @@ public class Enemy {
     private int health;
     private Animation idleAnimation;
     private String name;
+    private int attackTime;
     
-    public Enemy(String name, Attack[] attacks, int health, Animation idleAnimation) {
+    public Enemy(String name, Attack[] attacks, int health, Animation idleAnimation, int attackTime) {
         this.name = name;
         this.attacks = attacks;
+        this.attackTime = attackTime;
         this.health = health;
         this.idleAnimation = idleAnimation;
     }
@@ -32,9 +34,17 @@ public class Enemy {
     public Animation getIdleAnimation() {
         return idleAnimation;
     }
+
+    public int getAttackTime() {
+        return attackTime;
+    }    
     
     public int getAttackCount() {
         return attacks.length;
+    }
+    
+    public Attack getRandomAttack() {
+        return attacks[(int)(Math.random()*attacks.length)];
     }
     
     public Attack getAttack(int count) {

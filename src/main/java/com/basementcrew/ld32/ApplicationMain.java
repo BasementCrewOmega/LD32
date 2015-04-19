@@ -4,6 +4,7 @@ import javax.sound.midi.Sequence;
 
 import bropals.lib.simplegame.AWTGameWindow;
 import bropals.lib.simplegame.GameWindow;
+import bropals.lib.simplegame.QuitHandler;
 import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.logger.ErrorLogger;
@@ -24,9 +25,12 @@ import com.basementcrew.ld32.movie.Movie;
 import com.basementcrew.ld32.states.MainMenuState;
 import com.basementcrew.ld32.states.TimedGameStateRunner;
 import com.basementcrew.ld32.states.TransitionState;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ApplicationMain {
 
@@ -201,12 +205,43 @@ public class ApplicationMain {
         }
         
         GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
+        window.registerQuitHandler(new QuitHandler() {
+			@Override
+			public void onQuit() {
+				// Otherwise game doesn't quit
+				MusicPlayer.getInstance().shutdown();
+			}
+		});
+        
         TimedGameStateRunner runner = new TimedGameStateRunner(window, assetManager);
 
         /*
          runner.setState(new MainMenuState());
          */
-        runner.setState(new TransitionState(assetManager.getAsset("intro", Movie.class), new MainMenuState()));
+        
+        Map<String, Object> flags = new HashMap<String, Object>();
+        
+        // Skip constant caller arg TODO: Replace with public domain flag parsing code
+        for (int i = 1; i < args.length; i++) {
+        	String param = args[i];
+        	param = param.trim();
+        	if (param.charAt(0) == '-') {
+        		String key = param.substring(1); // -key
+        		if (key.indexOf('=') > 0) {						// -key=value 
+        			key = key.substring(0, key.indexOf('='));	// TODO: if value is a "string" that might break this type
+        			String value = key.substring(key.indexOf('=') + 1);
+        			flags.put(key, value);
+        		} else if (args[i+1].charAt(0) != '-') {	// -key value
+        			String value = args[i+1];
+        			i++; // Skip next arg since we already handle it as a value
+        			flags.put(key, value);
+        		} else {									// -key (flag)
+        			flags.put(key, true);
+        		}
+        	}
+        }
+        
+        runner.setState(new TransitionState(assetManager.getAsset("intro", Movie.class), new MainMenuState(flags)));
         try {
             runner.loop();
         } catch (Exception e) {

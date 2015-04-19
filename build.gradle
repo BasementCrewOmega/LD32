@@ -16,7 +16,8 @@ task wrapper(type: Wrapper) {
 
 jar {
 	manifest {
-		attributes("Main-Class": "com.basementcrew.ld32.ApplicationMain")
+		attributes "Main-Class": "com.basementcrew.ld32.ApplicationMain",
+					"SplashScreen-Image": "assets/img/splash.png"
 	}
 	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }

@@ -15,6 +15,7 @@ import bropals.lib.simplegame.state.GameState;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.Map;
 
 import javax.sound.midi.Sequence;
 
@@ -27,14 +28,27 @@ import com.basementcrew.ld32.MusicPlayer;
 public class MainMenuState extends GameState {
 
     private Gui gui = new Gui();
+    protected boolean isQuiet;
     private int alpha = 255;
     
+    public MainMenuState(Map<String, Object> flags) {
+		if (flags.containsKey("quiet")) {
+			Object flag = flags.get("quiet");
+			if (flag instanceof Boolean) {
+				isQuiet = true;
+			} else {
+				isQuiet = Boolean.parseBoolean((String) flag);
+			}
+		}
+	}
+	
     @Override
     public void update() {
         Point mouse = getWindow().getMousePosition();
         if (mouse!=null) {
             gui.update(mouse.x, mouse.y);
         }
+        
         if (alpha > 0) {
             alpha -= 12;
             if (alpha < 0){
@@ -119,10 +133,11 @@ public class MainMenuState extends GameState {
         TownState townState = new TownState(null);
         
         getGameStateRunner().setState(townState);
-        /*
-        Sequence seq = getAssetManager().getAsset("main_song", Sequence.class);
-		MusicPlayer player = MusicPlayer.getInstance();
-		player.play(seq, true, 0, 15, 25530);
-        */
+       
+        if (!isQuiet) {
+	        Sequence seq = getAssetManager().getAsset("main_song", Sequence.class);
+			MusicPlayer player = MusicPlayer.getInstance();
+			player.play(seq, true, 0, 15, 25530);
+        }
     }
 }

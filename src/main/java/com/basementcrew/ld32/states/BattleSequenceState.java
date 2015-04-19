@@ -93,9 +93,7 @@ public class BattleSequenceState extends TimedGameState {
         enemyAttack = fighting.getAttack(0);
         playerWeapon = null;
         if (playerData.getWeapons().size() > 0) {
-            cooldownCounters = new int[playerData.
-                    getWeapons().
-                    size()];
+            cooldownCounters = new int[playerData.getWeapons().size()];
         }
         
     }

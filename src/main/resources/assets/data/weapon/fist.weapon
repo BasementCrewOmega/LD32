@@ -1,7 +1,7 @@
 cooldown:200;
 attack:1;
 effect:DOUBLE_DAMAGE;
-timings:700,900,1100;
+timings:500,900,1100;
 image:fist_button;
 hImage:hover_fist_button;
 sound:fist_sound;

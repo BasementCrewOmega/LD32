@@ -1,5 +1,5 @@
 attack {
-	damage:2;
+	damage:6;
 	timings:750,1350,1550;
 }
 data {

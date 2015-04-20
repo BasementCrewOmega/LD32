@@ -47,7 +47,7 @@ public class BattleSequenceState extends TimedGameState {
     private BufferedImage lowerMenuBackground;
     private BufferedImage selector;
     private BufferedImage backgroundImage;
-    private Particle particle;
+    private ArrayList<Particle> particles;
     
     private int moveToAttackDistance;
     private int moveToAttackProgress; // how far has the player or enemy moved to reach their target so far?
@@ -233,9 +233,9 @@ public class BattleSequenceState extends TimedGameState {
                             }
                             
                             if (particleImage != null) {
-                                 particle = new Particle(particleImage, 
+                                 particles.add(new Particle(particleImage, 
                                         (int)(enemyRenderPosition.getX() - 20),
-                                        (int)(enemyRenderPosition.getY() - 100), 600);
+                                        (int)(enemyRenderPosition.getY() - 100), 600));
                             }
                             pressedKeyInRegion = -2; // lock the interval of tiome again
                         } 
@@ -312,9 +312,9 @@ public class BattleSequenceState extends TimedGameState {
                                     enemyAttack.getSound().play();
                                 }
                             } else {
-                                particle = new Particle(getAssetManager().getImage("dodge_particle"), 
+                                particles.add(new Particle(getAssetManager().getImage("dodge_particle"), 
                                         (int)(playerRenderPosition.getX() - 20),
-                                        (int)(playerRenderPosition.getY() - 100), 600);
+                                        (int)(playerRenderPosition.getY() - 100), 600));
                             }
                             dodgedEnemyAttack = false;
                         }
@@ -376,10 +376,12 @@ public class BattleSequenceState extends TimedGameState {
                     new MainMenuState())); // lose and go to the main menu
         }
         
-        if (particle != null) {
-            particle.update(dt);
-            if (!particle.isAlive()) {
-                particle = null;
+        if (particles != null) {
+            for (int i=0; i<particles.size(); i++) {
+                particles.get(i).update(dt);
+                if (!particles.get(i).isAlive()) {
+                    particles.remove(i);
+                }
             }
         }
     }
@@ -492,8 +494,10 @@ public class BattleSequenceState extends TimedGameState {
                 (int) (144 * ((double) fighting.getHealth() / enemyMaxHealth)),
                 24);
 
-        if (particle != null) {
-            particle.render((Graphics2D)g);
+        if (particles != null) {
+            for (Particle p : particles) {
+                p.render((Graphics2D)g);
+            }
         }
     }
 
@@ -502,7 +506,7 @@ public class BattleSequenceState extends TimedGameState {
         lowerMenuBackground = getImage("lowerMenuBackground");
         selector = getImage("selector");
         projectileImage = null;
-        particle = null;
+        particles = new ArrayList<>();
         
         playerAnimation = getAssetManager().getAsset("player", Animation.class);
         playerAnimation.setTrack(0); // the idle animations

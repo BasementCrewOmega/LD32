@@ -1,8 +1,8 @@
 attack {
-	damage:3;
-	timings:900,1300,1400;
+	damage:7;
+	timings:800,1350,1400;
 }
 data {
-	health:7;
+	health:12;
 	animation:yeti;
 }

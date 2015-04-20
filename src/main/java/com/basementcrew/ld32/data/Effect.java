@@ -10,14 +10,16 @@ package com.basementcrew.ld32.data;
  * @author Jonathon
  */
 public enum Effect {
-    DOUBLE_DAMAGE, NONE;
+    DOUBLE_DAMAGE, GOBLIN_STENCH, NONE;
     
     public void doEffect(Weapon with, Enemy target, PlayerData playerData) {
         switch (this) {
             case DOUBLE_DAMAGE:
-                System.out.println("Double damage!");
+                ///System.out.println("Double damage!");
                 target.damage(with.getAttackDamage());
                 break;
+            case GOBLIN_STENCH:
+                target.damage(1);
         }
     }
 }

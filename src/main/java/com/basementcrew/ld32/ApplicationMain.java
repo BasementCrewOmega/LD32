@@ -143,6 +143,7 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/movies/mountainsStatic.png", "mountainsStatic");
         assetManager.loadImage("assets/img/movies/darkFace.png", "darkFace");
         assetManager.loadImage("assets/img/movies/verses.png", "verses");
+        assetManager.loadImage("assets/img/movies/winner.png", "winner");
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 200, 28); //Max size is 350
@@ -158,6 +159,7 @@ public class ApplicationMain {
         assetManager.loadAsset("assets/data/animation/introMountains.animation", "introMountains", Animation.class);
         assetManager.loadAsset("assets/data/animation/burningBuildings.animation", "burningBuildings", Animation.class);
         assetManager.loadAsset("assets/data/animation/verses.animation", "verses", Animation.class);
+        assetManager.loadAsset("assets/data/animation/winner.animation", "winner", Animation.class);
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 220, 28); //Max size is 350

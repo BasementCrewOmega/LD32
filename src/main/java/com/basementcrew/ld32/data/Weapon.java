@@ -18,12 +18,13 @@ public class Weapon {
     private Effect effect;
     private int[] timings;
     private int cooldown, attackAnimationTrack;
-    private BufferedImage image, himage;
+    private BufferedImage image, himage, projectileImage;
     private SoundEffect sound;
     private String name;
     
     public Weapon(String name, int attackDamage, Effect effect, int[] timings, int cooldown, 
-            BufferedImage image, BufferedImage himage, SoundEffect sound, int attackAnimationTrack) {
+            BufferedImage image, BufferedImage himage, SoundEffect sound, 
+            int attackAnimationTrack, BufferedImage projectileImage) {
         this.attackDamage = attackDamage;
         this.effect = effect;
         this.timings = timings;
@@ -33,7 +34,16 @@ public class Weapon {
         this.himage = himage;
         this.name = name;
         this.attackAnimationTrack = attackAnimationTrack;
+        this.projectileImage = projectileImage;
     }    
+
+    public BufferedImage getProjectileImage() {
+        return projectileImage;
+    }
+    
+    public boolean isMelee() {
+        return projectileImage == null; // it's melee if there is no projectiles for it
+    }
     
     public int getAttackAnimationTrack() {
         return attackAnimationTrack;

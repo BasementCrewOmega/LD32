@@ -26,6 +26,10 @@ public class Attack {
         this.sound = sound;
     }
 
+    public boolean isMelee() {
+        return true;
+    }
+    
     public int getDamage() {
         return damage;
     }

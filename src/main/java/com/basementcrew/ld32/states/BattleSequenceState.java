@@ -44,7 +44,14 @@ public class BattleSequenceState extends TimedGameState {
     private BufferedImage lowerMenuBackground;
     private BufferedImage selector;
     private BufferedImage backgroundImage;
-
+    
+    private int moveToAttackDistance;
+    private int moveToAttackProgress; // how far has the player or enemy moved to reach their target so far?
+    private int moveToAttackDelta; // move distance in 10 frames
+    private BufferedImage projectileImage; // if this is null, then the attack is a melee attack.
+                                           // otherwise, it's a range attack and the projectile is stored here.
+    private int projectileStartTime, projectileDelta, projectileProgress;                                       
+    
     // variables to manage the turns
     private boolean playerTurn; // true when the player's turn; false when the enemy's turn
     /**
@@ -143,51 +150,81 @@ public class BattleSequenceState extends TimedGameState {
 
         if (playerTurn) { // is it the players turn?
             if (playerWeapon != null) { // has the player chosen a weapon?
-                //System.out.println("PLAYER is attacking");
-                if (abilityButtonsGroup.isEnabled()) { // remove the gui for chosing abilities after you chose an ability
-                    abilityButtonsGroup.setEnabled(false);
-                }
+                // only pay attention to the move timers if it's a melee attack
+                if (!playerWeapon.isMelee() || ((moveToAttackProgress >= moveToAttackDistance - 10) || 
+                        (playerAttackProgress > playerWeapon.getTimingEntireEnded()))) { // for melee, move the player to attack
+                    
+                    //System.out.println("PLAYER is attacking");
+                    if (abilityButtonsGroup.isEnabled()) { // remove the gui for chosing abilities after you chose an ability
+                        abilityButtonsGroup.setEnabled(false);
+                    }
 
-                if (playerAttackTiming == null) {
-                    regionCounter = 0; // reset the region counter with a new atttack
-                    playerAttackTiming = playerWeapon.getTimings();
-                }
-
-                playerAttackProgress += dt; // update how long the attack has been going on for.
-                // change the animation to the track according to the weapon being used
-                if (playerAnimation.getCurrentTrackIndex() != playerWeapon.getAttackAnimationTrack()) {
-                    playerAnimation.setTrack(playerWeapon.getAttackAnimationTrack()); // set the animation to the attack animation
-                    playerAnimation.getTrackOn().resetCounter();
-                }
-                if (playerAttackProgress
-                        > playerWeapon.getTimingEntireEnded()) { // see if the attack is done yet
-                    // finish the ability
-                    //System.out.println("Player has attacked the enemy");
-                    pressedKeyInRegion = -1; // no zone pressed
-                    playerTurn = false;
-                    playerWeapon = null;
-                    playerAttackTiming = null;
-                    playerAttackProgress = 0;
-                    playerAnimation.setTrack(0); // back to idle animation
-                    playerAnimation.getTrackOn().resetCounter();
-                } else { // if the attack is not done yet
-                    // track what region of time we're in right now
-                    if (regionCounter != -1 && playerAttackProgress > playerWeapon.getTimingEnd(regionCounter)) {
-                        regionCounter++;
-                        if (regionCounter > (int) (playerAttackTiming.length / 2) - 1) {
-                            regionCounter = -1; // done with regions
+                    if (playerAttackTiming == null) {
+                        regionCounter = 0; // reset the region counter with a new atttack
+                        playerAttackTiming = playerWeapon.getTimings();
+                        projectileImage = playerWeapon.getProjectileImage();
+                        // if there IS a projectile, then set up the intial stuff for it.
+                        if (projectileImage != null) {
+                            // calculate the time and stuff for the projectile
+                            projectileStartTime = playerAttackTiming[0] - 100; // miliseconds
+                            int timeToTake = playerAttackTiming[1] + 100 - projectileStartTime;
+                            int numberOfUpdateCycles = (int)(timeToTake / dt);
+                            projectileProgress = 0;
+                            projectileDelta = moveToAttackDistance / numberOfUpdateCycles;
                         }
-                        pressedKeyInRegion = -1;
-                        fighting.damage(playerWeapon.getAttackDamage()); // do the damage
                     }
 
-                    // if you pressed the key in the right region
-                    if (regionCounter != -1 && pressedKeyInRegion == regionCounter) {
-                        // bonus effect!
-                        System.out.println("you pressed the key in the right region!");
-                        playerWeapon.getEffect().doEffect(playerWeapon, fighting, playerData);
-                        pressedKeyInRegion = -2; // lock the interval of tiome again
+                    playerAttackProgress += dt; // update how long the attack has been going on for.
+                    if (!playerWeapon.isMelee() && playerAttackProgress >= projectileStartTime) {
+                        projectileProgress += projectileDelta;
+                        if (projectileProgress > moveToAttackDistance) {
+                            projectileImage = null; // stop drawing the projectile when it reaches it's target
+                        }
                     }
+                    
+                    // change the animation to the track according to the weapon being used
+                    if (playerAnimation.getCurrentTrackIndex() != playerWeapon.getAttackAnimationTrack()) {
+                        playerAnimation.setTrack( playerWeapon.getAttackAnimationTrack()); // set the animation to the attack animation
+                        playerAnimation.getTrackOn().resetCounter();
+                    }
+                    if (playerAttackProgress > 
+                            playerWeapon.getTimingEntireEnded()) { // see if the attack is done yet
+                        // finish the ability
+                        playerAnimation.setTrack(0); // back to idle animation
+                            playerAnimation.getTrackOn().resetCounter();
+                        if (!playerWeapon.isMelee() || (moveToAttackProgress <= moveToAttackDelta)) {
+                            //System.out.println("Player has attacked the enemy");
+                            pressedKeyInRegion = -1; // no zone pressed
+                            playerTurn = false;
+                            playerWeapon = null;
+                            playerAttackTiming = null;
+                            projectileImage = null;
+                            playerAttackProgress = 0;
+                            moveToAttackProgress = 0; //reset the move distance
+                        } else {
+                            moveToAttackProgress -= moveToAttackDelta;
+                        }
+                    } else { // if the attack is not done yet
+                        // track what region of time we're in right now
+                        if (regionCounter != -1 && playerAttackProgress > playerWeapon.getTimingEnd(regionCounter)) {
+                            regionCounter++;
+                            if (regionCounter > (int)(playerAttackTiming.length/2)-1)
+                                regionCounter = -1; // done with regions
+
+                            pressedKeyInRegion = -1;
+                            fighting.damage(playerWeapon.getAttackDamage()); // do the damage
+                        }
+
+                        // if you pressed the key in the right region
+                        if (regionCounter!= -1 && pressedKeyInRegion == regionCounter) {
+                            // bonus effect!
+                            System.out.println("you pressed the key in the right region!");
+                            playerWeapon.getEffect().doEffect(playerWeapon, fighting, playerData);
+                            pressedKeyInRegion = -2; // lock the interval of tiome again
+                        } 
+                    }
+                } else {
+                    moveToAttackProgress += moveToAttackDelta;
                 }
             } else {
                 if (!abilityButtonsGroup.isEnabled()) { // enable the GUI when you don't have a weapon
@@ -196,48 +233,62 @@ public class BattleSequenceState extends TimedGameState {
             }
         } else { // the enemy's turn
             if (enemyAttack != null) { // does the enemy have an attack?
-                //System.out.println("ENEMY is attacking");
-                if (enemyAttackTiming == null) {
-                    regionCounter = 0; // reset the region counter with a new attack
-                    enemyAttackTiming = enemyAttack.getTimings();
-                }
-
-                enemyAttackProgress += dt;
-                if (enemyAnimation.getCurrentTrackIndex() != 1) {
-                    enemyAnimation.setTrack(1); // set the animation to the attack animation
-                    enemyAnimation.getTrackOn().resetCounter();
-                }
-                if (enemyAttackProgress
-                        > enemyAttack.getTimingEntireEnded()) {
-                    //System.out.println("THe enemy has finished its attack");
-                    playerTurn = true; // it's now the player's turn
-                    enemyAttack = null;
-                    enemyAttackTiming = null;
-                    dodgedEnemyAttack = false; // reset dodging the attack
-                    pressedKeyInRegion = -1; // reset the status of pressing a key
-                    enemyAttackProgress = 0;
-                    enemyAnimation.setTrack(0); // back to idle animation
-                    enemyAnimation.getTrackOn().resetCounter();
-                } else { // the attack is not done yet
-                    if (regionCounter != -1 && enemyAttackProgress > enemyAttack.getTimingEnd(regionCounter)) {
-                        regionCounter++;
-                        if (regionCounter > (int) (enemyAttackTiming.length / 2) - 1) {
-                            regionCounter = -1; // done with regions
-                        }
-                        pressedKeyInRegion = -1; // undo the lock to press again
-                        if (!dodgedEnemyAttack) {
-                            // get damaged when you don't dodge by the end of the interval
-                            playerData.setHealth(playerData.getHealth() - enemyAttack.getDamage());
-                        }
-                        dodgedEnemyAttack = false;
+                // only pay attention to the movement timers if it's a melee attack
+                if (!enemyAttack.isMelee() || ((moveToAttackProgress >= moveToAttackDistance - 10) || 
+                        (enemyAttackProgress > enemyAttack.getTimingEntireEnded()))) { // move the enemy for the attack
+                    System.out.println("ENEMY is attacking");
+                    if (enemyAttackTiming == null) {
+                        regionCounter = 0; // reset the region counter with a new attack
+                        enemyAttackTiming = enemyAttack.getTimings();
+                        //projectileImage = the projectile for the enemy attack;
                     }
 
-                    // if you pressed the key in the right region
-                    if (regionCounter != -1 && pressedKeyInRegion == regionCounter) {
-                        System.out.println("you pressed the key in the right region!");
-                        dodgedEnemyAttack = true;
-                        pressedKeyInRegion = -2; // lock the interval of tiome again
+                    enemyAttackProgress += dt;
+                    if (enemyAnimation.getCurrentTrackIndex() != 1) {
+                        enemyAnimation.setTrack(1); // set the animation to the attack animation
+                        enemyAnimation.getTrackOn().resetCounter();
                     }
+                    if (enemyAttackProgress >
+                            enemyAttack.getTimingEntireEnded()) {
+                        enemyAnimation.setTrack(0); // back to idle animation
+                            enemyAnimation.getTrackOn().resetCounter();
+                        if (!enemyAttack.isMelee() || (moveToAttackProgress <= moveToAttackDelta)) {
+                            //System.out.println("THe enemy has finished its attack");
+                            playerTurn = true; // it's now the player's turn
+                            enemyAttack = null;
+                            enemyAttackTiming = null;
+                            projectileImage = null;
+                            dodgedEnemyAttack = false; // reset dodging the attack
+                            pressedKeyInRegion = -1; // reset the status of pressing a key
+                            enemyAttackProgress = 0;
+                            moveToAttackProgress = 0; //reset the move distance
+                        } else {
+                            moveToAttackProgress -= moveToAttackDelta;
+                        }
+                    } else { // the attack is not done yet
+                        if (regionCounter != -1 && enemyAttackProgress > enemyAttack.getTimingEnd(regionCounter)) {
+                            regionCounter++;
+                            if (regionCounter > (int)(enemyAttackTiming.length/2)-1)
+                                regionCounter = -1; // done with regions
+
+                            pressedKeyInRegion = -1; // undo the lock to press again
+                            if (!dodgedEnemyAttack) {
+                                // get damaged when you don't dodge by the end of the interval
+                                playerData.setHealth(playerData.getHealth() - enemyAttack.getDamage());
+                            }
+                            dodgedEnemyAttack = false;
+                        }
+
+                        // if you pressed the key in the right region
+                        if (regionCounter!= -1 && pressedKeyInRegion == regionCounter) {
+                            System.out.println("you pressed the key in the right region!");
+                            dodgedEnemyAttack = true;
+                            pressedKeyInRegion = -2; // lock the interval of tiome again
+                        } 
+                    }
+                } else {
+                    System.out.println("Going in for the kill!");
+                    moveToAttackProgress += moveToAttackDelta;
                 }
             } else {
                 // need to chose the attack they're doing
@@ -330,14 +381,27 @@ public class BattleSequenceState extends TimedGameState {
 
         //Draw the player
         if (playerAnimation != null && playerAnimation.getCurrentImage() != null) {
-            g.drawImage(playerAnimation.getCurrentImage(),
-                    (int) playerRenderPosition.getX(), (int) playerRenderPosition.getY(), null);
+            g.drawImage(playerAnimation.getCurrentImage(), 
+                    (int)playerRenderPosition.getX() + 
+                            (playerTurn ? moveToAttackProgress : 0), // render the player as closer if the player is attacking
+                    (int)playerRenderPosition.getY(), null);
         }
 
         //Draw the enemy
         if (enemyAnimation != null && enemyAnimation.getCurrentImage() != null) {
-            g.drawImage(enemyAnimation.getCurrentImage(),
-                    (int) enemyRenderPosition.getX(), (int) enemyRenderPosition.getY(), null);
+            g.drawImage(enemyAnimation.getCurrentImage(), 
+                    (int)enemyRenderPosition.getX() - 
+                            (!playerTurn ? moveToAttackProgress : 0), // render the enemy as closer if the enemy is attacking
+                    (int)enemyRenderPosition.getY(), null);
+        }
+        
+        // draw the projectile
+        if (projectileImage != null && playerAttackProgress >= projectileStartTime) {
+            g.drawImage(projectileImage, 
+                    (int)(playerTurn ? playerRenderPosition.getX() + projectileProgress :
+                            enemyRenderPosition.getX() - projectileProgress),
+                    (int)(playerTurn ? playerRenderPosition.getY() : 
+                            enemyRenderPosition.getY()) - (projectileImage.getHeight()/2), null);
         }
 
         // debug drawing
@@ -398,12 +462,19 @@ public class BattleSequenceState extends TimedGameState {
     public void onEnter() {
         lowerMenuBackground = getImage("lowerMenuBackground");
         selector = getImage("selector");
-
+        projectileImage = null;
+        
         playerAnimation = getAssetManager().getAsset("player", Animation.class);
         playerAnimation.setTrack(0); // the idle animations
         playerAnimation.update(0); // to set the image
         playerRenderPosition = new Point(80, 100); // can change because you might be moving to hit the enemy
-        // adjust the render location for the player according to the are you're inside
+        
+        enemyAnimation = fighting.getAnimation();
+        enemyAnimation.setTrack(0);
+        enemyAnimation.update(0);
+        enemyRenderPosition = new Point(500, 100);
+        
+        // adjust the render location for the player and enemy according to the are you're inside
         if (areaInside.getName().equals("savanna")) {
             playerRenderPosition.setLocation(80, 190);
         } else if (areaInside.getName().equals("fire")) {
@@ -413,12 +484,11 @@ public class BattleSequenceState extends TimedGameState {
         } else if (areaInside.getName().equals("swamp")) {
             playerRenderPosition.setLocation(80, 180);
         }
-
-        enemyAnimation = fighting.getAnimation();
-        enemyAnimation.setTrack(0);
-        enemyAnimation.update(0);
-        enemyRenderPosition = new Point(500, 100);
-
+        
+        moveToAttackDistance = (int)(enemyRenderPosition.getX() - 
+                playerRenderPosition.getX() + 
+                playerAnimation.getCurrentImage().getWidth());
+        moveToAttackDelta = moveToAttackDistance / 7; // 7 frames for moving
         GuiGroup main = new GuiGroup();
         //Make the health bars and other Gui elements
 
@@ -441,8 +511,7 @@ public class BattleSequenceState extends TimedGameState {
         }
 
         abilityButtonsGroup.setEnabled(false);
-        playerTurn = false;
-
+        playerTurn = true;
         // set the max healths
         playerMaxHealth = playerData.getMaxHealth();
         fighting.healCompletely();

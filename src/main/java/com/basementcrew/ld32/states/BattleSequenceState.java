@@ -13,6 +13,7 @@ import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiGroup;
 import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.state.GameState;
+import com.basementcrew.ld32.Particle;
 import com.basementcrew.ld32.data.Area;
 import com.basementcrew.ld32.data.Attack;
 import com.basementcrew.ld32.data.Enemy;
@@ -44,6 +45,7 @@ public class BattleSequenceState extends TimedGameState {
     private BufferedImage lowerMenuBackground;
     private BufferedImage selector;
     private BufferedImage backgroundImage;
+    private Particle particle;
     
     private int moveToAttackDistance;
     private int moveToAttackProgress; // how far has the player or enemy moved to reach their target so far?
@@ -218,7 +220,7 @@ public class BattleSequenceState extends TimedGameState {
                         // if you pressed the key in the right region
                         if (regionCounter!= -1 && pressedKeyInRegion == regionCounter) {
                             // bonus effect!
-                            System.out.println("you pressed the key in the right region!");
+                            //System.out.println("you pressed the key in the right region!");
                             playerWeapon.getEffect().doEffect(playerWeapon, fighting, playerData);
                             pressedKeyInRegion = -2; // lock the interval of tiome again
                         } 
@@ -236,7 +238,7 @@ public class BattleSequenceState extends TimedGameState {
                 // only pay attention to the movement timers if it's a melee attack
                 if (!enemyAttack.isMelee() || ((moveToAttackProgress >= moveToAttackDistance - 10) || 
                         (enemyAttackProgress > enemyAttack.getTimingEntireEnded()))) { // move the enemy for the attack
-                    System.out.println("ENEMY is attacking");
+                    //System.out.println("ENEMY is attacking");
                     if (enemyAttackTiming == null) {
                         regionCounter = 0; // reset the region counter with a new attack
                         enemyAttackTiming = enemyAttack.getTimings();
@@ -281,13 +283,13 @@ public class BattleSequenceState extends TimedGameState {
 
                         // if you pressed the key in the right region
                         if (regionCounter!= -1 && pressedKeyInRegion == regionCounter) {
-                            System.out.println("you pressed the key in the right region!");
+                            //System.out.println("you pressed the key in the right region!");
                             dodgedEnemyAttack = true;
                             pressedKeyInRegion = -2; // lock the interval of tiome again
                         } 
                     }
                 } else {
-                    System.out.println("Going in for the kill!");
+//                    System.out.println("Going in for the kill!");
                     moveToAttackProgress += moveToAttackDelta;
                 }
             } else {
@@ -463,6 +465,7 @@ public class BattleSequenceState extends TimedGameState {
         lowerMenuBackground = getImage("lowerMenuBackground");
         selector = getImage("selector");
         projectileImage = null;
+        particle = null;
         
         playerAnimation = getAssetManager().getAsset("player", Animation.class);
         playerAnimation.setTrack(0); // the idle animations
@@ -486,7 +489,7 @@ public class BattleSequenceState extends TimedGameState {
         }
         
         moveToAttackDistance = (int)(enemyRenderPosition.getX() - 
-                playerRenderPosition.getX() + 
+                playerRenderPosition.getX() - 
                 playerAnimation.getCurrentImage().getWidth());
         moveToAttackDelta = moveToAttackDistance / 7; // 7 frames for moving
         GuiGroup main = new GuiGroup();

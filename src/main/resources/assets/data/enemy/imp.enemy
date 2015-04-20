@@ -3,6 +3,6 @@ attack {
 	timings:800,1600,1900;
 }
 data {
-	health:1;
+	health:3;
 	animation:imp;
 }

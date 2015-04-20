@@ -103,7 +103,7 @@ public class TownState extends GameState {
          )); 
          */
         //What other elements are in the shop gui? (its behavior on item buying?)
-      //  gui.addGroup("town", town);
+        //  gui.addGroup("town", town);
         //  gui.disable("town");
         background = getImage("townBackground");
     }
@@ -131,23 +131,8 @@ public class TownState extends GameState {
         @Override
         public void onButtonPress() {
             Enemy enemy = area.getRandomEnemy();
-            Movie movie = null;
-            switch (enemy.getName()) {
-                case "goblin":
-                    movie = getAssetManager().getAsset("enter_battle_goblin", Movie.class);
-                    break;
-                case "yeti":
-                    movie = getAssetManager().getAsset("enter_battle_yeti", Movie.class);
-                    break;
-                case "warthog":
-                    movie = getAssetManager().getAsset("enter_battle_warthog", Movie.class);
-                    break;
-                case "imp":
-                    movie = getAssetManager().getAsset("enter_battle_imp", Movie.class);
-                    break;
-                default:
-                    ErrorLogger.println("No enter battle movie for " + enemy.getName());
-            }
+            Movie movie = getAssetManager().getAsset("enter_battle_" + enemy.getName(), Movie.class);
+
             getGameStateRunner().setState(new TransitionState(
                     movie,
                     new BattleSequenceState(enemy, playerData,

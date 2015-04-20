@@ -130,10 +130,13 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/entity/warthog_attack.png", "warthog_attack");
         assetManager.loadImage("assets/img/entity/imp_idle.png", "imp_idle");
         assetManager.loadImage("assets/img/entity/imp_attack.png", "imp_attack");
+        assetManager.loadImage("assets/img/entity/iceMonster_idle.png", "iceMonster_idle");
+        assetManager.loadImage("assets/img/entity/iceMonster_attack.png", "iceMonster_attack");
         assetManager.loadImage("assets/img/entity/player_idle.png", "player_idle");
         assetManager.loadImage("assets/img/entity/player_attack.png", "player_attack");
         assetManager.loadImage("assets/img/entity/goblin_shotput.png", "goblin_shotput");
-
+        
+        
         if (splash != null && g != null) {
             g.fillRect(26, 189, 160, 28); //Max size is 350
             splash.update();
@@ -158,6 +161,7 @@ public class ApplicationMain {
         }
 
         //Load animations
+        assetManager.loadAsset("assets/data/animation/iceMonster.animation", "iceMonster", Animation.class);
         assetManager.loadAsset("assets/data/animation/goblin.animation", "goblin", Animation.class);
         assetManager.loadAsset("assets/data/animation/yeti.animation", "yeti", Animation.class);
         assetManager.loadAsset("assets/data/animation/warthog.animation", "warthog", Animation.class);
@@ -178,7 +182,8 @@ public class ApplicationMain {
         assetManager.loadAsset("assets/data/enemy/yeti.enemy", "yeti", Enemy.class);
         assetManager.loadAsset("assets/data/enemy/warthog.enemy", "warthog", Enemy.class);
         assetManager.loadAsset("assets/data/enemy/imp.enemy", "imp", Enemy.class);
-
+        assetManager.loadAsset("assets/data/enemy/iceMonster.enemy", "iceMonster", Enemy.class);
+        
         if (splash != null && g != null) {
             g.fillRect(26, 189, 240, 28); //Max size is 350
             splash.update();
@@ -215,6 +220,7 @@ public class ApplicationMain {
         //Load Movies
         assetManager.loadAsset("assets/data/movie/intro.movie", "intro", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_goblin.movie", "enter_battle_goblin", Movie.class);
+        assetManager.loadAsset("assets/data/movie/enter_battle_iceMonster.movie", "enter_battle_iceMonster", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_imp.movie", "enter_battle_imp", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_yeti.movie", "enter_battle_yeti", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_warthog.movie", "enter_battle_warthog", Movie.class);

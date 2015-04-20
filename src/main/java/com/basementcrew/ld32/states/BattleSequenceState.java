@@ -11,6 +11,7 @@ import bropals.lib.simplegame.gui.Gui;
 import bropals.lib.simplegame.gui.GuiButton;
 import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiGroup;
+import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.logger.ErrorLogger;
 import bropals.lib.simplegame.state.GameState;
 import com.basementcrew.ld32.Particle;
@@ -319,23 +320,8 @@ public class BattleSequenceState extends TimedGameState {
             } else {
                 // if you did not kill the boss
                 Enemy enemy = areaInside.getRandomEnemy();
-                Movie movie = null;
-                switch (enemy.getName()) {
-                    case "goblin":
-                        movie = getAssetManager().getAsset("enter_battle_goblin", Movie.class);
-                        break;
-                    case "yeti":
-                        movie = getAssetManager().getAsset("enter_battle_yeti", Movie.class);
-                        break;
-                    case "warthog":
-                        movie = getAssetManager().getAsset("enter_battle_warthog", Movie.class);
-                        break;
-                    case "imp":
-                        movie = getAssetManager().getAsset("enter_battle_imp", Movie.class);
-                        break;
-                    default:
-                        ErrorLogger.println("No enter battle movie for " + enemy.getName());
-                }
+                Movie movie = getAssetManager().getAsset("enter_battle_" + enemy.getName(), Movie.class);
+                
                 nextState = new TransitionState(
                         getAssetManager().getAsset("win_battle", Movie.class),
                         new TransitionState(

@@ -102,6 +102,8 @@ public class ApplicationMain {
             splash.update();
         }
         
+        assetManager.loadImage("assets/img/icon.png", "windowIcon");
+        
         assetManager.loadImage("assets/img/battleSequence/cooldownBar.png", "cooldownBar");
         assetManager.loadImage("assets/img/battleSequence/cooldownBarBackground.png", "cooldownBarBackground");
         assetManager.loadImage("assets/img/battleSequence/healthBar.png", "healthBar");
@@ -230,6 +232,7 @@ public class ApplicationMain {
         //Load Movies
         assetManager.loadAsset("assets/data/movie/intro.movie", "intro", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_goblin.movie", "enter_battle_goblin", Movie.class);
+        assetManager.loadAsset("assets/data/movie/enter_battle_slime.movie", "enter_battle_goblin", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_iceMonster.movie", "enter_battle_iceMonster", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_imp.movie", "enter_battle_imp", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_yeti.movie", "enter_battle_yeti", Movie.class);
@@ -256,6 +259,8 @@ public class ApplicationMain {
         }
         
         GameWindow window = new AWTGameWindow("Battle!", 800, 600);
+
+        window.setIcon(assetManager.getImage("windowIcon"));
         window.registerQuitHandler(new QuitHandler() {
 			@Override
 			public void onQuit() {

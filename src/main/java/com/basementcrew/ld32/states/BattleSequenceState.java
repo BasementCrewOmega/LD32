@@ -22,6 +22,7 @@ import com.basementcrew.ld32.data.PlayerData;
 import com.basementcrew.ld32.data.Weapon;
 import com.basementcrew.ld32.movie.Movie;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -230,6 +231,9 @@ public class BattleSequenceState extends TimedGameState {
                                 case DOUBLE_DAMAGE:
                                     particleImage = getAssetManager().getImage("double_damage_particle");
                                     break;
+                                case GOBLIN_STENCH:
+                                    particleImage = getAssetManager().getImage("goblin_stench_particle");
+                                    break;
                             }
                             
                             if (particleImage != null) {
@@ -365,6 +369,11 @@ public class BattleSequenceState extends TimedGameState {
                                 movie,
                                 new BattleSequenceState(enemy, playerData,
                                         backgroundImage, areaInside, enemyFightingOn + 1)));
+                
+                Weapon weaponWon = areaInside.getRewardWeapon();
+                if (!playerData.getWeapons().contains(weaponWon)) {
+                    playerData.getWeapons().add(weaponWon);
+                }
             }
 
             getGameStateRunner().setState(new TransitionState(
@@ -441,7 +450,8 @@ public class BattleSequenceState extends TimedGameState {
                            (enemyAnimation.getCurrentImage().getHeight()/2) , null);
             }
         }
-
+        
+        /*
         // debug drawing
         if (playerTurn) {
             if (playerAttackTiming != null) {
@@ -462,7 +472,9 @@ public class BattleSequenceState extends TimedGameState {
                         (int) enemyRenderPosition.getY(), 10, 10);
             }
         }
+        */
 
+        // draw the GUI
         g.drawImage(lowerMenuBackground, 0, 350, null);
 
         gui.render(o);
@@ -472,6 +484,11 @@ public class BattleSequenceState extends TimedGameState {
             }
         }
 
+        Font font = new Font("Arial Bold", Font.PLAIN, 20);
+        g.setFont(font);
+        g.drawString(playerData.getName() + ":", 20, 390);
+        g.drawString("HP: " + playerData.getHealth() + " / " + playerData.getMaxHealth(), 20, 430);
+                
         // draw the health bar for the player
         g.drawImage(getAssetManager().getImage("healthBar"),
                 (int) playerRenderPosition.getX(),
@@ -545,7 +562,7 @@ public class BattleSequenceState extends TimedGameState {
         abilityActions = new ArrayList<>();
         for (int i = 0; i < playerData.getWeapons().size(); i++) {
             //System.out.println("Adding a weapon BUTTON");
-            System.out.println("Hover image: " + playerData.getWeapons().get(i).getHoverImage());
+            //System.out.println("Hover image: " + playerData.getWeapons().get(i).getHoverImage());
             ChosePlayerAbilityAction action = new ChosePlayerAbilityAction(i);
             GuiButton newGuiButton = new GuiButton(250, 390 + (i * 40),
                     240, 30, playerData.getWeapons().get(i).getImage(),

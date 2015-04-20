@@ -19,7 +19,7 @@ public enum Effect {
                 target.damage(with.getAttackDamage());
                 break;
             case GOBLIN_STENCH:
-                target.damage(1);
+                target.damage(5);
         }
     }
 }

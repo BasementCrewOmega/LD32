@@ -3,6 +3,6 @@ attack {
 	timings:750,1350,1550;
 }
 data {
-	health:10;
+	health:6;
 	animation:warthog;
 }

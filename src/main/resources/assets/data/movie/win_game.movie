@@ -1,0 +1,3 @@
+define winner animation win_game
+add winner 0 0 
+delay 2000

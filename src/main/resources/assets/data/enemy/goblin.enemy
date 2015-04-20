@@ -1,8 +1,9 @@
 attack {
-	damage:1;
-	timings:800,1200,1500;
+	damage:5;
+	timings:500,850,1000;
+        projectile:spear_projectile;
 }
 data {
-	health:3;
+	health:6;
 	animation:goblin;
 }

@@ -82,13 +82,7 @@ public class ApplicationMain {
             g.fillRect(26, 189, 25, 28); //Max size is 350
             splash.update();
         }
-        
-        assetManager.loadImage("assets/img/townMenu/shopDown.png", "shopDown");
-        assetManager.loadImage("assets/img/townMenu/shopHover.png", "shopHover");
-        assetManager.loadImage("assets/img/townMenu/shopUp.png", "shopUp");
-        assetManager.loadImage("assets/img/townMenu/toTownDown.png", "toTownDown");
-        assetManager.loadImage("assets/img/townMenu/toTownHover.png", "toTownHover");
-        assetManager.loadImage("assets/img/townMenu/toTownUp.png", "toTownUp");
+
         assetManager.loadImage("assets/img/townMenu/townBackground.png", "townBackground");
         assetManager.loadImage("assets/img/townMenu/swamp_icon.png", "swamp_icon");
         assetManager.loadImage("assets/img/townMenu/fire_icon.png", "fire_icon");
@@ -142,6 +136,7 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/entity/player_attack.png", "player_attack");
         assetManager.loadImage("assets/img/entity/goblin_shotput.png", "goblin_shotput");
         assetManager.loadImage("assets/img/particle/imp_projectile.png", "imp_projectile");
+        assetManager.loadImage("assets/img/particle/spear.png", "spear_projectile");
    
         if (splash != null && g != null) {
             g.fillRect(26, 189, 160, 28); //Max size is 350
@@ -160,10 +155,12 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/movies/darkFace.png", "darkFace");
         assetManager.loadImage("assets/img/movies/verses.png", "verses");
         assetManager.loadImage("assets/img/movies/winner.png", "winner");
+        assetManager.loadImage("assets/img/movies/wonGame.png", "win_game");
         
         // parcticles
         assetManager.loadImage("assets/img/particle/dodge.png", "dodge_particle");
         assetManager.loadImage("assets/img/particle/double_damage.png", "double_damage_particle");
+        assetManager.loadImage("assets/img/particle/goblin_stench.png", "goblin_stench_particle");
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 200, 28); //Max size is 350
@@ -182,6 +179,7 @@ public class ApplicationMain {
         assetManager.loadAsset("assets/data/animation/burningBuildings.animation", "burningBuildings", Animation.class);
         assetManager.loadAsset("assets/data/animation/verses.animation", "verses", Animation.class);
         assetManager.loadAsset("assets/data/animation/winner.animation", "winner", Animation.class);
+        assetManager.loadAsset("assets/data/animation/win_game.animation", "win_game", Animation.class);
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 220, 28); //Max size is 350

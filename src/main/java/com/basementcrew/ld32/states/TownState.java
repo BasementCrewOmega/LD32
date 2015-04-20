@@ -43,6 +43,28 @@ public class TownState extends GameState {
         if (p != null) {
             gui.update(p.x, p.y);
         }
+        
+        boolean beatSwamp = false;
+        boolean beatSavanna = false;
+        boolean beatFire = false;
+        boolean beatIce = false;
+        for (int i=0; i<playerData.getCompletedAreas().size(); i++) {
+            if (playerData.getCompletedAreas().get(i).equals("swamp")) {
+                beatSwamp = true;
+            } else if (playerData.getCompletedAreas().get(i).equals("savanna")) {
+                beatSavanna = true;
+            } else if (playerData.getCompletedAreas().get(i).equals("fire")) {
+                beatFire = true;
+            } else if (playerData.getCompletedAreas().get(i).equals("ice")) {
+                beatIce = true;
+            }
+        }
+        // when you have beated all the areas
+        if (beatSwamp && beatSavanna && beatFire && beatIce) {
+            getGameStateRunner().setState(new TransitionState(
+                    getAssetManager().getAsset("win_game", Movie.class),
+                    new MainMenuState()));
+        }
     }
 
     @Override

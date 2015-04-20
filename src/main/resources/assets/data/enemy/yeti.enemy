@@ -3,6 +3,6 @@ attack {
 	timings:800,1350,1400;
 }
 data {
-	health:12;
+	health:9;
 	animation:yeti;
 }

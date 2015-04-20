@@ -1,6 +1,6 @@
 attack {
 	damage:2;
-	timings:1000,1350,1550;
+	timings:750,1350,1550;
 }
 data {
 	health:10;

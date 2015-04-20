@@ -439,7 +439,7 @@ public class BattleSequenceState extends TimedGameState {
         // draw the health bar for the player
         g.drawImage(getAssetManager().getImage("healthBar"),
                 (int) playerRenderPosition.getX(),
-                (int) playerRenderPosition.getY() - 30, null);
+                (int) playerRenderPosition.getY() - 50, null);
         g.setColor(Color.RED);
         // 144x24
         g.fillRect((int) playerRenderPosition.getX() + 3,
@@ -450,7 +450,7 @@ public class BattleSequenceState extends TimedGameState {
         // draw the health bar for the enemy
         g.drawImage(getAssetManager().getImage("healthBar"),
                 (int) enemyRenderPosition.getX(),
-                (int) enemyRenderPosition.getY() - 30, null);
+                (int) enemyRenderPosition.getY() - 50, null);
         g.setColor(Color.RED);
         // 144x24
         g.fillRect((int) enemyRenderPosition.getX() + 3,
@@ -480,12 +480,15 @@ public class BattleSequenceState extends TimedGameState {
         // adjust the render location for the player and enemy according to the are you're inside
         if (areaInside.getName().equals("savanna")) {
             playerRenderPosition.setLocation(80, 190);
+            enemyRenderPosition.setLocation(500, 180);
         } else if (areaInside.getName().equals("fire")) {
             playerRenderPosition.setLocation(80, 200);
         } else if (areaInside.getName().equals("ice")) {
             playerRenderPosition.setLocation(80, 165);
+            enemyRenderPosition.setLocation(500, 205);
         } else if (areaInside.getName().equals("swamp")) {
             playerRenderPosition.setLocation(80, 180);
+            enemyRenderPosition.setLocation(500, 115);
         }
         
         moveToAttackDistance = (int)(enemyRenderPosition.getX() - 

@@ -82,7 +82,13 @@ public class MainMenuState extends GameState {
                 getAssetManager().getImage("playHover"),
                 new PlayButton()
         );
-        GuiButton quitButton = new GuiButton(80, 450, 120, 60,
+        GuiButton helpButton = new GuiButton(80, 390, 120, 60,
+                getAssetManager().getImage("helpUp"),
+                getAssetManager().getImage("helpUp"),
+                getAssetManager().getImage("helpHover"),
+                new HelpButton()
+        );
+        GuiButton quitButton = new GuiButton(80, 480, 120, 60,
                 getAssetManager().getImage("quitUp"),
                 getAssetManager().getImage("quitUp"),
                 getAssetManager().getImage("quitHover"),
@@ -92,6 +98,7 @@ public class MainMenuState extends GameState {
         GuiImage title = new GuiImage(0, 0, 800, 200, getAssetManager().getImage("titleBanner"));
         group.addElement(bg);
         group.addElement(playButton);
+        group.addElement(helpButton);
         group.addElement(quitButton);
         group.addElement(title);
         gui.addGroup("main", group);
@@ -116,6 +123,13 @@ public class MainMenuState extends GameState {
             getWindow().requestToClose();
             System.exit(0);
             
+        }
+    }
+    
+    class HelpButton implements GuiButtonAction {
+        @Override
+        public void onButtonPress() {
+            getGameStateRunner().setState(new HelpState());
         }
     }
     

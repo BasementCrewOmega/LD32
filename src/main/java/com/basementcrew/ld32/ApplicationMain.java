@@ -71,9 +71,13 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/mainMenu/quitDown.png", "quitDown");
         assetManager.loadImage("assets/img/mainMenu/quitUp.png", "quitUp");
         assetManager.loadImage("assets/img/mainMenu/quitHover.png", "quitHover");
+        assetManager.loadImage("assets/img/mainMenu/helpDown.png", "helpDown");
+        assetManager.loadImage("assets/img/mainMenu/helpUp.png", "helpUp");
+        assetManager.loadImage("assets/img/mainMenu/helpHover.png", "helpHover");
         assetManager.loadImage("assets/img/mainMenu/titleBanner.png", "titleBanner");
         assetManager.loadImage("assets/img/mainMenu/mainMenuBackground.png", "mainMenuBackground");
-
+        assetManager.loadImage("assets/img/mainMenu/help.png", "help");
+        
         if (splash != null && g != null) {
             g.fillRect(26, 189, 25, 28); //Max size is 350
             splash.update();

@@ -209,6 +209,7 @@ public class ApplicationMain {
         assetManager.loadSoundEffect("assets/sound/its_up_to_you_to_go_out.wav", "intro3");
         assetManager.loadSoundEffect("assets/sound/and_save_wornia.wav", "intro4");
         assetManager.loadSoundEffect("assets/sound/winner.wav", "winner");
+        assetManager.loadSoundEffect("assets/sound/verses.wav", "verses");
         assetManager.loadSoundEffect("assets/sound/help.wav", "help");
         
         if (splash != null && g != null) {
@@ -282,7 +283,7 @@ public class ApplicationMain {
         Track[] tracks = seq.getTracks();
         try {
             for (int t = 0; t < tracks.length; t++) {
-                tracks[t].add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, t, 0, 60), 0));
+                tracks[t].add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, t, 0, 30), 0));
 
             }
         } catch (InvalidMidiDataException ex) {

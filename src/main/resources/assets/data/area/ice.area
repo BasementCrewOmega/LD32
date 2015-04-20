@@ -1,5 +1,6 @@
 enemies {
 	yeti;
+        iceMonster;
 }
 enemiesToBoss:4;
 boss:yeti;

@@ -1,0 +1,8 @@
+attack {
+    damage:4;
+    timings:1000,1400,1600;
+}
+data {
+    health:7;
+    animation:iceMonster;
+}

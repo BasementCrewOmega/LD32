@@ -186,7 +186,7 @@ public class ApplicationMain {
         }
 
         //Load enemies
-        assetManager.loadAsset("assets/data/enemy/slime.enemy", "goblin", Enemy.class);
+        assetManager.loadAsset("assets/data/enemy/slime.enemy", "slime", Enemy.class);
         assetManager.loadAsset("assets/data/enemy/goblin.enemy", "goblin", Enemy.class);
         assetManager.loadAsset("assets/data/enemy/yeti.enemy", "yeti", Enemy.class);
         assetManager.loadAsset("assets/data/enemy/warthog.enemy", "warthog", Enemy.class);

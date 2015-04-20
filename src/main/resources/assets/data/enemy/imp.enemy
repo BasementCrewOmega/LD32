@@ -1,6 +1,7 @@
 attack {
 	damage:12;
 	timings:800,1100,1200;
+        projectile:imp_projectile;
 }
 data {
 	health:3;

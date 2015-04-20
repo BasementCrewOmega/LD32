@@ -7,6 +7,7 @@ package com.basementcrew.ld32.data;
 
 import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.sound.SoundEffect;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Attack {
     private Animation animation;
     private int[] timings;
     private SoundEffect sound;
+    private BufferedImage projectileImage;
     
     public Attack(int damage, Animation animation, int[] timings, SoundEffect sound) {
         this.damage = damage;
@@ -27,7 +29,7 @@ public class Attack {
     }
 
     public boolean isMelee() {
-        return true;
+        return projectileImage == null;
     }
     
     public int getDamage() {
@@ -91,6 +93,12 @@ public class Attack {
     public void setSound(SoundEffect sound) {
         this.sound = sound;
     }
-    
-    
+
+    public void setProjectileImage(BufferedImage projectileImage) {
+        this.projectileImage = projectileImage;
+    }
+
+    public BufferedImage getProjectileImage() {
+        return projectileImage;
+    }
 }

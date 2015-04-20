@@ -134,9 +134,8 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/entity/iceMonster_attack.png", "iceMonster_attack");
         assetManager.loadImage("assets/img/entity/player_idle.png", "player_idle");
         assetManager.loadImage("assets/img/entity/player_attack.png", "player_attack");
-        assetManager.loadImage("assets/img/entity/goblin_shotput.png", "goblin_shotput");
-        
-        
+        assetManager.loadImage("assets/img/particle/goblin_shotput.png", "goblin_shotput");
+   
         if (splash != null && g != null) {
             g.fillRect(26, 189, 160, 28); //Max size is 350
             splash.update();

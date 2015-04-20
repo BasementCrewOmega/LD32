@@ -1,6 +1,7 @@
 attack {
 	damage:3;
 	timings:900,1300,1400;
+        sound:yeti_attack;
 }
 data {
 	health:7;

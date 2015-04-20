@@ -74,6 +74,8 @@ public class MainMenuState extends GameState {
 
     @Override
     public void onEnter() {
+        playSoundEffect("battle");
+        
         GuiGroup group = new GuiGroup();
         GuiButton playButton = new GuiButton(80, 300, 120, 60,
                 getAssetManager().getImage("playUp"),

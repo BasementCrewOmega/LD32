@@ -30,6 +30,7 @@ public class HelpState extends GameState {
 
     @Override
     public void onEnter() {
+        playSoundEffect("help");
         help = getAssetManager().getImage("help");
     }
 

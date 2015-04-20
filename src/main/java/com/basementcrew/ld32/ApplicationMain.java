@@ -175,7 +175,7 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/particle/double_damage.png", "double_damage_particle");
 
         if (splash != null && g != null) {
-            g.fillRect(26, 189, 200, 28); //Max size is 350
+            g.fillRect(26, 189, 180, 28); //Max size is 350
             splash.update();
         }
 
@@ -192,6 +192,25 @@ public class ApplicationMain {
         assetManager.loadAsset("assets/data/animation/verses.animation", "verses", Animation.class);
         assetManager.loadAsset("assets/data/animation/winner.animation", "winner", Animation.class);
 
+        if (splash != null && g != null) {
+            g.fillRect(26, 189, 200, 28); //Max size is 350
+            splash.update();
+        }
+        
+        //Load sound effects
+        assetManager.loadSoundEffect("assets/sound/spawn.wav", "spawn");
+        assetManager.loadSoundEffect("assets/sound/imp_attack.wav", "imp_attack");
+        assetManager.loadSoundEffect("assets/sound/yeti_attack.wav", "yeti_attack");
+        assetManager.loadSoundEffect("assets/sound/warthog_attack.wav", "warthog_attack");
+        assetManager.loadSoundEffect("assets/sound/slime_attack.wav", "slime_attack");
+        assetManager.loadSoundEffect("assets/sound/battle.wav", "battle");
+        assetManager.loadSoundEffect("assets/sound/the_land_of_wornia.wav", "intro1");
+        assetManager.loadSoundEffect("assets/sound/overrun_by_wild_beast.wav", "intro2");
+        assetManager.loadSoundEffect("assets/sound/its_up_to_you_to_go_out.wav", "intro3");
+        assetManager.loadSoundEffect("assets/sound/and_save_wornia.wav", "intro4");
+        assetManager.loadSoundEffect("assets/sound/winner.wav", "winner");
+        assetManager.loadSoundEffect("assets/sound/help.wav", "help");
+        
         if (splash != null && g != null) {
             g.fillRect(26, 189, 220, 28); //Max size is 350
             splash.update();
@@ -257,7 +276,7 @@ public class ApplicationMain {
 
         // Load Music
         assetManager.loadAsset("assets/music/song_20150419_054852_239.mid", "main_song", Sequence.class);
-
+        
         //Process the sequence to make it quieter
         Sequence seq = assetManager.getAsset("main_song", Sequence.class);
         Track[] tracks = seq.getTracks();

@@ -134,6 +134,8 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/entity/imp_attack.png", "imp_attack");
         assetManager.loadImage("assets/img/entity/iceMonster_idle.png", "iceMonster_idle");
         assetManager.loadImage("assets/img/entity/iceMonster_attack.png", "iceMonster_attack");
+        assetManager.loadImage("assets/img/entity/slime_idle.png", "slime_idle");
+        assetManager.loadImage("assets/img/entity/slime_attack.png", "slime_attack");
         assetManager.loadImage("assets/img/entity/player_idle.png", "player_idle");
         assetManager.loadImage("assets/img/entity/player_attack.png", "player_attack");
         assetManager.loadImage("assets/img/entity/goblin_shotput.png", "goblin_shotput");
@@ -166,6 +168,7 @@ public class ApplicationMain {
         }
 
         //Load animations
+        assetManager.loadAsset("assets/data/animation/slime.animation", "slime", Animation.class);
         assetManager.loadAsset("assets/data/animation/iceMonster.animation", "iceMonster", Animation.class);
         assetManager.loadAsset("assets/data/animation/goblin.animation", "goblin", Animation.class);
         assetManager.loadAsset("assets/data/animation/yeti.animation", "yeti", Animation.class);
@@ -183,6 +186,7 @@ public class ApplicationMain {
         }
 
         //Load enemies
+        assetManager.loadAsset("assets/data/enemy/slime.enemy", "goblin", Enemy.class);
         assetManager.loadAsset("assets/data/enemy/goblin.enemy", "goblin", Enemy.class);
         assetManager.loadAsset("assets/data/enemy/yeti.enemy", "yeti", Enemy.class);
         assetManager.loadAsset("assets/data/enemy/warthog.enemy", "warthog", Enemy.class);

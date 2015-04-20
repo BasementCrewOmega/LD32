@@ -10,8 +10,8 @@ set_bg introMovieBackground1
 add sun 250 400
 add text1 50 50
 add mountains 0 300
-move sun 250 300 4000
-delay 4000
+move sun 250 300 3500
+delay 3500
 remove sun
 remove text1
 remove mountains

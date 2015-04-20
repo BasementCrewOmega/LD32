@@ -36,7 +36,7 @@ public class TownState extends GameState {
     public TownState(PlayerData data) {
         playerData = data;
     }
-    
+
     @Override
     public void update() {
         Point p = getWindow().getMousePosition();
@@ -51,19 +51,19 @@ public class TownState extends GameState {
         g.drawImage(background, 0, 0, null);
         gui.render(o);
     }
-    
+
     @Override
     public void onEnter() {
         if (playerData == null) {
             playerData = getAssetManager().getAsset("default_playerdata", PlayerData.class);
         }
-        
+
         //Add areas to the list of areas.
         areas.add(getAssetManager().getAsset("swamp", Area.class));
         areas.add(getAssetManager().getAsset("savanna", Area.class));
         areas.add(getAssetManager().getAsset("fire", Area.class));
         areas.add(getAssetManager().getAsset("ice", Area.class));
-        
+
         //Main town area GUI
         GuiGroup main = new GuiGroup();
         for (int i = 0; i < areas.size(); i++) {
@@ -77,33 +77,34 @@ public class TownState extends GameState {
                     new GoToAreaButton(areas.get(i))
             ));
         }
-        main.addElement(new GuiButton(
-                25, 540, 100, 40,
-                getImage("shopDown"),
-                getImage("shopUp"),
-                getImage("shopHover"),
-                new GoToShopButton()
-        ));
+        /*
+         main.addElement(new GuiButton(
+         25, 540, 100, 40,
+         getImage("shopDown"),
+         getImage("shopUp"),
+         getImage("shopHover"),
+         new GoToShopButton()
+         ));
+         */
 
         gui.addGroup("main", main);
         gui.enable("main");
 
         //Shop menu GUI
-        GuiGroup town = new GuiGroup();
-        town.addElement(new GuiButton(
-            25, 25,
-            100, 40,
-            getImage("toTownDown"),
-            getImage("toTownUp"),
-            getImage("toTownHover"),
-            new GoToTownButton()
-        ));
-        
+        /*    
+         GuiGroup town = new GuiGroup();
+         town.addElement(new GuiButton(
+         25, 25,
+         100, 40,
+         getImage("toTownDown"),
+         getImage("toTownUp"),
+         getImage("toTownHover"),
+         new GoToTownButton()
+         )); 
+         */
         //What other elements are in the shop gui? (its behavior on item buying?)
-        
-        gui.addGroup("town", town);
-        gui.disable("town");
-
+      //  gui.addGroup("town", town);
+        //  gui.disable("town");
         background = getImage("townBackground");
     }
 
@@ -129,27 +130,27 @@ public class TownState extends GameState {
 
         @Override
         public void onButtonPress() {
-                Enemy enemy = area.getRandomEnemy();
-                Movie movie = null;
-                switch(enemy.getName()) {
-                    case "goblin":
-                        movie = getAssetManager().getAsset("enter_battle_goblin", Movie.class);
-                        break;
-                    case "yeti":
-                        movie = getAssetManager().getAsset("enter_battle_yeti", Movie.class);
-                        break;
-                    case "warthog":
-                        movie = getAssetManager().getAsset("enter_battle_warthog", Movie.class);
-                        break;
-                    case "imp":
-                        movie = getAssetManager().getAsset("enter_battle_imp", Movie.class);
-                        break;
-                    default:
-                        ErrorLogger.println("No enter battle movie for " + enemy.getName());
-                }
-                getGameStateRunner().setState(new TransitionState(
+            Enemy enemy = area.getRandomEnemy();
+            Movie movie = null;
+            switch (enemy.getName()) {
+                case "goblin":
+                    movie = getAssetManager().getAsset("enter_battle_goblin", Movie.class);
+                    break;
+                case "yeti":
+                    movie = getAssetManager().getAsset("enter_battle_yeti", Movie.class);
+                    break;
+                case "warthog":
+                    movie = getAssetManager().getAsset("enter_battle_warthog", Movie.class);
+                    break;
+                case "imp":
+                    movie = getAssetManager().getAsset("enter_battle_imp", Movie.class);
+                    break;
+                default:
+                    ErrorLogger.println("No enter battle movie for " + enemy.getName());
+            }
+            getGameStateRunner().setState(new TransitionState(
                     movie,
-                    new BattleSequenceState(enemy, playerData, 
+                    new BattleSequenceState(enemy, playerData,
                             area.getBackgroundImage(), area, 1)));
         }
 

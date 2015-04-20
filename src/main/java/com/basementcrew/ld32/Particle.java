@@ -5,6 +5,7 @@
  */
 package com.basementcrew.ld32;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -13,7 +14,7 @@ import java.awt.image.BufferedImage;
  */
 public class Particle {
     
-    private int timeShown, timeAliveSoFar;
+    private int timeShown, timeAliveSoFar, x, y;
     private BufferedImage image;
     
     /**
@@ -21,10 +22,16 @@ public class Particle {
      * @param image
      * @param timeShown 
      */
-    public Particle(BufferedImage image, int timeShown) {
+    public Particle(BufferedImage image, int x, int y, int timeShown) {
         this.image=image;
         this.timeShown=timeShown;
         this.timeAliveSoFar = 0;
+        this.x=x;
+        this.y=y;
+    }
+    
+    public void render(Graphics2D g) {
+        g.drawImage(image, x, y, null);
     }
     
     public void update(long dt) {

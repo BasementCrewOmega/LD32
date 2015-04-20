@@ -94,6 +94,8 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/townMenu/fire_icon.png", "fire_icon");
         assetManager.loadImage("assets/img/townMenu/ice_icon.png", "ice_icon");
         assetManager.loadImage("assets/img/townMenu/savanna_icon.png", "savanna_icon");
+        assetManager.loadImage("assets/img/townMenu/completed_icon.png", "completed_icon");
+
 
         if (splash != null && g != null) {
             g.fillRect(26, 189, 70, 28); //Max size is 350
@@ -151,6 +153,10 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/movies/darkFace.png", "darkFace");
         assetManager.loadImage("assets/img/movies/verses.png", "verses");
         assetManager.loadImage("assets/img/movies/winner.png", "winner");
+        
+        // parcticles
+        assetManager.loadImage("assets/img/particle/dodge.png", "dodge_particle");
+        assetManager.loadImage("assets/img/particle/double_damage.png", "double_damage_particle");
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 200, 28); //Max size is 350

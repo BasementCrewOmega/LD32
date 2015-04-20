@@ -255,7 +255,7 @@ public class ApplicationMain {
             splash.close();
         }
         
-        GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
+        GameWindow window = new AWTGameWindow("Battle!", 800, 600);
         window.registerQuitHandler(new QuitHandler() {
 			@Override
 			public void onQuit() {

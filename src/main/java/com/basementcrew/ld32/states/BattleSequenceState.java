@@ -522,7 +522,7 @@ public class BattleSequenceState extends TimedGameState {
             playerRenderPosition.setLocation(80, 200);
         } else if (areaInside.getName().equals("ice")) {
             playerRenderPosition.setLocation(80, 165);
-            enemyRenderPosition.setLocation(500, 205);
+            enemyRenderPosition.setLocation(500, 105);
         } else if (areaInside.getName().equals("swamp")) {
             playerRenderPosition.setLocation(80, 180);
             enemyRenderPosition.setLocation(500, 115);

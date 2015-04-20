@@ -262,7 +262,7 @@ public class BattleSequenceState extends TimedGameState {
                         if (projectileImage != null) {
                             // calculate the time and stuff for the projectile
                             projectileStartTime = enemyAttackTiming[0] - 100; // miliseconds
-                            int timeToTake = playerAttackTiming[1] + 100 - projectileStartTime;
+                            int timeToTake = enemyAttackTiming[1] + 100 - projectileStartTime;
                             int numberOfUpdateCycles = (int)(timeToTake / dt);
                             projectileProgress = 0;
                             projectileDelta = moveToAttackDistance / numberOfUpdateCycles;
@@ -435,7 +435,8 @@ public class BattleSequenceState extends TimedGameState {
                     (int)(playerTurn ? playerRenderPosition.getX() + projectileProgress :
                             enemyRenderPosition.getX() - projectileProgress),
                     (int)(playerTurn ? playerRenderPosition.getY() : 
-                            enemyRenderPosition.getY()) - (projectileImage.getHeight()/2), null);
+                            enemyRenderPosition.getY()) - (projectileImage.getHeight()/2) + 
+                           (enemyAnimation.getCurrentImage().getHeight()/2) , null);
             }
         }
 

@@ -50,6 +50,15 @@ public class TownState extends GameState {
         Graphics g = (Graphics) o;
         g.drawImage(background, 0, 0, null);
         gui.render(o);
+        ArrayList<String> completedAreas = playerData.getCompletedAreas();
+        for (String aName : completedAreas) {
+            for (Area a : areas) {
+                if (a.getName().equals(aName)) {
+                    g.drawImage(getAssetManager().getImage("completed_icon"), 
+                            a.getIconX(), a.getIconY(), null);
+                }
+            }
+        }
     }
 
     @Override

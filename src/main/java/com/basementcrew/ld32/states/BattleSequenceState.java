@@ -257,7 +257,7 @@ public class BattleSequenceState extends TimedGameState {
                     if (enemyAttackTiming == null) {
                         regionCounter = 0; // reset the region counter with a new attack
                         enemyAttackTiming = enemyAttack.getTimings();
-                       // projectileImage = enemyAttack.getProjectileImage();
+                        projectileImage = enemyAttack.getProjectileImage();
                         // if there IS a projectile, then set up the intial stuff for it.
                         if (projectileImage != null) {
                             // calculate the time and stuff for the projectile
@@ -308,6 +308,9 @@ public class BattleSequenceState extends TimedGameState {
                             if (!dodgedEnemyAttack) {
                                 // get damaged when you don't dodge by the end of the interval
                                 playerData.setHealth(playerData.getHealth() - enemyAttack.getDamage());
+                                if (enemyAttack.getSound() != null) {
+                                    enemyAttack.getSound().play();
+                                }
                             } else {
                                 particle = new Particle(getAssetManager().getImage("dodge_particle"), 
                                         (int)(playerRenderPosition.getX() - 20),

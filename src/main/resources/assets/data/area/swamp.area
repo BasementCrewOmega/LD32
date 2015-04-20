@@ -1,5 +1,6 @@
 enemies {
 	goblin;
+        slime;
 }
 enemiesToBoss:4;
 boss:goblin;

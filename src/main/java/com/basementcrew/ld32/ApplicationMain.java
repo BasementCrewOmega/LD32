@@ -102,6 +102,8 @@ public class ApplicationMain {
             splash.update();
         }
         
+        assetManager.loadImage("assets/img/icon.png", "windowIcon");
+        
         assetManager.loadImage("assets/img/battleSequence/cooldownBar.png", "cooldownBar");
         assetManager.loadImage("assets/img/battleSequence/cooldownBarBackground.png", "cooldownBarBackground");
         assetManager.loadImage("assets/img/battleSequence/healthBar.png", "healthBar");
@@ -255,7 +257,8 @@ public class ApplicationMain {
             splash.close();
         }
         
-        GameWindow window = new AWTGameWindow("Ludum Dare 32", 800, 600);
+        GameWindow window = new AWTGameWindow("Battle!", 800, 600);
+        window.setIcon(assetManager.getImage("windowIcon"));
         window.registerQuitHandler(new QuitHandler() {
 			@Override
 			public void onQuit() {

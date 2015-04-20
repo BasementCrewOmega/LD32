@@ -257,10 +257,26 @@ public class BattleSequenceState extends TimedGameState {
                     if (enemyAttackTiming == null) {
                         regionCounter = 0; // reset the region counter with a new attack
                         enemyAttackTiming = enemyAttack.getTimings();
-                        //projectileImage = the projectile for the enemy attack;
+                       // projectileImage = enemyAttack.getProjectileImage();
+                        // if there IS a projectile, then set up the intial stuff for it.
+                        if (projectileImage != null) {
+                            // calculate the time and stuff for the projectile
+                            projectileStartTime = enemyAttackTiming[0] - 100; // miliseconds
+                            int timeToTake = playerAttackTiming[1] + 100 - projectileStartTime;
+                            int numberOfUpdateCycles = (int)(timeToTake / dt);
+                            projectileProgress = 0;
+                            projectileDelta = moveToAttackDistance / numberOfUpdateCycles;
+                        }
                     }
 
                     enemyAttackProgress += dt;
+                    if (!enemyAttack.isMelee() && enemyAttackProgress >= projectileStartTime) {
+                        projectileProgress += projectileDelta;
+                        if (projectileProgress > moveToAttackDistance) {
+                            projectileImage = null; // stop drawing the projectile when it reaches it's target
+                        }
+                    }
+                    
                     if (enemyAnimation.getCurrentTrackIndex() != 1) {
                         enemyAnimation.setTrack(1); // set the animation to the attack animation
                         enemyAnimation.getTrackOn().resetCounter();
@@ -409,12 +425,15 @@ public class BattleSequenceState extends TimedGameState {
         }
         
         // draw the projectile
-        if (projectileImage != null && playerAttackProgress >= projectileStartTime) {
-            g.drawImage(projectileImage, 
+        if (projectileImage != null) {
+            if ((playerTurn && playerAttackProgress >= projectileStartTime) || 
+                    (!playerTurn && enemyAttackProgress >= projectileStartTime)) {
+                g.drawImage(projectileImage, 
                     (int)(playerTurn ? playerRenderPosition.getX() + projectileProgress :
                             enemyRenderPosition.getX() - projectileProgress),
                     (int)(playerTurn ? playerRenderPosition.getY() : 
                             enemyRenderPosition.getY()) - (projectileImage.getHeight()/2), null);
+            }
         }
 
         // debug drawing

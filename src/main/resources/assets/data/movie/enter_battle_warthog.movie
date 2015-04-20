@@ -4,4 +4,5 @@ define enemy animation warthog
 add verses 0 0 
 add player 100 200
 add enemy 500 200
+play_sound verses
 delay 2500

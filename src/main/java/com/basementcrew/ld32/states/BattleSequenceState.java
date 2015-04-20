@@ -375,10 +375,6 @@ public class BattleSequenceState extends TimedGameState {
                     playerData.getWeapons().add(weaponWon);
                 }
             }
-
-            getGameStateRunner().setState(new TransitionState(
-                    getAssetManager().getAsset("win_battle", Movie.class),
-                    nextState));
         } else if (playerData.getHealth() <= 0) {
             getGameStateRunner().setState(new TransitionState(
                     getAssetManager().getAsset("lose_battle", Movie.class),

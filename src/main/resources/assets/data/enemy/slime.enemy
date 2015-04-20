@@ -1,6 +1,7 @@
 attack {
     damage:3;
     timings:1800,2350,2400;
+    sound:slime_attack;
 }
 data {
     health:7;

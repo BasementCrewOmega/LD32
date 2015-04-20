@@ -1,0 +1,11 @@
+java.lang.IllegalStateException: sequence not set
+	at com.sun.media.sound.RealTimeSequencer.start(RealTimeSequencer.java:248)
+	at com.basementcrew.ld32.MusicPlayer.resume(MusicPlayer.java:54)
+	at com.basementcrew.ld32.states.TransitionState.onExit(TransitionState.java:59)
+	at bropals.lib.simplegame.GameStateRunner.setState(GameStateRunner.java:85)
+	at com.basementcrew.ld32.states.TransitionState.end(TransitionState.java:43)
+	at com.basementcrew.ld32.states.TransitionState.mouse(TransitionState.java:72)
+	at bropals.lib.simplegame.GameStateRunner.mousePressed(GameStateRunner.java:145)
+	at bropals.lib.simplegame.AWTGameWindow.flushInput(AWTGameWindow.java:529)
+	at com.basementcrew.ld32.states.TimedGameStateRunner.loop(TimedGameStateRunner.java:36)
+	at com.basementcrew.ld32.ApplicationMain.main(ApplicationMain.java:321)

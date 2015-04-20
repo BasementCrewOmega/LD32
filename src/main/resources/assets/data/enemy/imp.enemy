@@ -1,7 +1,8 @@
 attack {
 	damage:12;
 	timings:800,1150,1200;
-    projectile:imp_projectile;
+        sound:imp_attack;
+        projectile:imp_projectile;
 }
 data {
 	health:3;

@@ -1,6 +1,7 @@
 attack {
 	damage:6;
 	timings:750,1350,1550;
+        sound:warthog_attack;
 }
 data {
 	health:6;

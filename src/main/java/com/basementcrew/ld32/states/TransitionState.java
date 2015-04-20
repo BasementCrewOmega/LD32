@@ -7,6 +7,7 @@ package com.basementcrew.ld32.states;
 
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
+import com.basementcrew.ld32.MusicPlayer;
 import com.basementcrew.ld32.movie.Movie;
 import java.awt.Graphics;
 
@@ -50,10 +51,12 @@ public class TransitionState extends TimedGameState {
     @Override
     public void onEnter() {
         movie.reset();
+        MusicPlayer.getInstance().stop();
     }
 
     @Override
     public void onExit() {
+        MusicPlayer.getInstance().resume();
     }
 
     @Override

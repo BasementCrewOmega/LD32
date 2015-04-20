@@ -1,3 +1,4 @@
 define winner animation winner
 add winner 0 0 
+play_sound winner
 delay 2000

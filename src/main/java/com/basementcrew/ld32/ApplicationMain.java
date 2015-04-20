@@ -29,10 +29,20 @@ import com.basementcrew.ld32.states.TransitionState;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Track;
 
 public class ApplicationMain {
+
     public static Map<String, Object> flags = new HashMap<String, Object>();
 
     public static void main(String[] args) {
@@ -77,7 +87,7 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/mainMenu/titleBanner.png", "titleBanner");
         assetManager.loadImage("assets/img/mainMenu/mainMenuBackground.png", "mainMenuBackground");
         assetManager.loadImage("assets/img/mainMenu/help.png", "help");
-        
+
         if (splash != null && g != null) {
             g.fillRect(26, 189, 25, 28); //Max size is 350
             splash.update();
@@ -90,14 +100,13 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/townMenu/savanna_icon.png", "savanna_icon");
         assetManager.loadImage("assets/img/townMenu/completed_icon.png", "completed_icon");
 
-
         if (splash != null && g != null) {
             g.fillRect(26, 189, 70, 28); //Max size is 350
             splash.update();
         }
-        
+
         assetManager.loadImage("assets/img/icon.png", "windowIcon");
-        
+
         assetManager.loadImage("assets/img/battleSequence/cooldownBar.png", "cooldownBar");
         assetManager.loadImage("assets/img/battleSequence/cooldownBarBackground.png", "cooldownBarBackground");
         assetManager.loadImage("assets/img/battleSequence/healthBar.png", "healthBar");
@@ -114,12 +123,12 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/battleSequence/abilityButtonFistsHover.png", "hover_fist_button");
         assetManager.loadImage("assets/img/battleSequence/abilityButtonGoblin.png", "goblin_shotput_button");
         assetManager.loadImage("assets/img/battleSequence/abilityButtonGoblinHover.png", "hover_goblin_shotput_button");
-            
+
         if (splash != null && g != null) {
             g.fillRect(26, 189, 120, 28); //Max size is 350
             splash.update();
         }
-        
+
         assetManager.loadImage("assets/img/entity/goblin_idle.png", "goblin_idle");
         assetManager.loadImage("assets/img/entity/goblin_attack.png", "goblin_attack");
         assetManager.loadImage("assets/img/entity/yeti_idle.png", "yeti_idle");
@@ -142,7 +151,7 @@ public class ApplicationMain {
             g.fillRect(26, 189, 160, 28); //Max size is 350
             splash.update();
         }
-        
+
         assetManager.loadImage("assets/img/movies/introMovieBackground1.png", "introMovieBackground1");
         assetManager.loadImage("assets/img/movies/introMovieBackground2.png", "introMovieBackground2");
         assetManager.loadImage("assets/img/movies/introMountains.png", "introMountains");
@@ -163,7 +172,7 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/particle/goblin_stench.png", "goblin_stench_particle");
         
         if (splash != null && g != null) {
-            g.fillRect(26, 189, 200, 28); //Max size is 350
+            g.fillRect(26, 189, 180, 28); //Max size is 350
             splash.update();
         }
 
@@ -180,6 +189,26 @@ public class ApplicationMain {
         assetManager.loadAsset("assets/data/animation/verses.animation", "verses", Animation.class);
         assetManager.loadAsset("assets/data/animation/winner.animation", "winner", Animation.class);
         assetManager.loadAsset("assets/data/animation/win_game.animation", "win_game", Animation.class);
+
+        if (splash != null && g != null) {
+            g.fillRect(26, 189, 200, 28); //Max size is 350
+            splash.update();
+        }
+        
+        //Load sound effects
+        assetManager.loadSoundEffect("assets/sound/spawn.wav", "spawn");
+        assetManager.loadSoundEffect("assets/sound/imp_attack.wav", "imp_attack");
+        assetManager.loadSoundEffect("assets/sound/yeti_attack.wav", "yeti_attack");
+        assetManager.loadSoundEffect("assets/sound/warthog_attack.wav", "warthog_attack");
+        assetManager.loadSoundEffect("assets/sound/slime_attack.wav", "slime_attack");
+        assetManager.loadSoundEffect("assets/sound/battle.wav", "battle");
+        assetManager.loadSoundEffect("assets/sound/the_land_of_wornia.wav", "intro1");
+        assetManager.loadSoundEffect("assets/sound/overrun_by_wild_beast.wav", "intro2");
+        assetManager.loadSoundEffect("assets/sound/its_up_to_you_to_go_out.wav", "intro3");
+        assetManager.loadSoundEffect("assets/sound/and_save_wornia.wav", "intro4");
+        assetManager.loadSoundEffect("assets/sound/winner.wav", "winner");
+        assetManager.loadSoundEffect("assets/sound/verses.wav", "verses");
+        assetManager.loadSoundEffect("assets/sound/help.wav", "help");
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 220, 28); //Max size is 350
@@ -193,7 +222,7 @@ public class ApplicationMain {
         assetManager.loadAsset("assets/data/enemy/warthog.enemy", "warthog", Enemy.class);
         assetManager.loadAsset("assets/data/enemy/imp.enemy", "imp", Enemy.class);
         assetManager.loadAsset("assets/data/enemy/iceMonster.enemy", "iceMonster", Enemy.class);
-        
+
         if (splash != null && g != null) {
             g.fillRect(26, 189, 240, 28); //Max size is 350
             splash.update();
@@ -246,6 +275,18 @@ public class ApplicationMain {
 
         // Load Music
         assetManager.loadAsset("assets/music/song_20150419_054852_239.mid", "main_song", Sequence.class);
+        
+        //Process the sequence to make it quieter
+        Sequence seq = assetManager.getAsset("main_song", Sequence.class);
+        Track[] tracks = seq.getTracks();
+        try {
+            for (int t = 0; t < tracks.length; t++) {
+                tracks[t].add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, t, 0, 30), 0));
+
+            }
+        } catch (InvalidMidiDataException ex) {
+            ErrorLogger.println("Invalid midi data exception: " + ex);
+        }
 
         if (splash != null && g != null) {
             g.fillRect(26, 189, 350, 28); //Max size is 350
@@ -255,50 +296,61 @@ public class ApplicationMain {
             g.dispose();
             splash.close();
         }
-        
+
         GameWindow window = new AWTGameWindow("Battle!", 800, 600);
 
         window.setIcon(assetManager.getImage("windowIcon"));
         window.registerQuitHandler(new QuitHandler() {
-			@Override
-			public void onQuit() {
-				// Otherwise game doesn't quit
-				MusicPlayer.getInstance().shutdown();
-			}
-		});
-        
+            @Override
+            public void onQuit() {
+                // Otherwise game doesn't quit
+                InfoLogger.println("This");
+                MusicPlayer.getInstance().shutdown();
+            }
+        });
+
         TimedGameStateRunner runner = new TimedGameStateRunner(window, assetManager);
 
         /*
          runner.setState(new MainMenuState());
          */
-                
         // Skip constant caller arg TODO: Replace with public domain flag parsing code
         for (int i = 0; i < args.length; i++) {
-        	String param = args[i];
-        	param = param.trim();
-        	if (param.charAt(0) == '-') {
-        		String key = param.substring(1); // -key
-        		if (key.indexOf('=') > 0) {						// -key=value 
-        			key = key.substring(0, key.indexOf('='));	// TODO: if value is a "string" that might break this type
-        			String value = key.substring(key.indexOf('=') + 1);
-        			flags.put(key, value);
-        		} else if ((i+1 < args.length) && args[i+1].charAt(0) != '-') {	// -key value
-        			String value = args[i+1];
-        			i++; // Skip next arg since we already handle it as a value
-        			flags.put(key, value);
-        		} else {									// -key (flag)
-        			flags.put(key, true);
-        		}
-        	}
+            String param = args[i];
+            param = param.trim();
+            if (param.charAt(0) == '-') {
+                String key = param.substring(1); // -key
+                if (key.indexOf('=') > 0) {						// -key=value 
+                    key = key.substring(0, key.indexOf('='));	// TODO: if value is a "string" that might break this type
+                    String value = key.substring(key.indexOf('=') + 1);
+                    flags.put(key, value);
+                } else if ((i + 1 < args.length) && args[i + 1].charAt(0) != '-') {	// -key value
+                    String value = args[i + 1];
+                    i++; // Skip next arg since we already handle it as a value
+                    flags.put(key, value);
+                } else {									// -key (flag)
+                    flags.put(key, true);
+                }
+            }
         }
-        
+
         runner.setState(new TransitionState(assetManager.getAsset("intro", Movie.class), new MainMenuState()));
         try {
             runner.loop();
         } catch (Exception e) {
             System.out.println("THERE WAS AN EXCEPTION \n CLOSING WINDOW");
             e.printStackTrace();
+            PrintWriter writer = null;
+            try {
+                writer = new PrintWriter(new File("error.txt"));
+            } catch (FileNotFoundException ex) {
+                ErrorLogger.println("Could not make error.txt (what now!?)");
+            }
+            if (writer != null) {
+                e.printStackTrace(writer);
+                writer.flush();
+                writer.close();
+            }
         }
         window.destroy();
 

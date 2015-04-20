@@ -232,7 +232,7 @@ public class ApplicationMain {
         //Load Movies
         assetManager.loadAsset("assets/data/movie/intro.movie", "intro", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_goblin.movie", "enter_battle_goblin", Movie.class);
-        assetManager.loadAsset("assets/data/movie/enter_battle_slime.movie", "enter_battle_goblin", Movie.class);
+        assetManager.loadAsset("assets/data/movie/enter_battle_slime.movie", "enter_battle_slime", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_iceMonster.movie", "enter_battle_iceMonster", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_imp.movie", "enter_battle_imp", Movie.class);
         assetManager.loadAsset("assets/data/movie/enter_battle_yeti.movie", "enter_battle_yeti", Movie.class);

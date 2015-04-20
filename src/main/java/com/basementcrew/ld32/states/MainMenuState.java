@@ -17,10 +17,10 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Map;
 
-import javax.sound.midi.Sequence;
 
 import com.basementcrew.ld32.ApplicationMain;
 import com.basementcrew.ld32.MusicPlayer;
+import javax.sound.midi.Sequence;
 
 /**
  * The main menu
@@ -42,7 +42,6 @@ public class MainMenuState extends GameState {
 				isQuiet = Boolean.parseBoolean((String) flag);
 			}
 		}
-                isQuiet = true;
 	}
 	
     @Override
@@ -152,7 +151,7 @@ public class MainMenuState extends GameState {
         getGameStateRunner().setState(townState);
        
         if (!isQuiet) {
-	        Sequence seq = getAssetManager().getAsset("main_song", Sequence.class);
+            Sequence seq = getAssetManager().getAsset("main_song", Sequence.class);
 			MusicPlayer player = MusicPlayer.getInstance();
 			player.play(seq, true, 0, 15, 25530);
         }

@@ -23,6 +23,7 @@ import com.basementcrew.ld32.data.Weapon;
 import com.basementcrew.ld32.movie.Movie;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -223,6 +224,19 @@ public class BattleSequenceState extends TimedGameState {
                             // bonus effect!
                             //System.out.println("you pressed the key in the right region!");
                             playerWeapon.getEffect().doEffect(playerWeapon, fighting, playerData);
+                            
+                            BufferedImage particleImage = null;
+                            switch (playerWeapon.getEffect()) {
+                                case DOUBLE_DAMAGE:
+                                    particleImage = getAssetManager().getImage("double_damage_particle");
+                                    break;
+                            }
+                            
+                            if (particleImage != null) {
+                                 particle = new Particle(particleImage, 
+                                        (int)(enemyRenderPosition.getX() - 20),
+                                        (int)(enemyRenderPosition.getY() - 100), 600);
+                            }
                             pressedKeyInRegion = -2; // lock the interval of tiome again
                         } 
                     }
@@ -243,10 +257,26 @@ public class BattleSequenceState extends TimedGameState {
                     if (enemyAttackTiming == null) {
                         regionCounter = 0; // reset the region counter with a new attack
                         enemyAttackTiming = enemyAttack.getTimings();
-                        //projectileImage = the projectile for the enemy attack;
+                       // projectileImage = enemyAttack.getProjectileImage();
+                        // if there IS a projectile, then set up the intial stuff for it.
+                        if (projectileImage != null) {
+                            // calculate the time and stuff for the projectile
+                            projectileStartTime = enemyAttackTiming[0] - 100; // miliseconds
+                            int timeToTake = playerAttackTiming[1] + 100 - projectileStartTime;
+                            int numberOfUpdateCycles = (int)(timeToTake / dt);
+                            projectileProgress = 0;
+                            projectileDelta = moveToAttackDistance / numberOfUpdateCycles;
+                        }
                     }
 
                     enemyAttackProgress += dt;
+                    if (!enemyAttack.isMelee() && enemyAttackProgress >= projectileStartTime) {
+                        projectileProgress += projectileDelta;
+                        if (projectileProgress > moveToAttackDistance) {
+                            projectileImage = null; // stop drawing the projectile when it reaches it's target
+                        }
+                    }
+                    
                     if (enemyAnimation.getCurrentTrackIndex() != 1) {
                         enemyAnimation.setTrack(1); // set the animation to the attack animation
                         enemyAnimation.getTrackOn().resetCounter();
@@ -278,6 +308,10 @@ public class BattleSequenceState extends TimedGameState {
                             if (!dodgedEnemyAttack) {
                                 // get damaged when you don't dodge by the end of the interval
                                 playerData.setHealth(playerData.getHealth() - enemyAttack.getDamage());
+                            } else {
+                                particle = new Particle(getAssetManager().getImage("dodge_particle"), 
+                                        (int)(playerRenderPosition.getX() - 20),
+                                        (int)(playerRenderPosition.getY() - 100), 600);
                             }
                             dodgedEnemyAttack = false;
                         }
@@ -338,6 +372,13 @@ public class BattleSequenceState extends TimedGameState {
                     getAssetManager().getAsset("lose_battle", Movie.class),
                     new MainMenuState())); // lose and go to the main menu
         }
+        
+        if (particle != null) {
+            particle.update(dt);
+            if (!particle.isAlive()) {
+                particle = null;
+            }
+        }
     }
 
     /**
@@ -384,12 +425,15 @@ public class BattleSequenceState extends TimedGameState {
         }
         
         // draw the projectile
-        if (projectileImage != null && playerAttackProgress >= projectileStartTime) {
-            g.drawImage(projectileImage, 
+        if (projectileImage != null) {
+            if ((playerTurn && playerAttackProgress >= projectileStartTime) || 
+                    (!playerTurn && enemyAttackProgress >= projectileStartTime)) {
+                g.drawImage(projectileImage, 
                     (int)(playerTurn ? playerRenderPosition.getX() + projectileProgress :
                             enemyRenderPosition.getX() - projectileProgress),
                     (int)(playerTurn ? playerRenderPosition.getY() : 
                             enemyRenderPosition.getY()) - (projectileImage.getHeight()/2), null);
+            }
         }
 
         // debug drawing
@@ -429,7 +473,7 @@ public class BattleSequenceState extends TimedGameState {
         g.setColor(Color.RED);
         // 144x24
         g.fillRect((int) playerRenderPosition.getX() + 3,
-                (int) playerRenderPosition.getY() - 27,
+                (int) playerRenderPosition.getY() - 47,
                 (int) (144 * ((double) playerData.getHealth() / playerMaxHealth)),
                 24);
 
@@ -440,10 +484,13 @@ public class BattleSequenceState extends TimedGameState {
         g.setColor(Color.RED);
         // 144x24
         g.fillRect((int) enemyRenderPosition.getX() + 3,
-                (int) enemyRenderPosition.getY() - 27,
+                (int) enemyRenderPosition.getY() - 47,
                 (int) (144 * ((double) fighting.getHealth() / enemyMaxHealth)),
                 24);
 
+        if (particle != null) {
+            particle.render((Graphics2D)g);
+        }
     }
 
     @Override

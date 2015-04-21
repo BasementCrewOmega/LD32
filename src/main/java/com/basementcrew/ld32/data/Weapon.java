@@ -49,6 +49,10 @@ public class Weapon {
         return attackAnimationTrack;
     }
     
+    public SoundEffect getSound() {
+        return sound;
+    }
+    
     public Effect getEffect() {
         return effect;
     }

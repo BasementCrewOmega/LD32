@@ -4,6 +4,6 @@ enemies {
 enemiesToBoss:3;
 boss:warthog;
 background_image:savanna_background;
-weapon:warthog_tusk_shiv;
+weapon:weapon_horn;
 icon_image:savanna_icon;
 button_location:600,100;

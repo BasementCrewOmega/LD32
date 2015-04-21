@@ -1,6 +1,7 @@
 attack {
     damage:4;
     timings:800,1300,1600;
+    sound:ice_sound;
 }
 data {
     health:7;

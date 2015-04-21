@@ -5,6 +5,6 @@ enemies {
 enemiesToBoss:4;
 boss:goblin;
 background_image:swamp_background;
-weapon:goblin;
+weapon:weapon_goblin;
 icon_image:swamp_icon;
 button_location:100,100;

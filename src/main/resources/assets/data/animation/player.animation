@@ -1,2 +1,4 @@
 player_idle;80;150;1000;;
 player_attack;80;150;200;;
+player_attack_wing;80;150;200;;
+player_attack_horn;80;150;200;;

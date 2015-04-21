@@ -107,23 +107,24 @@ public class ApplicationMain {
 
         assetManager.loadImage("assets/img/icon.png", "windowIcon");
 
-        assetManager.loadImage("assets/img/battleSequence/cooldownBar.png", "cooldownBar");
-        assetManager.loadImage("assets/img/battleSequence/cooldownBarBackground.png", "cooldownBarBackground");
         assetManager.loadImage("assets/img/battleSequence/healthBar.png", "healthBar");
         assetManager.loadImage("assets/img/battleSequence/healthBarBackground.png", "healthBarBackground");
-        assetManager.loadImage("assets/img/battleSequence/selector.png", "selector");
         assetManager.loadImage("assets/img/battleSequence/lowerMenuBackground.png", "lowerMenuBackground");
         assetManager.loadImage("assets/img/battleSequence/swamp_background.png", "swamp_background");
         assetManager.loadImage("assets/img/battleSequence/ice_background.png", "ice_background");
         assetManager.loadImage("assets/img/battleSequence/fire_background.png", "fire_background");
         assetManager.loadImage("assets/img/battleSequence/savanna_background.png", "savanna_background");
-        assetManager.loadImage("assets/img/battleSequence/abilityButtonTemplate.png", "abilityButtonTemplate");
-        assetManager.loadImage("assets/img/battleSequence/abilityButtonTemplateHover.png", "abilityButtonTemplateHover");
         assetManager.loadImage("assets/img/battleSequence/abilityButtonFists.png", "fist_button");
         assetManager.loadImage("assets/img/battleSequence/abilityButtonFistsHover.png", "hover_fist_button");
         assetManager.loadImage("assets/img/battleSequence/abilityButtonGoblin.png", "goblin_shotput_button");
         assetManager.loadImage("assets/img/battleSequence/abilityButtonGoblinHover.png", "hover_goblin_shotput_button");
-
+        assetManager.loadImage("assets/img/battleSequence/abilityButtonIce.png", "ice_button");
+        assetManager.loadImage("assets/img/battleSequence/abilityButtonIceHover.png", "hover_ice_button");
+        assetManager.loadImage("assets/img/battleSequence/abilityButtonHorn.png", "horn_button");
+        assetManager.loadImage("assets/img/battleSequence/abilityButtonHornHover.png", "hover_horn_button");
+        assetManager.loadImage("assets/img/battleSequence/abilityButtonWings.png", "wings_button");
+        assetManager.loadImage("assets/img/battleSequence/abilityButtonWingsHover.png", "hover_wings_button");
+        
         if (splash != null && g != null) {
             g.fillRect(26, 189, 120, 28); //Max size is 350
             splash.update();
@@ -143,9 +144,12 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/entity/slime_attack.png", "slime_attack");
         assetManager.loadImage("assets/img/entity/player_idle.png", "player_idle");
         assetManager.loadImage("assets/img/entity/player_attack.png", "player_attack");
+        assetManager.loadImage("assets/img/entity/player_attack_wing.png", "player_attack_wing");
+        assetManager.loadImage("assets/img/entity/player_attack_horn.png", "player_attack_horn");
         assetManager.loadImage("assets/img/entity/goblin_shotput.png", "goblin_shotput");
         assetManager.loadImage("assets/img/particle/imp_projectile.png", "imp_projectile");
         assetManager.loadImage("assets/img/particle/spear.png", "spear_projectile");
+        assetManager.loadImage("assets/img/particle/ice_projectile.png", "ice_projectile");
    
         if (splash != null && g != null) {
             g.fillRect(26, 189, 160, 28); //Max size is 350
@@ -170,6 +174,7 @@ public class ApplicationMain {
         assetManager.loadImage("assets/img/particle/dodge.png", "dodge_particle");
         assetManager.loadImage("assets/img/particle/double_damage.png", "double_damage_particle");
         assetManager.loadImage("assets/img/particle/goblin_stench.png", "goblin_stench_particle");
+        assetManager.loadImage("assets/img/particle/frostbite.png", "frostbite_particle");
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 180, 28); //Max size is 350
@@ -209,6 +214,11 @@ public class ApplicationMain {
         assetManager.loadSoundEffect("assets/sound/winner.wav", "winner");
         assetManager.loadSoundEffect("assets/sound/verses.wav", "verses");
         assetManager.loadSoundEffect("assets/sound/help.wav", "help");
+        assetManager.loadSoundEffect("assets/sound/punch.wav", "fist_attack");
+        assetManager.loadSoundEffect("assets/sound/stab.wav", "horn_attack");
+        assetManager.loadSoundEffect("assets/sound/wing_slap.wav", "wing_sound");
+        assetManager.loadSoundEffect("assets/sound/ice_smash.wav", "ice_sound");
+    
         
         if (splash != null && g != null) {
             g.fillRect(26, 189, 220, 28); //Max size is 350
@@ -227,7 +237,19 @@ public class ApplicationMain {
             g.fillRect(26, 189, 240, 28); //Max size is 350
             splash.update();
         }
+        
+        //Load weapons
+        assetManager.loadAsset("assets/data/weapon/fist.weapon", "fist", Weapon.class);
+        assetManager.loadAsset("assets/data/weapon/goblinshotput.weapon", "weapon_goblin", Weapon.class);
+        assetManager.loadAsset("assets/data/weapon/iceprojectile.weapon", "weapon_ice", Weapon.class);
+        assetManager.loadAsset("assets/data/weapon/horn.weapon", "weapon_horn", Weapon.class);
+        assetManager.loadAsset("assets/data/weapon/wing.weapon", "weapon_wing", Weapon.class);
 
+        if (splash != null && g != null) {
+            g.fillRect(26, 189, 300, 28); //Max size is 350
+            splash.update();
+        }
+        
         //Load areas
         assetManager.loadAsset("assets/data/area/fire.area", "fire", Area.class);
         assetManager.loadAsset("assets/data/area/ice.area", "ice", Area.class);
@@ -236,15 +258,6 @@ public class ApplicationMain {
 
         if (splash != null && g != null) {
             g.fillRect(26, 189, 280, 28); //Max size is 350
-            splash.update();
-        }
-
-        //Load weapons
-        assetManager.loadAsset("assets/data/weapon/fist.weapon", "fist", Weapon.class);
-        assetManager.loadAsset("assets/data/weapon/goblinshotput.weapon", "goblin", Weapon.class);
-
-        if (splash != null && g != null) {
-            g.fillRect(26, 189, 300, 28); //Max size is 350
             splash.update();
         }
 

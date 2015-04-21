@@ -1,0 +1,8 @@
+cooldown:200;
+attack:4;
+effect:DOUBLE_DAMAGE;
+timings:500,900,1100;
+image:wings_button;
+hImage:hover_wings_button;
+sound:wing_sound;
+attackAnimationTrack:2;

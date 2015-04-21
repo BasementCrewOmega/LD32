@@ -2,6 +2,7 @@ attack {
 	damage:5;
 	timings:500,850,1000;
         projectile:spear_projectile;
+        sound:horn_attack;
 }
 data {
 	health:6;

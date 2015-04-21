@@ -68,6 +68,7 @@ public class BattleSequenceState extends TimedGameState {
     private int enemyAttackProgress = 0; //Milliseconds the attack has been occuring
     private Attack enemyAttack;
     private int enemyMaxHealth;
+    private boolean enemyAttackSoundPlayed, playerSoundAlreadyPlayed;
 
     //Player attack management
     private int[] playerAttackTiming = null;
@@ -123,16 +124,18 @@ public class BattleSequenceState extends TimedGameState {
         this.areaInside = areaInsid;
         this.bossFight = false;
 
-        enemyAttack = fighting.getAttack(0);
+        
         playerWeapon = null;
         if (playerData.getWeapons().size() > 0) {
             cooldownCounters = new int[playerData.getWeapons().size()];
         }
         enemyFightingOn = enemyOn;
         if (enemyFightingOn > areaInside.getEnemiesToBoss()) {
-            fighting = areaInside.getBoss();
+            this.fighting = areaInside.getBoss();
             bossFight = true;
+            System.out.println("enemyFightingOn: "+enemyFightingOn + "  >   " + areaInside.getEnemiesToBoss());
         }
+        enemyAttack = fighting.getAttack(0);
     }
 
     @Override
@@ -192,6 +195,12 @@ public class BattleSequenceState extends TimedGameState {
                         playerAnimation.setTrack( playerWeapon.getAttackAnimationTrack()); // set the animation to the attack animation
                         playerAnimation.getTrackOn().resetCounter();
                     }
+                    
+                    if (!playerSoundAlreadyPlayed && playerWeapon.getSound() != null && playerAttackProgress > playerWeapon.getTimingStart(0)) {
+                        playerWeapon.getSound().play();
+                        playerSoundAlreadyPlayed = true;
+                    }
+                    
                     if (playerAttackProgress > 
                             playerWeapon.getTimingEntireEnded()) { // see if the attack is done yet
                         // finish the ability
@@ -234,12 +243,15 @@ public class BattleSequenceState extends TimedGameState {
                                 case GOBLIN_STENCH:
                                     particleImage = getAssetManager().getImage("goblin_stench_particle");
                                     break;
+                                case FROSTBITE:
+                                    particleImage = getAssetManager().getImage("frostbite_particle");
+                                    break;
                             }
                             
                             if (particleImage != null) {
                                  particles.add(new Particle(particleImage, 
                                         (int)(enemyRenderPosition.getX() - 20),
-                                        (int)(enemyRenderPosition.getY() - 100), 600));
+                                        (int)(enemyRenderPosition.getY() - 100), 1100));
                             }
                             pressedKeyInRegion = -2; // lock the interval of tiome again
                         } 
@@ -251,6 +263,7 @@ public class BattleSequenceState extends TimedGameState {
                 if (!abilityButtonsGroup.isEnabled()) { // enable the GUI when you don't have a weapon
                     abilityButtonsGroup.setEnabled(true);
                 }
+                playerSoundAlreadyPlayed = false;
             }
         } else { // the enemy's turn
             if (enemyAttack != null) { // does the enemy have an attack?
@@ -303,7 +316,16 @@ public class BattleSequenceState extends TimedGameState {
                             moveToAttackProgress -= moveToAttackDelta;
                         }
                     } else { // the attack is not done yet
+                        if (regionCounter != -1 && !enemyAttackSoundPlayed && enemyAttackProgress > enemyAttack.getTimingStart(regionCounter)) {
+                            // play a sound effect for the attack
+                            if (enemyAttack.getSound() != null) {
+                                enemyAttack.getSound().play();
+                            }
+                            enemyAttackSoundPlayed = true;
+                        }
+                        
                         if (regionCounter != -1 && enemyAttackProgress > enemyAttack.getTimingEnd(regionCounter)) {
+                            
                             regionCounter++;
                             if (regionCounter > (int)(enemyAttackTiming.length/2)-1)
                                 regionCounter = -1; // done with regions
@@ -322,7 +344,7 @@ public class BattleSequenceState extends TimedGameState {
                             }
                             dodgedEnemyAttack = false;
                         }
-
+                        
                         // if you pressed the key in the right region
                         if (regionCounter!= -1 && pressedKeyInRegion == regionCounter) {
                             //System.out.println("you pressed the key in the right region!");
@@ -337,6 +359,7 @@ public class BattleSequenceState extends TimedGameState {
             } else {
                 // need to chose the attack they're doing
                 enemyAttack = fighting.getRandomAttack();
+                enemyAttackSoundPlayed = false; // reset lock on playing a sound
             }
         }
 
@@ -356,6 +379,14 @@ public class BattleSequenceState extends TimedGameState {
 
             // if you killed teh boss
             if (bossFight) {
+               Weapon weaponWon = areaInside.getRewardWeapon();
+                if (!playerData.getWeapons().contains(weaponWon)) {
+                    playerData.getWeapons().add(weaponWon);
+//                    System.out.println("Added a weapon");
+//                    System.out.println(playerData.getWeapons().size());
+//                    System.out.println(weaponWon);
+                }
+                
                 playerData.completeArea(areaInside.getName());
                 nextState = new TownState(playerData);
             } else {
@@ -364,17 +395,13 @@ public class BattleSequenceState extends TimedGameState {
                 Movie movie = getAssetManager().getAsset("enter_battle_" + enemy.getName(), Movie.class);
                 
                 nextState = new TransitionState(
-                        getAssetManager().getAsset("win_battle", Movie.class),
-                        new TransitionState(
-                                movie,
-                                new BattleSequenceState(enemy, playerData,
-                                        backgroundImage, areaInside, enemyFightingOn + 1)));
+                        movie,
+                        new BattleSequenceState(enemy, playerData,
+                            backgroundImage, areaInside, enemyFightingOn + 1));
                 
-                Weapon weaponWon = areaInside.getRewardWeapon();
-                if (!playerData.getWeapons().contains(weaponWon)) {
-                    playerData.getWeapons().add(weaponWon);
-                }
             }
+            getGameStateRunner().setState(new TransitionState(
+                        getAssetManager().getAsset("win_battle", Movie.class), nextState));
         } else if (playerData.getHealth() <= 0) {
             getGameStateRunner().setState(new TransitionState(
                     getAssetManager().getAsset("lose_battle", Movie.class),
@@ -481,6 +508,7 @@ public class BattleSequenceState extends TimedGameState {
         }
 
         Font font = new Font("Arial Bold", Font.PLAIN, 20);
+        g.setColor(Color.WHITE);
         g.setFont(font);
         g.drawString(playerData.getName() + ":", 20, 390);
         g.drawString("HP: " + playerData.getHealth() + " / " + playerData.getMaxHealth(), 20, 430);
@@ -519,6 +547,8 @@ public class BattleSequenceState extends TimedGameState {
         lowerMenuBackground = getImage("lowerMenuBackground");
         selector = getImage("selector");
         projectileImage = null;
+        enemyAttackSoundPlayed = false;
+        playerSoundAlreadyPlayed =false;
         particles = new ArrayList<>();
         
         playerAnimation = getAssetManager().getAsset("player", Animation.class);
@@ -529,20 +559,17 @@ public class BattleSequenceState extends TimedGameState {
         enemyAnimation = fighting.getAnimation();
         enemyAnimation.setTrack(0);
         enemyAnimation.update(0);
-        enemyRenderPosition = new Point(500, 100);
+        enemyRenderPosition = new Point(500, 335 - enemyAnimation.getCurrentImage().getHeight());
         
         // adjust the render location for the player and enemy according to the are you're inside
         if (areaInside.getName().equals("savanna")) {
             playerRenderPosition.setLocation(80, 190);
-            enemyRenderPosition.setLocation(500, 180);
         } else if (areaInside.getName().equals("fire")) {
             playerRenderPosition.setLocation(80, 200);
         } else if (areaInside.getName().equals("ice")) {
             playerRenderPosition.setLocation(80, 165);
-            enemyRenderPosition.setLocation(500, 105);
         } else if (areaInside.getName().equals("swamp")) {
             playerRenderPosition.setLocation(80, 180);
-            enemyRenderPosition.setLocation(500, 115);
         }
         
         moveToAttackDistance = (int)(enemyRenderPosition.getX() - 
@@ -557,11 +584,17 @@ public class BattleSequenceState extends TimedGameState {
         abilityButtons = new ArrayList<>();
         abilityActions = new ArrayList<>();
         for (int i = 0; i < playerData.getWeapons().size(); i++) {
+            if (playerData.getWeapons().get(i) == null)
+                continue;
+            
             //System.out.println("Adding a weapon BUTTON");
             //System.out.println("Hover image: " + playerData.getWeapons().get(i).getHoverImage());
             ChosePlayerAbilityAction action = new ChosePlayerAbilityAction(i);
             GuiButton newGuiButton = new GuiButton(250, 390 + (i * 40),
-                    240, 30, playerData.getWeapons().get(i).getImage(),
+                    240, 30, playerData.
+                            getWeapons().
+                            get(i).
+                            getImage(),
                     playerData.getWeapons().get(i).getImage(),
                     playerData.getWeapons().get(i).getHoverImage(),
                     action); // make a button to chose the weapon

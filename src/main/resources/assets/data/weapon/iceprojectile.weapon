@@ -1,0 +1,9 @@
+cooldown:300;
+attack:1;
+effect:FROSTBITE;
+timings:300,900,1100;
+image:ice_button;
+hImage:hover_ice_button;
+sound:ice_sound;
+attackAnimationTrack:1;
+projectile:ice_projectile;

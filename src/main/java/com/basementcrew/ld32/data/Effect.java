@@ -10,7 +10,7 @@ package com.basementcrew.ld32.data;
  * @author Jonathon
  */
 public enum Effect {
-    DOUBLE_DAMAGE, GOBLIN_STENCH, NONE;
+    DOUBLE_DAMAGE, GOBLIN_STENCH, FROSTBITE, NONE;
     
     public void doEffect(Weapon with, Enemy target, PlayerData playerData) {
         switch (this) {
@@ -19,6 +19,9 @@ public enum Effect {
                 target.damage(with.getAttackDamage());
                 break;
             case GOBLIN_STENCH:
+                target.damage(5);
+                break;
+            case FROSTBITE:
                 target.damage(5);
         }
     }

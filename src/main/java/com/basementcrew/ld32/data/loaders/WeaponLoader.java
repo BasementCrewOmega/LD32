@@ -79,6 +79,10 @@ public class WeaponLoader extends AssetLoader<Weapon> {
                         //Parse the effect
                         if (buffer.equals("DOUBLE_DAMAGE"))
                             effect = Effect.DOUBLE_DAMAGE;
+                        else if (buffer.equals("GOBLIN_STENCH"))
+                            effect = Effect.GOBLIN_STENCH;
+                        else if (buffer.equals("FROSTBITE"))
+                            effect = Effect.FROSTBITE;
                         buffer = "";
                     } else if (property.equals("timings")) {
                         String[] timingsSplit = buffer.split(Pattern.quote(","));

@@ -1,0 +1,8 @@
+cooldown:200;
+attack:2;
+effect:DOUBLE_DAMAGE;
+timings:500,900,1100;
+image:horn_button;
+hImage:hover_horn_button;
+sound:horn_attack;
+attackAnimationTrack:3;
